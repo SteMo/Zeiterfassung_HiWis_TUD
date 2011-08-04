@@ -4,7 +4,7 @@ Ext.require([
 	'Ext.util.Cookies'
 	]);
 
-//Ext.BLANK_IMAGE_URL = 'resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = '../ext/resources/images/default/s.gif';
 
 
 Ext.application({

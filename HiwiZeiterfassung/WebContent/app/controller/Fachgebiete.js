@@ -23,13 +23,11 @@ Ext.define('AM.controller.Fachgebiete', {
            },
            {
         	   ref: 'a',
-        	   selector: 'contentgrid'
+        	   selector: 'grid'
            }
     ],	
 
      init: function() {
-    	 this.addEvents('personen');
-    	 
     	 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     	 console.log("Toolbar: " + this.getMenu());
     	 console.log("Toolbar item[0] " + this.getMenu().items.get(0).getId());
@@ -42,16 +40,7 @@ Ext.define('AM.controller.Fachgebiete', {
     	 this.getMenu().add({ text: 'Berichte'  });
     	 this.getMenu().doLayout();
     },
-    
-    init : function() {
-        this.application.addListener({
-            'personen' : this.personenClicked,
-        });
-    },  
 
-    personenClicked: function(){
-    	console.log("personenClicked!!!!");
-    },
 
     // editUser: function(grid, record) {
         // var view = Ext.widget('useredit');

@@ -23,8 +23,7 @@ Ext.define('AM.view.menu.Menu' ,{
 		{	text: 'Fachgebiete'	},
 		' ',
 		{	text: 'Personen', handler: function() {
-//								window.location.href = "index.html";
-								this.application.fireEvent('personen');  
+								window.location.href = "index.html";
 			}},
 		' ',
 		{	text: 'Verträge', handler: function() {
