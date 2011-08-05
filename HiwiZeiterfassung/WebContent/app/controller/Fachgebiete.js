@@ -21,10 +21,6 @@ Ext.define('AM.controller.Fachgebiete', {
                ref: 'menu',
                selector: 'toolbar'
            },
-           {
-        	   ref: 'a',
-        	   selector: 'grid'
-           }
     ],	
 
      init: function() {
@@ -32,8 +28,6 @@ Ext.define('AM.controller.Fachgebiete', {
     	 console.log("Toolbar: " + this.getMenu());
     	 console.log("Toolbar item[0] " + this.getMenu().items.get(0).getId());
     	 console.log("Toolbar item[0] " + this.getMenu().items.get(0).hide());
-    	 console.log("Fieldset: " + this.getA());
-    	 this.getA().setTitle("test");
     	 this.getMenu().items.get(0).hide();
     	 this.getMenu().items.get(0).disable(true);
     	 this.getMenu().items.get(0).setText("hi");

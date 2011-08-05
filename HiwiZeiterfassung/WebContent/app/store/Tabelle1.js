@@ -2,7 +2,7 @@ Ext.define('AM.store.Tabelle1', {
     extend: 'Ext.data.Store',
 	storeId:'Tabelle1',
 	
-	model: AM.model.fachgebiete.Tabelle1,
+	model: 'AM.model.fachgebiete.Tabelle1',
 	
 	data:{'items':[
 	  {"id": 1, "name":"Lisa", "fachgebiet":"DKE", "position":"Prof", "prof_zuordnung": -1, "mitarbeiter_zuordnung": -1},

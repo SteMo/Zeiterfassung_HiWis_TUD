@@ -1,7 +1,7 @@
 Ext.define('AM.store.Personentypen', {
     extend: 'Ext.data.Store',
 	
-	model: AM.model.fachgebiete.Personentypen,
+	model: 'AM.model.fachgebiete.Personentypen',
 	
 	data : [
 	  {"name":"Alle"},
