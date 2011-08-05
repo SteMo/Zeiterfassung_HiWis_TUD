@@ -26,7 +26,7 @@ Ext.define('AM.view.menu.Menu' ,{
 								window.location.href = "index.html";
 			}},
 		' ',
-		{	text: 'Vertr‰ge', handler: function() {
+		{	text: 'Vertr√§ge', handler: function() {
 								window.location.href = "vertraege.html";
 			}},
 		' ',

@@ -45,7 +45,7 @@ Ext.application({
 					},
 					{
 						xtype: 'button',
-						text: 'Person hinzufügen',
+						text: 'Person hinzufÃ¼gen',
 						icon: ''
 					} 
 				]

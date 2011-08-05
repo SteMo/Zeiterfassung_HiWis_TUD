@@ -56,10 +56,10 @@ Ext.application({
 					},
 					{
 						xtype: 'button',
-						text: 'Fachgebiet hinzufügen',
+						text: 'Fachgebiet hinzufÃ¼gen',
 						handler: function() {
 							Ext.create('Ext.window.Window', {
-								title: 'Fachgebiet hinzufügen',
+								title: 'Fachgebiet hinzufÃ¼gen',
 								height: 230,
 								width: 400,
 								layout: {
@@ -77,7 +77,7 @@ Ext.application({
 							    }, {
 							        xtype: 'textfield',
 							        name: 'kuerzel',
-							        fieldLabel: 'Kürzel',
+							        fieldLabel: 'KÃ¼rzel',
 							    }, {
 							    	xtype: 'searchField'
 							    }, {
@@ -85,13 +85,13 @@ Ext.application({
 							    }, { 
 							    	xtype: 'button', 
 							    	margin: '6 0 0 0',
-							    	text: 'Fachgebiet hinzufügen' 
+							    	text: 'Fachgebiet hinzufÃ¼gen' 
 							    }, { 
 							    	xtype: 'button', 
 							    	margin: '6 0 0 0',
-							    	text: 'Schließen',
+							    	text: 'SchlieÃŸen',
 							        handler: function() {
-//							            close();  // close() versucht wohl nicht nur Popup zu schließen, erlaubt Browser nicht... Wie schließen?
+//							            close();  // close() versucht wohl nicht nur Popup zu schlieï¿½en, erlaubt Browser nicht... Wie schlieï¿½en?
 							        }
 							    }]
 							}

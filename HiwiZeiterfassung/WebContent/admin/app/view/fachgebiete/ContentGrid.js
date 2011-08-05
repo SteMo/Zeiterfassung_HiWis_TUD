@@ -42,7 +42,7 @@ Ext.define('AM.view.fachgebiete.ContentGrid' ,{
 		},
 		{
 			dataIndex: 'kuerzel',
-			header: 'Kürzel',
+			header: 'KÃ¼rzel',
 			sortable: true,
 			width: 50,
 			align: 'center',
