@@ -1,10 +1,8 @@
 Ext.require([
 	'Ext.container.Viewport',
-	'Ext.state.*',
-	'Ext.util.Cookies'
-	]);
+]);
 
-Ext.BLANK_IMAGE_URL = '../ext/resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = '/ext-4.0.1/resources/images/default/s.gif';
 
 
 Ext.application({
@@ -18,16 +16,7 @@ Ext.application({
 
     
 	launch: function() {
-		
-   var cp = new Ext.state.CookieProvider({
-       path: "/cgi-bin/",
-       expires: new Date(new Date().getTime()+(1000*60*60*24*30)), //30 days
-       domain: "sencha.com"
-   });
-   Ext.state.Manager.setProvider(cp);
-   
-   Ext.util.Cookies.set('id','1');
-		
+			
         Ext.create('Ext.container.Viewport', {
 			layout: {
 				type:'vbox',

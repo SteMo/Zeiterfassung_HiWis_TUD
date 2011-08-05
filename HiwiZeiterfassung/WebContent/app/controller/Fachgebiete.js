@@ -16,23 +16,8 @@ Ext.define('AM.controller.Fachgebiete', {
 		'fachgebiete.Fachgebiete'
 	],
 	
-    refs: [
-           {
-               ref: 'menu',
-               selector: 'toolbar'
-           },
-    ],	
 
-     init: function() {
-    	 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    	 console.log("Toolbar: " + this.getMenu());
-    	 console.log("Toolbar item[0] " + this.getMenu().items.get(0).getId());
-    	 console.log("Toolbar item[0] " + this.getMenu().items.get(0).hide());
-    	 this.getMenu().items.get(0).hide();
-    	 this.getMenu().items.get(0).disable(true);
-    	 this.getMenu().items.get(0).setText("hi");
-    	 this.getMenu().add({ text: 'Berichte'  });
-    	 this.getMenu().doLayout();
+    init: function() {
     },
 
 

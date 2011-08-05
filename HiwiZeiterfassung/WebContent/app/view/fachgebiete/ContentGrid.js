@@ -90,7 +90,7 @@ Ext.define('AM.view.fachgebiete.ContentGrid' ,{
 			xtype:'actioncolumn', 
 			width:50,
 			items: [{
-				icon: 'images/edit.png',  // Use a URL in the icon config
+				icon: 'resources/images/edit.png',  // Use a URL in the icon config
 				iconCls: 'modifyImage',
 				tooltip: 'Edit',
 				handler: function(grid, rowIndex, colIndex) {
@@ -115,7 +115,7 @@ Ext.define('AM.view.fachgebiete.ContentGrid' ,{
 					}).show();
 				}
 			},{
-				icon: 'images/delete.png',
+				icon: 'resources/images/delete.png',
 				iconCls: 'modifyImage',
 				tooltip: 'Delete',
 				handler: function(grid, rowIndex, colIndex) {
