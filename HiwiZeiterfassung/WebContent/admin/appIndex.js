@@ -91,6 +91,7 @@ Ext.application({
 							    	margin: '6 0 0 0',
 							    	text: 'Schließen',
 							        handler: function() {
+							        	this.
 //							            close();  // close() versucht wohl nicht nur Popup zu schlie�en, erlaubt Browser nicht... Wie schließen?
 							        }
 							    }]

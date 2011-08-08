@@ -3,6 +3,9 @@ Ext.define('AM.view.menu.Menu' ,{
     extend: 'Ext.Toolbar',
     
     
+    id: 'menue',
+    itemId: 'menue',
+    
     autoRender: true,
    
 	title: '',
@@ -25,7 +28,27 @@ Ext.define('AM.view.menu.Menu' ,{
 		
 		{	text: 'Personen', 
 			handler: function() {
-				window.location.href = "personen.html";
+//				var wincmp = Ext.getCmp('lectures_win').getComponent('lecturescolumn');
+//				var rec = wincmp.getSelectionModel().getSelection();
+//				if (rec.length > 0) {
+//					var selectedlecture = rec[0];
+//		
+//					// loadlecture
+//					var lecture = new Clls.model.Lecture({
+//								title : selectedlecture.get('title'),
+//								serverId : selectedlecture.get('serverId'),
+//								channelSubId : selectedlecture
+//										.get('channelSubId'),
+//								creationTimeStamp : selectedlecture
+//										.get('creationTimeStamp'),
+//								noofslides: selectedlecture.get('noofslides'),
+//								noofdrawings: selectedlecture.get('noofdrawings'),
+//							});
+//		
+//					Ext.getCmp('lectures_win').hide();
+//					CllsApp = new CllsDesktop.App(lecture);
+//					CllsApp.loadLecture();
+//				}
 			}
 		}
 	],  

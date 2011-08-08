@@ -19,7 +19,16 @@ Ext.define('AM.controller.Fachgebiete', {
 	],
 	
 
+	
     init: function() {
+    	var view = this.getView("menu.Menu");
+    	console.log(view);
+    	console.log(view.getName);
+    	var test = view.prototype;
+    	console.log(test);
+    	console.log(test.alias);
+    	console.log(test.getId());
+    	test.add("Berichte");
     },
 
 
