@@ -9,9 +9,9 @@ Ext.define('AM.controller.Personen', {
 	
     views: [
         'layout.Menu',
-		'fachgebiete.ComboFachgebiete',
-		'fachgebiete.ComboPersonentypen',
-		'fachgebiete.ContentGrid'
+		'personen.ComboFachgebiete',
+		'personen.ComboPersonentypen',
+		'personen.ContentGrid'
     ],
 	
 	models: [
