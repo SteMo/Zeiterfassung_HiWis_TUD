@@ -10,7 +10,10 @@ Ext.application({
     appFolder: 'app',
 	
 	controllers: [
-        'Personen'
+        'Personen',
+        'Fachgebiete',
+        'Vertraege',
+        'Aufgaben'
     ],
 	
 
