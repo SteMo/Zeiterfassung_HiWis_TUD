@@ -1,11 +1,11 @@
-		var getPerson = function(value){
+var getPerson = function(value){
 						if (value === -1) {
 							return '';
 						}
 						var dataStore;
 						var idx;
-						if(Ext.data.StoreManager.lookup('Tabelle1').isFiltered()) {
-							dataStore = Ext.data.StoreManager.lookup('Tabelle1').snapshot;
+						if(Ext.data.StoreManager.lookup('Personen').isFiltered()) {
+							dataStore = Ext.data.StoreManager.lookup('Personen').snapshot;
 							idx = dataStore.findIndexBy(function(o,k) {
 									if(k==value) {
 										return true;
@@ -13,20 +13,20 @@
 									return false;
 								});
 						} else {
-							dataStore = dataStore = Ext.data.StoreManager.lookup('Tabelle1');
+							dataStore = dataStore = Ext.data.StoreManager.lookup('Personen');
 							idx = dataStore.findExact("id",value);
 						}
 						if(idx === -1) {
 							return "(404 - id: "+ value + ")";
 						}
 						return dataStore.getAt(idx).get("name");
-					}	
+					};
 
 Ext.define('AM.view.fachgebiete.ContentGrid' ,{
     extend: 'Ext.grid.GridPanel',
     alias : 'widget.contentGrid',
 
-	store: 'Tabelle1',	
+	store: 'Personen',	
 	
 	id: 'listOfPeople',
 	width: 700,
@@ -90,7 +90,8 @@ Ext.define('AM.view.fachgebiete.ContentGrid' ,{
 			xtype:'actioncolumn', 
 			width:50,
 			items: [{
-				icon: 'resources/images/edit.png',  // Use a URL in the icon config
+				icon: 'resources/images/edit.png',  // Use a URL in the icon
+													// config
 				iconCls: 'modifyImage',
 				tooltip: 'Edit',
 				handler: function(grid, rowIndex, colIndex) {
@@ -100,7 +101,8 @@ Ext.define('AM.view.fachgebiete.ContentGrid' ,{
 						height: 200,
 						width: 400,
 						layout: 'fit',
-						items: {  // Let's put an empty grid in just to illustrate fit layout
+						items: {  // Let's put an empty grid in just to
+									// illustrate fit layout
 							xtype: 'grid',
 							data: grid.getStore().getAt(rowIndex),
 							border: false,
@@ -109,8 +111,14 @@ Ext.define('AM.view.fachgebiete.ContentGrid' ,{
 									  },{
 										header: 'Fachbereich',
 										dataIndex: "fachbereich"
-									  }],                 // One header just for show. There's no data,
-							store: Ext.create('Ext.data.ArrayStore', {}) // A dummy empty data store
+									  }],                 // One header just
+															// for show. There's
+															// no data,
+							store: Ext.create('Ext.data.ArrayStore', {}) // A
+																			// dummy
+																			// empty
+																			// data
+																			// store
 						}
 					}).show();
 				}

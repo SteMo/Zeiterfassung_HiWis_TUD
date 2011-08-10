@@ -10,7 +10,7 @@ Ext.application({
     appFolder: 'app',
 	
 	controllers: [
-        'Fachgebiete'
+        'Personen'
     ],
 	
 
