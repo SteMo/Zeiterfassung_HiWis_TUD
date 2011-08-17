@@ -1,64 +1,24 @@
-Ext.require([
-	'Ext.container.Viewport',
-]);
+/* Unsere App folgt dem MVC Style und lehnt sich an den folgenden Tutorials an:
+ * http://www.sencha.com/learn/the-mvc-application-architecture/
+ * http://www.sencha.com/learn/architecting-your-app-in-ext-js-4-part-1
+ * http://www.sencha.com/learn/architecting-your-app-in-ext-js-4-part-2
+ */
 
-Ext.BLANK_IMAGE_URL = '/extjs/resources/images/default/s.gif';
-// Diese URL führt ins Nichts, wo kommt denn das Bild her?
-// Und warum muss es in jeder Datei einzeln spezifiziert werden, es sollte doch reichen, das einmal irgendwo hinzuschreiben.
-
+/* dadurch läd er benötigte Klassen automatisch */
+Ext.Loader.setConfig({enabled:true});
 
 Ext.application({
-    name: 'AM',
+    /* definiert Namespace in dem alle Klassen adressierbar sind, globale Variable */
+	name: 'AM',
     appFolder: 'app',
 	
-	controllers: [
-        'Personen',
-        'Fachgebiete',
-        'Vertraege',
-        'Aufgaben'
-    ],
+    /* "By setting autoCreateViewport to true, the framework will, by convention, include the app/view/Viewport.js file" */
+    autoCreateViewport: true,
+    
+	controllers: ['Controller'],
 	
-
     
 	launch: function() {
-			
-        Ext.create('Ext.container.Viewport', {
-			layout: {
-				type:'vbox',
-				padding:'5',
-				align:'center',
-				autoWidth: true,
-			},              
-			
-			items: [
-			{   	
-				// Toolbar/Menue
-				xtype: 'menue',
-			},
-			{
-				// Filterbereich
-				xtype: 'fieldset',
-				id: 'listOfFilters',
-				width: 700,
-				title: '',
-				items: [
-					{
-						xtype: 'comboFachgebiete',                   
-					},
-					{
-						xtype: 'comboPersonentypen',
-					},
-					{
-						xtype: 'button',
-						text: 'Person hinzuf&uuml;gen',
-						icon: ''
-					} 
-				]
-			},
-			{
-				// Inhaltsbereich (Tabelle/Grid)
-				xtype: 'contentGrid',
-			}]					
-			});
+		console.log("app.js launch called");		
     }
 });

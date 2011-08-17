@@ -1,12 +1,9 @@
 Ext.define('AM.store.Personentypen', {
     extend: 'Ext.data.Store',
 	
+    requires: 'AM.model.Personentypen',
 	model: 'AM.model.Personentypen',
 	
-	data : [
-	  {"name":"Alle"},
-	  {"name":"Prof"},
-	  {"name":"Mitarbeiter"},
-	  {"name":"HiWi"}
-	]
+	/* durch autoLoad=true läd er die JSON Daten direkt in den Store */
+	autoLoad: true,
 });

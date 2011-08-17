@@ -1,0 +1,9 @@
+{
+    'success': true,
+    'results': [
+	  {"name":"Alle"},
+	  {"name":"Prof"},
+	  {"name":"Mitarbeiter"},
+	  {"name":"HiWi"}
+    ]
+}

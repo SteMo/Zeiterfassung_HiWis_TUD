@@ -1,0 +1,10 @@
+{
+    'success': true,
+    'results': [
+	  {"name":"Alle"},
+	  {"name":"CMS"},
+	  {"name":"NCS"},
+	  {"name":"HCE"},
+	  {"name":"DKE"}
+    ]
+}

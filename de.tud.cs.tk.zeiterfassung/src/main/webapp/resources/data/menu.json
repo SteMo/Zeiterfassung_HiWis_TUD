@@ -1,0 +1,11 @@
+{
+    'success': true,
+    'results': [
+    		/* die id wird im Controller benutzt um auf onclick zu reagieren! */
+	        {id: 'btnDashboard', 	text: 'Dashboard',		handler:'',	xtype: 'button'},
+	        {id: 'btnFachbereiche', text: 'Fachbereiche',	handler:'',	xtype: 'button'},
+	        {id: 'btnPersonen',		text: 'Personen',		handler:'',	xtype: 'button'},
+	        {id: 'btnVertraege',	text: 'Vertr&auml;ge',	handler:'',	xtype: 'button'},
+	        {id: 'btnAufgaben', 	text: 'Aufgaben',		handler:'',	xtype: 'button'}
+    ]
+}
