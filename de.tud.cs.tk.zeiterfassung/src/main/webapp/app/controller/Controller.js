@@ -1,3 +1,5 @@
+/* speichern, welcher Menüpunkt gerade aktiv ist - wichtig für Detailfenster, da ich nicht weiß, wie ich verschiedene Selektoren für die dynamischen Grids machen kann */
+var activeView = 0;
 
 Ext.define('AM.controller.Controller', {
     extend: 'Ext.app.Controller',
@@ -16,6 +18,7 @@ Ext.define('AM.controller.Controller', {
         'layout.ContentGrid',
 		'personen.ComboFachgebiete',
 		'personen.ComboPersonentypen',
+		'personen.DetailsWindow',
     ],
 	
 	models: [
@@ -29,7 +32,8 @@ Ext.define('AM.controller.Controller', {
 	 * -> Zugriff über: this.get<ref>(), erster Buchstabe von <ref> groß...	 */
     refs: [
        { ref: "content",   selector: "contentGrid", },
-       { ref: 'menu',      selector: 'menue'		}
+       { ref: 'menu',      selector: 'menue'		},
+//       { ref: 'detailsWindow', selector: 'detailsWindow'}
     ],
 
     init: function() {
@@ -45,6 +49,7 @@ Ext.define('AM.controller.Controller', {
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
         	'menue button[id="btnVertraege"]': 		{ click: this.showDashboard  },
         	'menue button[id="btnAufgaben"]': 		{ click: this.showDashboard  }, 	
+        	'contentGrid':							{ itemdblclick: this.showContentDetails },
         });       	
     },
     
@@ -79,6 +84,7 @@ Ext.define('AM.controller.Controller', {
     showFachgebiete: function(){
     	console.log("Fachbereiche clicked");
     	/* reconfigure bindet einen neuen Store + columns an Grid */
+    	this.getContent().id = "listOfDepartments";
     	this.getContent().reconfigure(this.getFachgebieteDataStore(), columnsFachgebiete);
     	/* PagingToolbar aktualisieren: 1. an geänderten Store binden, 2. Ansicht refreshen */
     	this.getContent().getDockedComponent("pagingtoolbar").bindStore(this.getFachgebieteDataStore());
@@ -87,11 +93,13 @@ Ext.define('AM.controller.Controller', {
 
     showPersonen: function(){
     	console.log("Personen clicked");
+    	this.getContent().id = "listOfPeople";
     	/* reconfigure bindet einen neuen Store + columns an Grid */
     	this.getContent().reconfigure(this.getPersonenStore(), columnsPersonen);
     	/* PagingToolbar aktualisieren: 1. an geänderten Store binden, 2. Ansicht refreshen */
     	this.getContent().getDockedComponent("pagingtoolbar").bindStore(this.getPersonenStore());
     	this.getContent().getDockedComponent("pagingtoolbar").doRefresh();
+    	
     },
     
     showVertraege: function(){
@@ -103,4 +111,50 @@ Ext.define('AM.controller.Controller', {
     	console.log("Aufgaben clicked");
         this.getContent().bindStore(this.getFachgebieteDataStore());
     },    
+    
+    
+    showContentDetails: function(a, item){
+//    	console.log("showContentDetails:");
+//    	console.log(item.data);
+
+    	var detailsWindow = Ext.create('widget.detailsWindow', { title: 'Details &uuml;ber ' + item.data.name });
+
+    	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+    	/**
+    	 * ToDo: 
+    	 * Was soll alles angezeigt werden? Beim Store/Model muss man mal sehen, in dem Beispiel von unseren
+    	 * Betreuern (glaub da war das) haben die einfach alle Daten im Store, im Grid werden nicht alle angezeigt
+    	 *  - so wäre hier ja auch sinnvoll um bei den Details dann "alles" anzeigen zu können
+    	 */
+    	
+    	
+    	/* Abfrage welches Grid gerade geladen ist um entsprechendes Detailfenster anzuzeigen */
+    	if(Ext.ComponentQuery.query('#listOfPeople').length!=0){
+    		//Name:
+    		/* Packagenotation geht in query nicht, CSS-like... */
+        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonName')[0]).setValue(item.data.name);
+        	//Vorname:
+        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonVorname')[0]).setValue(item.data.name);
+        	//Fachgebiet:
+        	(Ext.ComponentQuery.query('#personenDetailsWindowUniFachgebiet')[0]).setValue(item.data.fachgebiet);
+        	//Position:
+        	(Ext.ComponentQuery.query('#personenDetailsWindowUniPosition')[0]).setValue(item.data.position);    	
+        	
+        	//zugeordneter Professor? Ist das entweder oder mit Mitarbeiter?
+        	if(item.data.prof_zuordnung!=-1)
+        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuProfessor')[0]).setValue(getPerson(item.data.prof_zuordnung));
+        	//zugeordneter Mitarbeiter?
+        	if(item.data.mitarbeiter_zuordnung!=-1)
+        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuMitarbeiter')[0]).setValue(getPerson(item.data.mitarbeiter_zuordnung));    	
+
+    	}else if(Ext.ComponentQuery.query('#listOfDepartments').length!=0){
+    		// TO DO ! Siehe oben...
+    	}
+		
+
+    	    		
+    	/* zeige Fenster */
+    	detailsWindow.show();
+    },
+
 });
