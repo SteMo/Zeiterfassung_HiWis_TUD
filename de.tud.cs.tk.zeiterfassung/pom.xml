@@ -41,6 +41,12 @@
 			<artifactId>javassist</artifactId>
 			<version>3.12.1.GA</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>2.2.2.GA</version>
+		</dependency>
+		
 
 		<!-- provided dependencies: -->
 		<dependency>
