@@ -1,5 +1,10 @@
 /* Warum hier proxy? Setzt Standardproxy, muss dann nicht von Stores immer gesetzt werden, nur wenn mehrere Stores selbes model benutzen und sich Rückgabe unterscheidet  */
 
+/**
+ * ! Wenn sich etwas am Model ändert müssen evtl auch andere Stellen angepasst werden, da diese 
+ * auf die Felder ja zugreifen (z.B. die Detail-Fenster zu Personen bei Doppelklick @ Controller) 
+ * */
+
 Ext.define('AM.model.Fachgebiete', {
     extend: 'Ext.data.Model',
     fields:['name'],
