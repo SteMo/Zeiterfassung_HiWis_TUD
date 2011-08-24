@@ -1,6 +1,9 @@
 package de.tud.cs.tk.zeiterfassung.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import javax.persistence.EntityExistsException;
 
 import org.junit.Test;
 
@@ -10,15 +13,60 @@ import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 public class FachgebietTest {
 
 	@Test
-	public void createFachgebiet() {
+	public void createTKFachgebiet() {
+		if (FachgebietDAO.findFachgebietByName("TK") == null) {
+			Fachgebiet f = new Fachgebiet();
+			f.name = "TK";
+			
+			long id = FachgebietDAO.create(f);
+			
+			f = FachgebietDAO.retrieve(id);
+			assertEquals("TK", f.name);
+		}
+	}
+
+	@Test(expected=EntityExistsException.class)
+	public void createExistingFachgebiet() {
 		Fachgebiet f = new Fachgebiet();
 		f.name = "TK";
 		
-		long id = FachgebietDAO.create(f);
-		f = null;
+		FachgebietDAO.create(f);
+	}
+
+	@Test
+	public void findFachgebiet() {
+		Fachgebiet f = FachgebietDAO.findFachgebietByName("TK");
+		assertEquals("TK", f.name);
+	}
+
+	@Test
+	public void findUnknownFachgebiet() {
+		Fachgebiet f = FachgebietDAO.findFachgebietByName("FOO");
+		assertNull(f);
+	}
+
+	@Test
+	public void createSEFachgebiet() {
+		if (FachgebietDAO.findFachgebietByName("SE") == null) {
+			Fachgebiet f = new Fachgebiet();
+			f.name = "SE";
+			
+			long id = FachgebietDAO.create(f);
+			
+			f = FachgebietDAO.retrieve(id);
+			assertEquals("SE", f.name);
+		}
+	}
+	
+	@Test
+	public void updateFachgebiet() {
+		Fachgebiet f = FachgebietDAO.findFachgebietByName("TK");
+		f.budget = 1000;
+		
+		long id = FachgebietDAO.update(f);
 		
 		f = FachgebietDAO.retrieve(id);
-		assertEquals("TK", f.name);
+		assertEquals(1000, f.budget);
 	}
 	
 }
