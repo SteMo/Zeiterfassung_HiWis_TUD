@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Fachgebiet {
+public class Tarif {
 
 	@Id
 	@GeneratedValue
@@ -20,9 +20,12 @@ public class Fachgebiet {
 	public String name;
 	
 	@Basic
-	public int budget;
+	public int stufe;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="fachgebiet")
-	public List<Person> people;
+	@Basic
+	public double stundensatz;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="tarif")
+	public List<Vertrag> vertraege;
 	
 }
