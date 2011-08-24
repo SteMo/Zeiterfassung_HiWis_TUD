@@ -18,7 +18,6 @@ public class TestServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println(request.getParameter("class").isEmpty());
 		if (request.getParameter("class") != null && !request.getParameter("class").isEmpty()) {
 			String className = request.getParameter("class");
 			response.setContentType("text/plain");

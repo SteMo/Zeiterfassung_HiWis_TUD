@@ -8,34 +8,29 @@ import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 
 public class FachgebietDAO {
 
-	public static boolean exists(String name) {
+	public static long create(Fachgebiet fachgebiet) {
+		Hibernate.saveObject(fachgebiet);
+		return fachgebiet.id;
+	}
+
+	public static Fachgebiet retrieve(long id) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 
-		Long occ = (Long) session.createQuery("select count(*) from Fachgebiet as f where f.name = ?").setString(0, name).uniqueResult();
+		Fachgebiet fachgebiet = (Fachgebiet) session.createQuery("from Fachgebiet where id=?").setLong(0, id).uniqueResult();
 
 		session.getTransaction().commit();
 
-		return (occ > 0);
+		return fachgebiet;
 	}
 
-	public static void create(Fachgebiet f) {
-		Hibernate.saveObject(f);
+	public static long update(Fachgebiet fachgebiet) {
+		Hibernate.saveOrUpdateObject(fachgebiet);
+		return fachgebiet.id;
 	}
-
-	public static void update(Fachgebiet f) {
-		Hibernate.saveOrUpdateObject(f);
-	}
-
-	public static Fachgebiet get(String name) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-
-		Fachgebiet f = (Fachgebiet) session.createQuery("from Fachgebiet where name=?").setString(0, name).uniqueResult();
-
-		session.getTransaction().commit();
-
-		return f;
+	
+	public static void delete(Fachgebiet fachgebiet) {
+		Hibernate.deleteObject(fachgebiet);
 	}
 	
 }

@@ -1,6 +1,6 @@
 package de.tud.cs.tk.zeiterfassung.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -14,8 +14,11 @@ public class FachgebietTest {
 		Fachgebiet f = new Fachgebiet();
 		f.name = "TK";
 		
-		FachgebietDAO.create(f);
-		assertTrue(FachgebietDAO.exists("TK"));
+		long id = FachgebietDAO.create(f);
+		f = null;
+		
+		f = FachgebietDAO.retrieve(id);
+		assertEquals("TK", f.name);
 	}
 	
 }
