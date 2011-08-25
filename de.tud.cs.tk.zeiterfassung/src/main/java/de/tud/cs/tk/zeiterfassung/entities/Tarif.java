@@ -5,9 +5,13 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Tarif {
@@ -25,7 +29,8 @@ public class Tarif {
 	@Basic
 	public double stundensatz;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="tarif")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="tarif", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	public List<Vertrag> vertraege;
 	
 }

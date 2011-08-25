@@ -5,10 +5,14 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Person {
@@ -26,13 +30,16 @@ public class Person {
 	@ManyToOne
 	private Person supervisor;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="vertragspartner")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="vertragspartner", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Vertrag> vertraege;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="supervisor")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="supervisor", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Person> mitarbeiter;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="verantwortlicher")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="verantwortlicher", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Aufgabe> aufgaben;
 	
 	@ManyToOne
