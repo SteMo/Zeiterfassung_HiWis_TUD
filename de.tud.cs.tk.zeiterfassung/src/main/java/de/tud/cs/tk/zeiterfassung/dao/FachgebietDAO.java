@@ -14,7 +14,7 @@ import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 public class FachgebietDAO {
 
 	public static long create(Fachgebiet fachgebiet) {
-		if (findFachgebietByName(fachgebiet.name) == null) {
+		if (findByName(fachgebiet.name) == null) {
 			Hibernate.saveObject(fachgebiet);
 		} else {
 			throw new EntityExistsException();
@@ -27,7 +27,7 @@ public class FachgebietDAO {
 		Hibernate.deleteObject(fachgebiet);
 	}
 	
-	public static Fachgebiet findFachgebietByName(String name) {
+	public static Fachgebiet findByName(String name) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 
@@ -36,18 +36,6 @@ public class FachgebietDAO {
 		session.getTransaction().commit();
 
 		return fachgebiet;	
-	}
-	
-	public static List<Fachgebiet> getAll() {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-
-		@SuppressWarnings("unchecked")
-		List<Fachgebiet> fachgebiete = (ArrayList<Fachgebiet>) session.createQuery("from Fachgebiet").list();
-
-		session.getTransaction().commit();
-
-		return fachgebiete;	
 	}
 	
 	public static Fachgebiet retrieve(long id) {
@@ -59,6 +47,18 @@ public class FachgebietDAO {
 		session.getTransaction().commit();
 
 		return fachgebiet;
+	}
+	
+	public static List<Fachgebiet> retrieveAll() {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+
+		@SuppressWarnings("unchecked")
+		List<Fachgebiet> fachgebiete = (ArrayList<Fachgebiet>) session.createQuery("from Fachgebiet").list();
+
+		session.getTransaction().commit();
+
+		return fachgebiete;	
 	}
 
 	public static long update(Fachgebiet fachgebiet) {

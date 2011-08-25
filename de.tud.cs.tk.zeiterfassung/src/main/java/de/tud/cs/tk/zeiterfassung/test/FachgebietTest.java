@@ -14,7 +14,7 @@ public class FachgebietTest {
 
 	@Test
 	public void createTKFachgebiet() {
-		if (FachgebietDAO.findFachgebietByName("TK") == null) {
+		if (FachgebietDAO.findByName("TK") == null) {
 			Fachgebiet f = new Fachgebiet();
 			f.name = "TK";
 			
@@ -35,19 +35,19 @@ public class FachgebietTest {
 
 	@Test
 	public void findFachgebiet() {
-		Fachgebiet f = FachgebietDAO.findFachgebietByName("TK");
+		Fachgebiet f = FachgebietDAO.findByName("TK");
 		assertEquals("TK", f.name);
 	}
 
 	@Test
 	public void findUnknownFachgebiet() {
-		Fachgebiet f = FachgebietDAO.findFachgebietByName("FOO");
+		Fachgebiet f = FachgebietDAO.findByName("FOO");
 		assertNull(f);
 	}
 
 	@Test
 	public void createSEFachgebiet() {
-		if (FachgebietDAO.findFachgebietByName("SE") == null) {
+		if (FachgebietDAO.findByName("SE") == null) {
 			Fachgebiet f = new Fachgebiet();
 			f.name = "SE";
 			
@@ -60,7 +60,7 @@ public class FachgebietTest {
 	
 	@Test
 	public void updateFachgebiet() {
-		Fachgebiet f = FachgebietDAO.findFachgebietByName("TK");
+		Fachgebiet f = FachgebietDAO.findByName("TK");
 		f.budget = 1000;
 		
 		long id = FachgebietDAO.update(f);
