@@ -18,26 +18,32 @@ public class TestServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("class") != null && !request.getParameter("class").isEmpty()) {
-			String className = request.getParameter("class");
-			response.setContentType("text/plain");
-			OutputStream out = response.getOutputStream();
-			final PrintStream pout = new PrintStream(out);
-			new JUnitCore().runMain(new JUnitSystem() {
-				public PrintStream out() {
-					return pout;
-				}
+		String className;
 
-				public void exit(int arg0) {
-				}
-			}, className);
-			out.close();			
+		if (request.getParameter("class") != null && !request.getParameter("class").isEmpty()) {
+			className = request.getParameter("class");
+		} else {
+			className = "de.tud.cs.tk.zeiterfassung.test.TestSuite";
 		}
+		response.setContentType("text/plain");
+		OutputStream out = response.getOutputStream();
+		final PrintStream pout = new PrintStream(out);
+		new JUnitCore().runMain(new JUnitSystem() {
+			public PrintStream out() {
+				return pout;
+			}
+
+			public void exit(int arg0) {
+			}
+		}, className);
+		out.close();
+
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
+
 }
