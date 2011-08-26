@@ -14,7 +14,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-public class Fachgebiet {
+public class Tarif {
 
 	@Id
 	@GeneratedValue
@@ -24,10 +24,13 @@ public class Fachgebiet {
 	public String name;
 	
 	@Basic
-	public int budget;
+	public int stufe;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="fachgebiet", fetch=FetchType.EAGER)
+	@Basic
+	public double stundensatz;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="tarif", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	public List<Person> people;
+	public List<Vertrag> vertraege;
 	
 }

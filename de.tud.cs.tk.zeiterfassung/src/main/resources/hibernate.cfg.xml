@@ -32,7 +32,11 @@
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">false</property>
 
+		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Aufgabe" />
 		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Fachgebiet" />
+		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Person" />
+		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Tarif" />
+		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Vertrag" />
 
 	</session-factory>
 </hibernate-configuration>
