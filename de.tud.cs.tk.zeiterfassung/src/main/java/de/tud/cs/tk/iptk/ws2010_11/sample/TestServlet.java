@@ -24,6 +24,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.ws.rs.GET;
+
 import de.tud.cs.tk.iptk.ws2010_11.jopenid.OpenIdPrincipal;
 
 /**
