@@ -1,4 +1,4 @@
-package de.tud.cs.tk.iptk.ws2010_11.jopenid;
+package de.tud.cs.tk.zeiterfassung.jopenid;
 
 import java.security.Principal;
 

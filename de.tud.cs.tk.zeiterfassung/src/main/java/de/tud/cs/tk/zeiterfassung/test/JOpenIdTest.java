@@ -1,4 +1,4 @@
-package de.tud.cs.tk.iptk.ws2010_11.sample;
+package de.tud.cs.tk.zeiterfassung.test;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,14 +26,14 @@ import org.xml.sax.SAXException;
 
 import javax.ws.rs.GET;
 
-import de.tud.cs.tk.iptk.ws2010_11.jopenid.OpenIdPrincipal;
+import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 
 /**
  * Minimal servlet reacting on user principal either being set or not. 
  * @author Hartle
  *
  */
-public class TestServlet extends HttpServlet {
+public class JOpenIdTest extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
