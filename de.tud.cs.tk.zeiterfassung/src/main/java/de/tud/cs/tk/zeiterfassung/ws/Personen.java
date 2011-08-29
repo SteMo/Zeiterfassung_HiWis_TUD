@@ -4,7 +4,6 @@
  */
 package de.tud.cs.tk.zeiterfassung.ws;
 
-import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 
@@ -52,7 +51,7 @@ public class Personen {
                     null,
                     (p.getSupervisor() != null)
                     ? p.getSupervisor().id 
-                    : -1));
+                    : Long.valueOf("-1")));
         }
         pl.success = true;
         return pl;
@@ -61,6 +60,7 @@ public class Personen {
     @GET
     @Path("/{ident}")
     public Person getById(@PathParam("ident") String ident) {
+        // Todo: Welche Daten sollen ausgegeben werden?
         return null;
     }
 }
