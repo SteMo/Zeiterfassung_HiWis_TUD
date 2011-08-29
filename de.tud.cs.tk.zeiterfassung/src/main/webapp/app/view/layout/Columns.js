@@ -95,20 +95,11 @@ var columnsPersonen = [
     		},
     		{
     			// xtype: 'gridcolumn',
-    			dataIndex: 'prof_zuordnung',
-    			header: 'Zugeordneter Professor',
+    			dataIndex: 'supervisor',
+    			header: 'Supervisor',
     			sortable: true,
-    			width: 175,
-    			renderer: getPerson
-
-    		},
-    		{
-    			// xtype: 'gridcolumn',
-    			dataIndex: 'mitarbeiter_zuordnung',
-    			header: 'Zugeordneter Mitarbeiter',
-    			sortable: true,
-    			width: 175,
-    			renderer: getPerson
+    			width: 350,
+                        renderer: getPerson
 
     		},
     		{

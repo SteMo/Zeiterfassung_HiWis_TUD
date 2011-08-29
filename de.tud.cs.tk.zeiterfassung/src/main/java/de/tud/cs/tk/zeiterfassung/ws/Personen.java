@@ -54,6 +54,7 @@ public class Personen {
                     ? p.getSupervisor().id 
                     : -1));
         }
+        pl.success = true;
         return pl;
     }
 
