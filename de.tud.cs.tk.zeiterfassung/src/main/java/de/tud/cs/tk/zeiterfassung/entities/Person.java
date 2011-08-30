@@ -27,6 +27,9 @@ public class Person {
 	@Basic
 	public String givenName;
 	
+	@Basic // OpenID identifier 
+	public String principal;
+	
 	@ManyToOne
 	private Person supervisor;
 	
