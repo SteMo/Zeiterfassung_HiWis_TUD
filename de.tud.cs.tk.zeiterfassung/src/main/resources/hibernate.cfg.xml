@@ -37,6 +37,7 @@
 		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Person" />
 		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Tarif" />
 		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Vertrag" />
+		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Rolle" />
 
 	</session-factory>
 </hibernate-configuration>
