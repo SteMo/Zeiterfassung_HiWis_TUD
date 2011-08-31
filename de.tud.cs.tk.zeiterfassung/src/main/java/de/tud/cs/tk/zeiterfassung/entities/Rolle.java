@@ -22,6 +22,9 @@ public class Rolle {
 	
 	@Basic
 	public String name;
+        
+        @Basic
+        public int significance;
 
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="rolle", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)

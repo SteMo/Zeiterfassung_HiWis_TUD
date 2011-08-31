@@ -59,7 +59,7 @@ public class JOpenIdTest extends HttpServlet {
 		writer.write("<body>");
 		
 		if (principal != null) {
-			writer.write("Got authenticated principal " + principal.getName() + " from " + principal.getEmail() + " with name "+principal.getFullName());
+			writer.write("Got authenticated principal " + principal.getName() + " from " + principal.getEmail() + " with identity "+principal.getIdentity());
 			
 		} else {
 			writer.write("Got no principal.");

@@ -42,6 +42,9 @@ public class Personen {
     @GET
     @Produces({"application/json"})
     public PersonList getPeople() {
+        // TODO je nach Rolle können nur bestimmte Information
+        // abgerufen werden. Todo ist Definition dieser Informationen
+        // und implementierung der Sicherheitsabfrage
         PersonList pl = new PersonList();
         List<Person> peopleDAO = PersonDAO.retrieveAll();
         pl.total = peopleDAO.size();

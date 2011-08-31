@@ -42,6 +42,18 @@ public class PersonDAO {
 
 		return personen;
 	}
+        
+        public static List<Person> findByPrincipal(String principal) {
+                Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+
+		@SuppressWarnings("unchecked")
+		List<Person> personen = (ArrayList<Person>) session.createQuery("from Person where principal=?").setString(0, principal).list();
+
+		session.getTransaction().commit();
+
+		return personen;
+        }
 	
 	public static List<Person> retrieveAll() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
