@@ -51,11 +51,15 @@ public class OpenIdAuthenticationFilter implements Filter {
 			HttpSession httpSession = null;
 			byte[] mac = null;
 			String alias = null;
+                        
+                        
 
 			// Cast to the proper type
 			httpServletRequest = (HttpServletRequest)servletRequest;
 	        httpServletResponse = (HttpServletResponse)servletResponse;
 	        httpSession = httpServletRequest.getSession();
+                
+                        this.manager.setReturnTo(httpServletRequest.getRequestURL().toString());
 
 	        // Try to get the authentication
 	        mac = (byte[])httpSession.getAttribute(ATTRIBUTE_MAC);
