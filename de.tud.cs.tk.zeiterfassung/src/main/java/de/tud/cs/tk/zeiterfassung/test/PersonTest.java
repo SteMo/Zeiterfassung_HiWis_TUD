@@ -7,6 +7,7 @@ import org.junit.Test;
 import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
+import de.tud.cs.tk.zeiterfassung.dao.RolleDAO;
 import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 
@@ -35,6 +36,7 @@ public class PersonTest {
 			p.givenName = "Spencer";
 			p.setFachgebiet(FachgebietDAO.findByName("TK"));
 			p.setSupervisor(PersonDAO.findByName("Chuck", "Norris").get(0));
+			p.setRolle(RolleDAO.findByName("Prof"));
 			
 			PersonDAO.create(p);
 			

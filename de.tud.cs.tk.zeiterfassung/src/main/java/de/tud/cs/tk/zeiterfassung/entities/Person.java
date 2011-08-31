@@ -27,8 +27,14 @@ public class Person {
 	@Basic
 	public String givenName;
 	
+	@Basic // OpenID identifier 
+	public String principal;
+	
 	@ManyToOne
 	private Person supervisor;
+	
+	@ManyToOne
+	private Rolle rolle;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="vertragspartner", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
@@ -72,17 +78,26 @@ public class Person {
 		return mitarbeiter;
 	}
 	
+	public Rolle getRolle() {
+		return rolle;
+	}
+	
 	public Person getSupervisor() {
 		return supervisor;
 	}
-	
+
 	public List<Vertrag> getVertraege() {
 		return vertraege;
 	}
-
+	
 	public void setFachgebiet(Fachgebiet fachgebiet) {
 		fachgebiet.people.add(this);
 		this.fachgebiet = fachgebiet;
+	}
+	
+	public void setRolle(Rolle rolle) {
+		rolle.personen.add(this);
+		this.rolle = rolle;
 	}
 	
 	public void setSupervisor(Person supervisor) {

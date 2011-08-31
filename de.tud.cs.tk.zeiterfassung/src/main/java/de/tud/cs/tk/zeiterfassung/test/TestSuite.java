@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	AufgabeTest.class,
 	TarifTest.class,
 	VertragTest.class,
+	RolleTest.class,
 	PersonTest.class
 })
 public class TestSuite {}
