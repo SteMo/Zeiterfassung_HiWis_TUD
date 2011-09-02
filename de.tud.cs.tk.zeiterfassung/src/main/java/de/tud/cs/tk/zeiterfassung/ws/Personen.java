@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.midi.SysexMessage;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import org.codehaus.jackson.JsonGenerationException;
@@ -53,9 +52,9 @@ public class Personen {
 
     @GET
     @Produces({"text/javascript", "application/json"})
-    public String processJSONPRequest(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
+    public String processJSONPRootRequest(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         
-        PersonResult personen = processJSONRequest(req);
+        PersonResult personen = processJSONRootRequest(req);
         String cb = req.getParameter("callback");
         String result="";
         try {
@@ -77,7 +76,7 @@ public class Personen {
     }
     
     
-    public PersonResult processJSONRequest(@Context HttpServletRequest req) {
+    public PersonResult processJSONRootRequest(@Context HttpServletRequest req) {
 
         PersonResult pl = new PersonResult();
 
@@ -97,10 +96,7 @@ public class Personen {
   
             pl.total = 0;
             for (Person p : peopleDAO) {
-                System.out.println("Mein Name: "+me.firstName);
-                System.out.println("Mein Fachbereichsname: "+me.getFachgebiet().name);
-                System.out.println("Mein Rollenname: "+me.getRolle().name+" mit der Signifikanz "+me.getRolle().significance);
-          
+                       
                 if (me.getRolle().significance <= 10 // Alle Personen
                         || (me.getRolle().significance <= 20 && me.getFachgebiet().id == p.getFachgebiet().id) // Alle Personen im Fachgebiet
                         || (me.getRolle().significance <= 30 && p.getSupervisor()!=null && p.getSupervisor().id == me.id)) // Alle mir zugeordneten Personen
@@ -120,9 +116,15 @@ public class Personen {
     }
 
     @GET
-    @Path("/{ident}")
-    public Person getById(@PathParam("ident") String ident) {
+    @Path("/{id}")
+    public Person getById(@PathParam("ident") int id) {
         // Todo: Welche Daten sollen ausgegeben werden?
         return null;
+    }
+    
+    @POST
+    @Path("/")
+    public int insertNewPerson() {
+        return 0;
     }
 }
