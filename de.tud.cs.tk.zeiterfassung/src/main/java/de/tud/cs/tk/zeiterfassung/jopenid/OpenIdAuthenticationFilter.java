@@ -59,7 +59,12 @@ public class OpenIdAuthenticationFilter implements Filter {
 	        httpServletResponse = (HttpServletResponse)servletResponse;
 	        httpSession = httpServletRequest.getSession();
                 
-                        this.manager.setReturnTo(httpServletRequest.getRequestURL().toString());
+                // Modify return-to to handle requests on webservices
+                StringBuffer request = httpServletRequest.getRequestURL();
+                if(httpServletRequest.getParameter("callback")!=null) {
+                    request.append("?callback="+httpServletRequest.getParameter("callback"));
+                }
+                this.manager.setReturnTo(request.toString());
 
 	        // Try to get the authentication
 	        mac = (byte[])httpSession.getAttribute(ATTRIBUTE_MAC);
