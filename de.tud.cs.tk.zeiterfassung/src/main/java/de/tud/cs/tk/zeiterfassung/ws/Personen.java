@@ -4,17 +4,24 @@
  */
 package de.tud.cs.tk.zeiterfassung.ws;
 
+import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.RolleDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sound.midi.SysexMessage;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 
 /**
  *
@@ -45,8 +52,32 @@ public class Personen {
     }
 
     @GET
-    @Produces({"application/json"})
-    public PersonResult getPeople(@Context HttpServletRequest req) {
+    @Produces({"text/javascript", "application/json"})
+    public String processJSONPRequest(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
+        
+        PersonResult personen = processJSONRequest(req);
+        String cb = req.getParameter("callback");
+        String result="";
+        try {
+            result = PojoMapper.toJson(personen, true);
+        } catch (JsonMappingException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JsonGenerationException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(cb != null) {
+            resp.setContentType("text/javascript");
+            return cb+"("+result+");";
+        }
+        resp.setContentType("application/json");
+        return result;
+        
+    }
+    
+    
+    public PersonResult processJSONRequest(@Context HttpServletRequest req) {
 
         PersonResult pl = new PersonResult();
 
