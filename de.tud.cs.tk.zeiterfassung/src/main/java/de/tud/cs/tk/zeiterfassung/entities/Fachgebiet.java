@@ -25,6 +25,12 @@ public class Fachgebiet {
 	
 	@Basic
 	public int budget;
+        
+        @Basic
+        public int leiter;
+        
+        @Basic
+        public int stellv;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="fachgebiet", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
