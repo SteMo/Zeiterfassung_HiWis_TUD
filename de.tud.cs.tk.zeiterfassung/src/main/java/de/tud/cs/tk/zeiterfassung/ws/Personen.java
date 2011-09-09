@@ -55,9 +55,9 @@ public class Personen {
 
     @GET
     @Produces({"text/javascript", "application/json"})
-    public String processJSONPRootRequest(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
+    public String getListJSONP(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         
-        PersonResult personen = processJSONRootRequest(req);
+        PersonResult personen = getListJSON(req);
         String cb = req.getParameter("callback");
         String result="";
         try {
@@ -79,7 +79,7 @@ public class Personen {
     }
     
     
-    public PersonResult processJSONRootRequest(@Context HttpServletRequest req) {
+    public PersonResult getListJSON(@Context HttpServletRequest req) {
 
         PersonResult pl = new PersonResult();
 
