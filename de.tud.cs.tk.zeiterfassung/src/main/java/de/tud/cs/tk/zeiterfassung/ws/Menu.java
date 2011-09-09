@@ -96,10 +96,10 @@ public class Menu {
                         }
                     }
                     result.results.add(new MenuItem("btnPersonen", "Personen","","button"));
-
+                    result.results.add(new MenuItem("btnVertraege", "Vertr&auml;ge","","button"));
+                    result.results.add(new MenuItem("btnAufgaben", "Aufgaben","","button"));
                 }
-                result.results.add(new MenuItem("btnVertraege", "Vertr&auml;ge","","button"));
-                result.results.add(new MenuItem("btnAufgaben", "Aufgaben","","button"));
+               
                 
             }
         }else{
