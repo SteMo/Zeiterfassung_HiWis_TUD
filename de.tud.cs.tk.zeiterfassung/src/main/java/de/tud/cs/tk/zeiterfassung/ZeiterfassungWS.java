@@ -4,6 +4,7 @@
  */
 package de.tud.cs.tk.zeiterfassung;
 
+import de.tud.cs.tk.zeiterfassung.ws.Fachgebiete;
 import de.tud.cs.tk.zeiterfassung.ws.Menu;
 import de.tud.cs.tk.zeiterfassung.ws.Personen;
 import java.util.HashSet;
@@ -22,8 +23,11 @@ public class ZeiterfassungWS extends Application  {
    public ZeiterfassungWS() {
        this.singletons.add(new Personen());
        this.singletons.add(new Menu());
+       this.singletons.add(new Fachgebiete());
+       
        this.classes.add(Personen.class);
        this.classes.add(Menu.class);
+       this.classes.add(Fachgebiete.class);
    }
    
    @Override
