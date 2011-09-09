@@ -77,8 +77,8 @@ Ext.define('AM.model.MenuModel', {
     ],
     
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/menuHiWi.json',
+        type: 'jsonp',
+        url: 'ws/menu',
         reader: {
             type: 'json',
             root: 'results'
