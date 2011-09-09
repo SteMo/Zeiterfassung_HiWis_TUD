@@ -9,8 +9,8 @@ Ext.define('AM.model.Fachgebiete', {
     extend: 'Ext.data.Model',
     fields:['name'],
 	proxy: {
-	    type: 'ajax',
-	    url: 'resources/data/fachgebiete.json',
+	    type: 'jsonp',
+	    url: 'ws/fachgebiete',
 	    reader: {
 	        type: 'json',
 	        root: 'results'
@@ -54,10 +54,10 @@ Ext.define('AM.model.Personen', {
 
 Ext.define('AM.model.fachgebiete.FachgebieteData', {
     extend: 'Ext.data.Model',
-    fields:['id', 'fachgebiet', 'kuerzel', 'leiter', 'stellvertreter'],
+    fields:['id', 'name', 'budget', 'leiter', 'stellv'],
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/fachgebieteData.json',
+        type: 'jsonp',
+        url: 'ws/fachgebiete',
         reader: {
             type: 'json',
             root: 'results',

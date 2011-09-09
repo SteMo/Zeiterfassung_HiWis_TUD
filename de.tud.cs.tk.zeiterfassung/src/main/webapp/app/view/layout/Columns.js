@@ -4,14 +4,14 @@
 
 var columnsFachgebiete = [
 	  		{
-	  			dataIndex: 'fachgebiet',
+	  			dataIndex: 'name',
 	  			header: 'Fachgebiet',
 	  			sortable: true,
 	  			width: 250,
 	  		},
 	  		{
-	  			dataIndex: 'kuerzel',
-	  			header: 'Kürzel',
+	  			dataIndex: 'budget',
+	  			header: 'Budget',
 	  			sortable: true,
 	  			width: 60,
 	  			align: 'center',
@@ -23,7 +23,7 @@ var columnsFachgebiete = [
 	  			width: 165,
 	  		},
 	  		{
-	  			dataIndex: 'stellvertreter',
+	  			dataIndex: 'stellv',
 	  			header: 'Stellvertreter',
 	  			sortable: true,
 	  			width: 165,
