@@ -56,10 +56,10 @@ public class Personen {
     @GET
     @Produces({"text/javascript", "application/json"})
     public String processGetList(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
-        
+
         PersonResult personen = getList(req);
         String cb = req.getParameter("callback");
-        String result="";
+        String result = "";
         try {
             result = PojoMapper.toJson(personen, true);
         } catch (JsonMappingException ex) {
@@ -69,16 +69,15 @@ public class Personen {
         } catch (IOException ex) {
             Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(cb != null) {
+        if (cb != null) {
             resp.setContentType("text/javascript");
-            return cb+"("+result+");";
+            return cb + "(" + result + ");";
         }
         resp.setContentType("application/json");
         return result;
-        
+
     }
-    
-    
+
     public PersonResult getList(@Context HttpServletRequest req) {
 
         PersonResult pl = new PersonResult();
@@ -96,13 +95,13 @@ public class Personen {
                 return pl;
             }
             Person me = people.get(0);
-  
+
             pl.total = 0;
             for (Person p : peopleDAO) {
-                       
+
                 if (me.getRolle().significance <= 10 // Alle Personen
                         || (me.getRolle().significance <= 20 && me.getFachgebiet().id == p.getFachgebiet().id) // Alle Personen im Fachgebiet
-                        || (me.getRolle().significance <= 30 && p.getSupervisor()!=null && p.getSupervisor().id == me.id)) // Alle mir zugeordneten Personen
+                        || (me.getRolle().significance <= 30 && p.getSupervisor() != null && p.getSupervisor().id == me.id)) // Alle mir zugeordneten Personen
                 {
                     pl.results.add(new PersonEntry(p.id, p.firstName + " " + p.givenName,
                             p.getFachgebiet().name,
@@ -124,7 +123,7 @@ public class Personen {
         // Todo: Welche Daten sollen ausgegeben werden?
         return null;
     }
-    
+
     @PUT
     @Path("/{id}")
     public long updatePerson(@Context HttpServletRequest req, @PathParam("id") int id, @QueryParam("name") String name, @QueryParam("fachgebiet") String fg, @QueryParam("position") String pos, @QueryParam("supervisor") long sup) {
@@ -134,39 +133,39 @@ public class Personen {
         }
         if (principal != null) { // Benutzer ist per OpenID identifiziert
             List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people != null && people.size() != 1 && people.get(0).getRolle().significance>10) {
+            if (people != null && people.size() != 1 && people.get(0).getRolle().significance > 10) {
                 return -1;
             }
             Person me = people.get(0);
             // Personen updaten
             Person p = PersonDAO.retrieve(id);
             String[] names = name.split(" ");
-            if(names.length >= 1) {
+            if (names.length >= 1) {
                 p.firstName = names[0];
             }
-            if(names.length >= 2) {
+            if (names.length >= 2) {
                 p.givenName = names[1];
             }
-            if(names.length >= 3) {
-                for (int i=2;i<names.length-3;i++) {
+            if (names.length >= 3) {
+                for (int i = 2; i < names.length - 3; i++) {
                     p.givenName = p.givenName.concat(names[i]);
                 }
             }
-            if(p.getRolle().name != pos) {
+            if (p.getRolle().name != pos) {
                 Rolle rolle = RolleDAO.findByName(pos);
-                if(rolle!=null) {
+                if (rolle != null) {
                     p.setRolle(rolle);
                 }
             }
-            if(p.getSupervisor().id != sup) {
+            if (p.getSupervisor().id != sup) {
                 Person su = PersonDAO.retrieve(sup);
-                if(su!=null) {
+                if (su != null) {
                     p.setSupervisor(su);
                 }
             }
-            if(!p.getFachgebiet().name.equals(fg)) {
+            if (!p.getFachgebiet().name.equals(fg)) {
                 Fachgebiet f = FachgebietDAO.findByName(fg);
-                if(f!=null) {
+                if (f != null) {
                     p.setFachgebiet(f);
                 }
             }
@@ -175,9 +174,10 @@ public class Personen {
         }
         return -1;
     }
-    
+
     @POST
     @Path("/")
+    @Consumes("application/json")
     public long insertNewPerson(@Context HttpServletRequest req, @QueryParam("name") String name, @QueryParam("fachgebiet") String fg, @QueryParam("position") String pos, @QueryParam("supervisor") long sup) {
         OpenIdPrincipal principal = null;
         if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
@@ -185,33 +185,35 @@ public class Personen {
         }
         if (principal != null) { // Benutzer ist per OpenID identifiziert
             List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people != null && people.size() != 1 && people.get(0).getRolle().significance>10) {
+            if (people != null && people.size() != 1 && people.get(0).getRolle().significance > 10) {
                 return -1;
             }
             Person me = people.get(0);
             Person p = new Person();
             String[] names = name.split(" ");
-            if(names.length >= 1) {
+            if (names.length >= 1) {
                 p.firstName = names[0];
-            }
-            if(names.length >= 2) {
-                p.givenName = names[1];
-            }
-            if(names.length >= 3) {
-                for (int i=2;i<names.length-3;i++) {
-                    p.givenName = p.givenName.concat(names[i]);
+                if (names.length >= 2) {
+                    p.givenName = names[1];
+                    if (names.length >= 3) {
+                        for (int i = 2; i < names.length - 3; i++) {
+                            p.givenName = p.givenName.concat(names[i]);
+                        }
+                    }
                 }
             }
-           Rolle rolle = RolleDAO.findByName(pos);
-            if(rolle!=null) {
+
+
+            Rolle rolle = RolleDAO.findByName(pos);
+            if (rolle != null) {
                 p.setRolle(rolle);
             }
             Person su = PersonDAO.retrieve(sup);
-            if(su!=null) {
+            if (su != null) {
                 p.setSupervisor(su);
             }
             Fachgebiet f = FachgebietDAO.findByName(fg);
-            if(f!=null) {
+            if (f != null) {
                 p.setFachgebiet(f);
             }
             return PersonDAO.create(p);

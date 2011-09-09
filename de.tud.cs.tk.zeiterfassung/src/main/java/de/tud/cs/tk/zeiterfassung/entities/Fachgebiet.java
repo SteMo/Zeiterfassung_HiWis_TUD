@@ -27,10 +27,10 @@ public class Fachgebiet {
 	public int budget;
         
         @Basic
-        public int leiter;
+        public long leiter;
         
         @Basic
-        public int stellv;
+        public long stellv;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="fachgebiet", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
