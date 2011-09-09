@@ -4,17 +4,23 @@
  */
 package de.tud.cs.tk.zeiterfassung.ws;
 
+import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.RolleDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.sound.midi.SysexMessage;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 
 /**
  *
@@ -45,8 +51,32 @@ public class Personen {
     }
 
     @GET
-    @Produces({"application/json"})
-    public PersonResult getPeople(@Context HttpServletRequest req) {
+    @Produces({"text/javascript", "application/json"})
+    public String processJSONPRootRequest(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
+        
+        PersonResult personen = processJSONRootRequest(req);
+        String cb = req.getParameter("callback");
+        String result="";
+        try {
+            result = PojoMapper.toJson(personen, true);
+        } catch (JsonMappingException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JsonGenerationException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(cb != null) {
+            resp.setContentType("text/javascript");
+            return cb+"("+result+");";
+        }
+        resp.setContentType("application/json");
+        return result;
+        
+    }
+    
+    
+    public PersonResult processJSONRootRequest(@Context HttpServletRequest req) {
 
         PersonResult pl = new PersonResult();
 
@@ -66,10 +96,7 @@ public class Personen {
   
             pl.total = 0;
             for (Person p : peopleDAO) {
-                System.out.println("Mein Name: "+me.firstName);
-                System.out.println("Mein Fachbereichsname: "+me.getFachgebiet().name);
-                System.out.println("Mein Rollenname: "+me.getRolle().name+" mit der Signifikanz "+me.getRolle().significance);
-          
+                       
                 if (me.getRolle().significance <= 10 // Alle Personen
                         || (me.getRolle().significance <= 20 && me.getFachgebiet().id == p.getFachgebiet().id) // Alle Personen im Fachgebiet
                         || (me.getRolle().significance <= 30 && p.getSupervisor()!=null && p.getSupervisor().id == me.id)) // Alle mir zugeordneten Personen
@@ -89,9 +116,15 @@ public class Personen {
     }
 
     @GET
-    @Path("/{ident}")
-    public Person getById(@PathParam("ident") String ident) {
+    @Path("/{id}")
+    public Person getById(@PathParam("ident") int id) {
         // Todo: Welche Daten sollen ausgegeben werden?
         return null;
+    }
+    
+    @POST
+    @Path("/")
+    public int insertNewPerson() {
+        return 0;
     }
 }

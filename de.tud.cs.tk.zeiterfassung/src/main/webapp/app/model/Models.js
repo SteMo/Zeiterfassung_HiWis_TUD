@@ -36,13 +36,19 @@ Ext.define('AM.model.Personen', {
     extend: 'Ext.data.Model',
     fields:['id', 'name', 'fachgebiet', 'position', 'supervisor'],
     proxy: {
-        type: 'rest',
+        type: 'jsonp',
         url: 'ws/personen',
-        reader: {
-            type: 'json',
-            root: 'results',
-            totalProperty: 'total'
-        }
+        format: 'json',
+       // reader: {
+       //     type: 'json',
+       //     root: 'results',
+       //     totalProperty: 'total'
+       // }
+       reader: new Ext.data.JsonReader({
+           root: 'results',
+           id: 'id',
+           fields: ['name', 'fachgebiet', 'position', 'supervisor', 'id']
+       })
     }
 });
 

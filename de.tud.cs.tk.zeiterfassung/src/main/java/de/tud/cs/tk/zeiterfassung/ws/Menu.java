@@ -4,14 +4,21 @@
  */
 package de.tud.cs.tk.zeiterfassung.ws;
 
+import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 
 /**
  *
@@ -37,9 +44,35 @@ public class Menu {
     }
     
     @GET
-    @Produces("application/json")
-    public MenuResult get(@Context HttpServletRequest req) {
+    @Produces({"text/javascript", "application/json"})
+    public String processJSONPRequest(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
+        
+        MenuResult menu = processJSONRequest(req);
+        String result = "";
+        String cb = req.getParameter("callback");
+        try {
+            result = PojoMapper.toJson(menu, true);
+        } catch (JsonMappingException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JsonGenerationException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(cb != null) {
+            resp.setContentType("text/javascript");
+            return cb + "(" + result + ");";
+        }
+        resp.setContentType("application/json");
+        return result;
+        
+        
+    }
+    
+    public MenuResult processJSONRequest(HttpServletRequest req) {
         MenuResult result = new MenuResult();
+        
+        String cp = req.getParameter("callback");
         
         OpenIdPrincipal principal = null;
 	if (req.getUserPrincipal() instanceof OpenIdPrincipal) {

@@ -52,7 +52,7 @@
             <param-name>strict</param-name>
             <param-value>true</param-value>
         </init-param>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/ws/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>Resteasy</filter-name>
