@@ -5,10 +5,13 @@
 package de.tud.cs.tk.zeiterfassung.ws;
 
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
+import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.RolleDAO;
+import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 
+import de.tud.cs.tk.zeiterfassung.entities.Rolle;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -122,9 +125,72 @@ public class Personen {
         return null;
     }
     
+    @PUT
+    @Path("/{id}")
+    public long updatePerson(@Context HttpServletRequest req, @PathParam("id") int id, @QueryParam("name") String name, @QueryParam("fachgebiet") String fg, @QueryParam("position") String pos, @QueryParam("supervisor") long sup) {
+        OpenIdPrincipal principal = null;
+        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
+            principal = (OpenIdPrincipal) req.getUserPrincipal();
+        }
+        if (principal != null) { // Benutzer ist per OpenID identifiziert
+            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
+            if (people != null && people.size() != 1 && people.get(0).getRolle().significance>10) {
+                return -1;
+            }
+            Person me = people.get(0);
+            // Personen updaten
+            Person p = PersonDAO.retrieve(id);
+            String[] names = name.split(" ");
+            if(names.length >= 1) {
+                p.firstName = names[0];
+            }
+            if(names.length >= 2) {
+                p.givenName = names[1];
+            }
+            if(names.length >= 3) {
+                for (int i=2;i<names.length-3;i++) {
+                    p.givenName = p.givenName.concat(names[i]);
+                }
+            }
+            if(p.getRolle().name != pos) {
+                Rolle rolle = RolleDAO.findByName(pos);
+                if(rolle!=null) {
+                    p.setRolle(rolle);
+                }
+            }
+            if(p.getSupervisor().id != sup) {
+                Person su = PersonDAO.retrieve(sup);
+                if(su!=null) {
+                    p.setSupervisor(su);
+                }
+            }
+            if(!p.getFachgebiet().name.equals(fg)) {
+                Fachgebiet f = FachgebietDAO.findByName(fg);
+                if(f!=null) {
+                    p.setFachgebiet(f);
+                }
+            }
+            PersonDAO.update(p);
+            return p.id;
+        }
+        return -1;
+    }
+    
     @POST
     @Path("/")
-    public int insertNewPerson() {
+    public long insertNewPerson(@Context HttpServletRequest req, @QueryParam("name") String name, @QueryParam("fachgebiet") String fg, @QueryParam("position") String pos, @QueryParam("supervisor") long sup) {
+        OpenIdPrincipal principal = null;
+        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
+            principal = (OpenIdPrincipal) req.getUserPrincipal();
+        }
+        if (principal != null) { // Benutzer ist per OpenID identifiziert
+            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
+            if (people != null && people.size() != 1 && people.get(0).getRolle().significance>10) {
+                return -1;
+            }
+            Person me = people.get(0);
+           
+        }
         return 0;
     }
 }
