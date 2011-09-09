@@ -9,7 +9,9 @@ Ext.define('AM.controller.Controller', {
          'Personentypen',
          'Personen',
          'FachgebieteData',
-         'Menu'
+         'Menu',
+         'DashboardData',
+         'TaskDetails'
     ],
 	
     views: [
@@ -19,6 +21,8 @@ Ext.define('AM.controller.Controller', {
 		'personen.ComboFachgebiete',
 		'personen.ComboPersonentypen',
 		'personen.DetailsWindow',
+		'dashboard.Dashboard',
+		'dashboard.TaskDetailsWindow'
     ],
 	
 	models: [
@@ -32,7 +36,10 @@ Ext.define('AM.controller.Controller', {
 	 * -> Zugriff über: this.get<ref>(), erster Buchstabe von <ref> groß...	 */
     refs: [
        { ref: "content",   selector: "contentGrid", },
+       { ref: "filterbereich", selector: "filterbereich"},
        { ref: 'menu',      selector: 'menue'		},
+       { ref: 'dashboard', selector: 'dashboard'},
+       { ref: 'taskDetailsGrid', selector: '#taskDetailsGrid'}
 //       { ref: 'detailsWindow', selector: 'detailsWindow'}
     ],
 
@@ -49,9 +56,13 @@ Ext.define('AM.controller.Controller', {
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
         	'menue button[id="btnVertraege"]': 		{ click: this.showDashboard  },
         	'menue button[id="btnAufgaben"]': 		{ click: this.showDashboard  }, 	
+        	'menue button[id="btnStundenEintragen"]': { click: this.showHiWiStundenEintragen  },
         	'contentGrid':							{ itemdblclick: this.showContentDetails },
+        	'#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged}
         });       	
     },
+    
+   
     
     /* lade Daten von DB in Menü-store */
     menuLoadItemsFromDB: function(e){
@@ -76,9 +87,15 @@ Ext.define('AM.controller.Controller', {
     },
     
     
-    showDashboard: function(){
+    showDashboard: function(){   	
     	console.log("Dashboard clicked");
-        this.getContent().bindStore(this.getFachgebieteDataStore());
+    	/* entferne Filterbereich + Grid */
+    	Ext.getCmp('viewport').remove("listOfFilters");
+    	this.getContent().setTitle("Aufgaben");
+//    	this.getContent().reconfigure(this.getDashboardDataStore(), columnsDashboard);
+    	console.log(this);
+    	Ext.getCmp('viewport').add(Ext.create('AM.view.dashboard.Dashboard'));
+    	Ext.getCmp('viewport').doLayout();
     },
     
     showFachgebiete: function(){
@@ -149,12 +166,27 @@ Ext.define('AM.controller.Controller', {
 
     	}else if(Ext.ComponentQuery.query('#listOfDepartments').length!=0){
     		// TO DO ! Siehe oben...
-    	}
-		
+    	
+    	}else if(Ext.ComponentQuery.query('#listOfTasks').length!=0){
+    		var detailsWindow = Ext.create('AM.view.dashboard.TaskDetailsWindow');
+		}
 
-    	    		
     	/* zeige Fenster */
     	detailsWindow.show();
     },
-
+    
+    
+    
+    /* ----------- HiWi ------------ */
+// -> über Doppelklick
+//    showHiWiStundenEintragen: function(){
+//    	console.log("HiWiStundenEintragen clicked");
+//    	Ext.getCmp('viewport').remove("listOfFilters");
+//        this.getContent().bindStore(this.getFachgebieteDataStore());   
+//    },
+    
+    taskDetailsGridSelectionChanged: function(selModel, selections){
+        this.getTaskDetailsGrid().down('#delete').setDisabled(selections.length === 0);     
+    },        
+    
 });

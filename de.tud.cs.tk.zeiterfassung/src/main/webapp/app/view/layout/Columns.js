@@ -148,3 +148,46 @@ var columnsPersonen = [
     				}                
     			}]
     		}];	
+
+
+
+var columnsDashboard = [
+                        {
+                            xtype: 'numbercolumn',
+                            width: 50,
+                            dataIndex: 'priority',
+                            format: '0',
+                            text: 'Priorität',
+                        },                        
+                        {
+                            xtype: 'datecolumn',
+                            width: 70,
+                            dataIndex: 'deadline',
+                            text: 'Deadline',
+                            format: 'd.m.y'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            width: 260,
+                            dataIndex: 'title',
+                            text: 'Titel'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            width: 103,
+                            dataIndex: 'assignedFrom',
+                            text: 'Zugewiesen von'
+                        },
+                        {
+                            xtype: 'datecolumn',
+                            dataIndex: 'assignedAt',
+                            text: 'Zugewiesen am',
+                            format: 'd.m.y'
+                        },
+                        {
+                            xtype: 'numbercolumn',
+                            dataIndex: 'worked',
+                            text: 'Geleistete Arbeit',
+                            format: '0.00 h',
+                        }                        
+                    ];

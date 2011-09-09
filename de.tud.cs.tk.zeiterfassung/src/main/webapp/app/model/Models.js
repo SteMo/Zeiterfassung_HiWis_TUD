@@ -72,7 +72,7 @@ Ext.define('AM.model.MenuModel', {
     
     proxy: {
         type: 'ajax',
-        url: 'resources/data/menu.json',
+        url: 'resources/data/menuHiWi.json',
         reader: {
             type: 'json',
             root: 'results'
@@ -100,3 +100,48 @@ Ext.define('AM.model.ColumnsFachgebiete', {
         }
     }    
 });
+
+Ext.define('AM.model.DashboardData', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'string'},
+        {name: 'priority', type: 'int'},
+        {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'title',type: 'string'},
+        {name: 'assignedFrom',type: 'string'},
+        {name: 'assignedAt',type: 'date', dateFormat: 'd.m.y'},
+        {name: 'worked',type: 'string'}
+    ],
+    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/dashboardData.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
+
+Ext.define('AM.model.TaskDetails', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'string'},
+        {name: 'date', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'worked',type: 'string'},
+        {name: 'description', type: 'string'},       
+    ],
+    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/dashboardTaskDetails.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        },
+        writer: {
+            type: 'json'
+        }        
+    }    
+});
+
