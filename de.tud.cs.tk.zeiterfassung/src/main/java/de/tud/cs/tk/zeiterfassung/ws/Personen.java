@@ -189,7 +189,32 @@ public class Personen {
                 return -1;
             }
             Person me = people.get(0);
-           
+            Person p = new Person();
+            String[] names = name.split(" ");
+            if(names.length >= 1) {
+                p.firstName = names[0];
+            }
+            if(names.length >= 2) {
+                p.givenName = names[1];
+            }
+            if(names.length >= 3) {
+                for (int i=2;i<names.length-3;i++) {
+                    p.givenName = p.givenName.concat(names[i]);
+                }
+            }
+           Rolle rolle = RolleDAO.findByName(pos);
+            if(rolle!=null) {
+                p.setRolle(rolle);
+            }
+            Person su = PersonDAO.retrieve(sup);
+            if(su!=null) {
+                p.setSupervisor(su);
+            }
+            Fachgebiet f = FachgebietDAO.findByName(fg);
+            if(f!=null) {
+                p.setFachgebiet(f);
+            }
+            return PersonDAO.create(p);
         }
         return 0;
     }
