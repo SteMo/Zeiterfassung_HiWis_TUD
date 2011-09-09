@@ -1,17 +1,14 @@
 Ext.define('AM.view.layout.ContentGrid' ,{
     extend: 'Ext.grid.GridPanel',
     alias : 'widget.contentGrid',
-
-	store: 'Personen',	
 	
-	id: 'listOfPeople',
+	id: 'listOfTasks',	//war: listOfPeople
+	width: '700',
 
-	title: '',
-//	autoHeight: true,	
-		
-	/* columnsPersonen definiert in view/layout/Columns.js */
-	columns: columnsPersonen,
+	store: 'DashboardData',
+	columns: columnsDashboard,	
 	
+	title: 'Aufgaben',	
 	
     dockedItems: [{
     	id:	   'pagingtoolbar',

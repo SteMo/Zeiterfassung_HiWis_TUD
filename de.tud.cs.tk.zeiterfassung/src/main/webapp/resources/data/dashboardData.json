@@ -1,0 +1,8 @@
+{
+    'success': true,
+    'results': [
+	  {"id": "1", "priority": '1', "deadline": "22.09.11", "title":"Beispielaufgabe A", "assignedFrom":"Prof A", "assignedAt": "22.05.11", "worked": "3.5"},
+	  {"id": "2", "priority": '3', "deadline":"24.09.11", "title":"Beispielaufgabe B", "assignedFrom":"Prof A", "assignedAt": "23.05.11", "worked": "1"},
+	  {"id": "3", "priority": '0', "deadline":"28.09.11", "title":"Beispielaufgabe C", "assignedFrom":"Prof A", "assignedAt": "01.06.11", "worked": "0"},
+    ]
+}
