@@ -80,7 +80,7 @@ public class Menu {
 	}
         if(principal!=null) {
             List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if(people != null && people.size()!=1) {
+            if(people == null || people.size()!=1) {
                 // Mehrere oder Kein Datenbank-Eintrag zu bestimmter Identity
                 // Es wird nichts vom Webservice zurückgegeben
                 result.success=false;

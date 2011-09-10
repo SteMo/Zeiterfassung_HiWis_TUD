@@ -122,8 +122,10 @@ Ext.define('AM.model.DashboardData', {
     ],
     
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/dashboardData.json',
+        // type: 'ajax',
+        // url: 'resources/data/dashboardData.json',
+        type: 'jsonp',
+        url: 'ws/aufgaben',
         reader: {
             type: 'json',
             root: 'results'
