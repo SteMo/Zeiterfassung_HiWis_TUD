@@ -13,7 +13,7 @@ Ext.define('AM.view.layout.ContentGrid' ,{
     dockedItems: [{
     	id:	   'pagingtoolbar',
         xtype: 'pagingtoolbar',
-        store: 'Personen',   // same store GridPanel is using
+        store: 'DashboardData',   // same store GridPanel is using
         dock: 'bottom',
         displayInfo: true
     }]

@@ -17,7 +17,9 @@ Ext.define('AM.view.Viewport', {
 		width: 700,
 	},	        
 	{   	
-		xtype: 'dashboardHiWi',
+		// dashboard in role.js definiert
+		xtype: dashboard,
+		id: 'dashboard',
 		width: 700,
 	}]
 	

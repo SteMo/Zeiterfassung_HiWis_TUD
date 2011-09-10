@@ -185,3 +185,24 @@ Ext.define('AM.model.Vertragsdaten', {
         }
     }    
 });
+Ext.define('AM.model.HiWiAufgaben', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'title', type: 'string'},
+        {name: 'hiwi', type: 'string'},
+        {name: 'assignedOn', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'priority', type: 'int'}
+    ],
+    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/hiwiAufgaben.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
+

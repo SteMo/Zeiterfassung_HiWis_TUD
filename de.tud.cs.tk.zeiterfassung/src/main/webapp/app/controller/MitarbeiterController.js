@@ -1,7 +1,7 @@
 /* speichern, welcher Menüpunkt gerade aktiv ist - wichtig für Detailfenster, da ich nicht weiß, wie ich verschiedene Selektoren für die dynamischen Grids machen kann */
 var activeView = 0;
 
-Ext.define('AM.controller.Controller', {
+Ext.define('AM.controller.MitarbeiterController', {
     extend: 'Ext.app.Controller',
 
     stores: [
@@ -14,7 +14,11 @@ Ext.define('AM.controller.Controller', {
          'TaskDetails'
     ],
 	
-    views: roleViews,
+    views: [
+	        'layout.Menu',
+	        'layout.ContentGrid',
+	        'dashboard.Mitarbeiter'            
+            ],
 	
 	models: [
 		'Personen',
@@ -35,7 +39,7 @@ Ext.define('AM.controller.Controller', {
     ],
 
     init: function() {
-    	console.log("Controller -> init");
+    	console.log("MitarbeiterController -> init");
 
     	/* hier greifen wir auf Events zu! Das "render"-Event ist wichtig, wenn wir auf eine Komponente zurückgreifen wollen mit getXYZ()
     	 * da man erst ab diesem Zeitpunkt auf die Komponente zugreifen kann (vollständig initialisiert und gerendered) */
@@ -79,14 +83,12 @@ Ext.define('AM.controller.Controller', {
     
     
     showDashboard: function(){   	
-    	console.log("Dashboard clicked");
-    	/* entferne Filterbereich + Grid */
-    	Ext.getCmp('viewport').remove("listOfFilters");
-    	if(Ext.getCmp('dashboardMitarbeiter')!=undefined)
-    		Ext.getCmp('viewport').add(Ext.create('AM.view.dashboard.Mitarbeiter'));
-    	else if(Ext.getCmp('dashboardHiWi')!=undefined)         			
-    			Ext.getCmp('viewport').add(Ext.create('AM.view.dashboard.HiWi'));
-    	Ext.getCmp('viewport').doLayout();
+    	console.log("Dashboard clicked");    	
+    	var layout = Ext.getCmp('viewport');
+    	/* lösche Komponenten um aktuelle hinzufügen zu können - definiert in functions.js */
+    	clearContentArea(layout); 	
+    	layout.add(Ext.create('AM.view.dashboard.Mitarbeiter'));
+    	layout.doLayout();
     },
     
     showFachgebiete: function(){

@@ -15,54 +15,77 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
     alias : 'widget.dashboardMitarbeiter',
     extend: 'Ext.container.Container',
     
-    id: "dashboardMitarbeiter", 
-
-    initComponent: function() {
-        var me = this;
+    width: 700,
+    
+    initComponent: function() {    	
+    	var me = this;
         
-        var store = Ext.create('Ext.data.Store', {
+    	/* TODO: hier brauche ich die Daten für das Formular */
+    	Ext.Ajax.request({
+    	    url: 'ajax_demo/sample.json',
+    	    success: function(response, opts) {
+    	        var obj = Ext.decode(response.responseText);
+    	        console.dir(obj);
+    	    },
+    	    failure: function(response, opts) {
+    	        console.log('server-side failure with status code ' + response.status);
+    	    }
+    	});    	
+    	
+    	
+    	
+        var storeVertragsdaten = Ext.create('Ext.data.Store', {
             autoLoad: true,
-//            autoSync: true,
+            autoSync: true,
             model: 'AM.model.Vertragsdaten',  
-        });           
+        });      
+        var storeAufgaben = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.HiWiAufgaben',  
+        });              
         
         me.items = [
             {
                 xtype: 'gridpanel',
                 itemId: 'vertragsendeGrid',
                 title: 'Vertragsende innerhalb der n&auml;chsten 2 Monate',
+                margin: '10 0 10 0',
+                store: storeVertragsdaten,
                 columns: [
+                      {
+                          xtype: 'datecolumn',
+                          dataIndex: 'ende',
+                          text: 'Vertragsende',
+                          format: 'd.m.y',
+                      },                          
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'vorname',
                         text: 'Name',
+                        width: 200,
                         renderer: function(val, meta, record) {
-                            console.log("hier:");
-                        	console.log(val);
-                            console.log(meta);
-                            console.log(record);
+                            return record.data.vorname + " " + record.data.name;
 //                        	var userId = record.data.user_id;
                       }
 
                     },
-                    {
-                        xtype: 'datecolumn',
-                        dataIndex: 'ende',
-                        text: 'Vertragsende'
-                    },
-                    {
-                        xtype: 'numbercolumn',
-                        dataIndex: 'beginn',
-                        text: 'Vertragsbeginn'
-                    },
+
+//                    {
+//                        xtype: 'numbercolumn',
+//                        dataIndex: 'beginn',
+//                        text: 'Vertragsbeginn',
+//                    	  format: 'd.m.y',
+//                    },
                     {
                         xtype: 'numbercolumn',
-                        dataIndex: 'bool',
+                        dataIndex: 'offeneStunden',
                         text: 'Offene Stunden'
                     },
                     {
-                        xtype: 'numbercolumn',
-                        text: 'Tarif'
+                        xtype: 'gridcolumn',
+                        text: 'Tarif',
+                        dataIndex: 'tarif',
                     }
                 ],
                 viewConfig: {
@@ -82,6 +105,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                 items: [
                     {
                         xtype: 'displayfield',
+                        width: 250,
                         name: 'budget',
                         value: 'Display Field',
                         fieldLabel: 'Budget',
@@ -118,23 +142,40 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                 xtype: 'gridpanel',
                 itemId: 'aufgabenDeadlineGrid',
                 title: 'Aufgaben Deadlines',
+                margin: '10 0 0 0',
+                store: storeAufgaben,
                 columns: [
                     {
                         xtype: 'datecolumn',
-                        dataIndex: 'string',
-                        text: 'Deadline'
+                        dataIndex: 'deadline',
+                        width: 80,
+                        text: 'Deadline',
+                        format: 'd.m.y',
                     },
                     {
                         xtype: 'gridcolumn',
-                        width: 416,
-                        dataIndex: 'number',
+                        width: 290,
+                        dataIndex: 'title',
                         text: 'Aufgabe'
                     },
                     {
                         xtype: 'gridcolumn',
-                        dataIndex: 'date',
+                        dataIndex: 'hiwi',
                         text: 'HiWi'
-                    }
+                    },
+                    {
+                        xtype: 'datecolumn',
+                        dataIndex: 'assignedOn',
+                        text: 'Zugewiesen am',
+                        format: 'd.m.y',
+                    },   
+                    {
+                        xtype: 'numbercolumn',
+                        dataIndex: 'priority',
+                        text: 'Priorität',
+                        format: '0',
+//                        allowNegative: false,                    	
+                    }                    
                 ],
                 viewConfig: {
 

@@ -7,6 +7,7 @@
 /* dadurch läd er benötigte Klassen automatisch */
 Ext.Loader.setConfig({enabled:true});
 
+
 Ext.application({
     /* definiert Namespace in dem alle Klassen adressierbar sind, globale Variable */
 	name: 'AM',
@@ -15,7 +16,8 @@ Ext.application({
     /* "By setting autoCreateViewport to true, the framework will, by convention, include the app/view/Viewport.js file" */
     autoCreateViewport: true,
     
-	controllers: ['Controller'],
+    /* controller in role.js definiert */
+	controllers: controller,
 	
     
 	launch: function() {

@@ -38,3 +38,13 @@ var createItemListFromStore = function (dataStore) {
     }
     return itemList;
 }    
+
+/* die Funktion löscht Inhalt eines Layouts (alles bis auf Menü) um den neuen Inhalt
+ * an das Layout später einfach anfügen zu können
+ * Das Menü ist immer Component0, für jede Seite
+ */
+var clearContentArea = function (layout) {
+	var componentsToRemove = layout.items.length;
+	for (var i=1;i<=componentsToRemove;i++)
+		layout.remove(layout.getComponent(i)); 
+}
