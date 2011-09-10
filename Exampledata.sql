@@ -1,18 +1,18 @@
-DELETE FROM aufgabe;
+﻿DELETE FROM aufgabe;
 DELETE FROM vertrag;
 DELETE FROM person;
 DELETE FROM fachgebiet;
 DELETE FROM rolle;
 
 INSERT INTO fachgebiet(
-            id, budget, "name")
-    VALUES (0, 10000, 'TK');
+            id, budget, "name", leiter, stellv)
+    VALUES (0, 10000, 'TK', -1, -1);
 INSERT INTO fachgebiet(
-            id, budget, "name")
-    VALUES (1, 10000, 'CMS');
+            id, budget, "name", leiter, stellv)
+    VALUES (1, 10000, 'CMS', -1, -1);
 INSERT INTO fachgebiet(
-            id, budget, "name")
-    VALUES (2, 10000, 'TS');
+            id, budget, "name", leiter, stellv)
+    VALUES (2, 10000, 'TS', -1, -1);
 
 INSERT INTO rolle(
             id, "name", significance)
@@ -39,4 +39,4 @@ INSERT INTO person(
     VALUES (2, 'Herr', 'Mitarbeiter', 'ccc', 0, 2, 1);
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id, supervisor_id)
-    VALUES (3, 'Herr', 'Hiwi', 'https://www.google.com/accounts/o8/id?id=AItOawm5WavitC2u_8ZUrRS1ffyJStYdoWNf7TU', 0, 3, 2);
+    VALUES (3, 'Herr', 'Hiwi', 'https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU', 0, 0, 2);
