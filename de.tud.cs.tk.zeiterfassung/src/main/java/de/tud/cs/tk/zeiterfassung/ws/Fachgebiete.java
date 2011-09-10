@@ -23,7 +23,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -91,7 +90,7 @@ public class Fachgebiete {
         result.total = 0;
         if (principal != null) { // Benutzer ist per OpenID identifiziert
             List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people != null && people.size() != 1) {
+            if (people == null || people.size() != 1) {
                 return result;
             }
             Person me = people.get(0);
