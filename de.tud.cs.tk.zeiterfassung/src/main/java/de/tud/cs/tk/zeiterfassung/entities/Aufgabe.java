@@ -19,7 +19,7 @@ public class Aufgabe {
 	@Basic
 	public String titel;
 	
-	@Lob
+	@Basic
 	public String beschreibung;
 	
 	@Basic
@@ -27,6 +27,18 @@ public class Aufgabe {
 	
 	@Basic
 	public boolean erledigt;
+        
+        @Basic 
+        public int priority;
+        
+        @Basic
+        public float worked;
+               
+        @Basic
+        public Date assignedAt;
+        
+        @ManyToOne
+        public Person assignedFrom;
 	
 	@ManyToOne
 	public Person verantwortlicher;

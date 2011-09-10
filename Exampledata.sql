@@ -40,6 +40,29 @@ INSERT INTO person(
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id, supervisor_id)
     VALUES (3, 'Herr', 'Hiwi', 'https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU', 0, 3, 2);
- INSERT INTO person(
+INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id, supervisor_id)
     VALUES (4, 'Stephan', 'M', 'https://www.google.com/accounts/o8/id?id=AItOawnHXIx1clex8SIcPQnK74vE8W4OJ4xSoUM', 0, 3, 2);
+
+INSERT INTO aufgabe(
+            id, assignedat, beschreibung, deadline, erledigt, priority, titel, 
+            worked, assignedfrom_id, verantwortlicher_id)
+    VALUES (0, '1999-01-08 04:05:06', 'Das ist die erste Aufgabe', '1999-01-08 04:05:06', false, 5, 'Die erste Aufgabe', 
+            4, 2, 4);
+INSERT INTO aufgabe(
+            id, assignedat, beschreibung, deadline, erledigt, priority, titel, 
+            worked, assignedfrom_id, verantwortlicher_id)
+    VALUES (1, '1999-01-08 04:05:06', 'Das ist die zweite Aufgabe', '1999-01-08 04:05:06', false, 2, 'Die zweite Aufgabe', 
+            4, 2, 3);
+INSERT INTO aufgabe(
+            id, assignedat, beschreibung, deadline, erledigt, priority, titel, 
+            worked, assignedfrom_id, verantwortlicher_id)
+    VALUES (2, '1999-01-08 04:05:06', 'Das ist die dritte Aufgabe', '1999-01-08 04:05:06', false, 4, 'Die dritte Aufgabe', 
+            4, 1, 4);
+INSERT INTO aufgabe(
+            id, assignedat, beschreibung, deadline, erledigt, priority, titel, 
+            worked, assignedfrom_id, verantwortlicher_id)
+    VALUES (3, '1999-01-08 04:05:06', 'Das ist die vierte Aufgabe', '1999-01-08 04:05:06', false, 3, 'Die vierte Aufgabe', 
+            4, 1, 3);
+
+
