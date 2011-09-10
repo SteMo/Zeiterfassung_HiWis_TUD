@@ -1,7 +1,7 @@
-/* Warum hier proxy? Setzt Standardproxy, muss dann nicht von Stores immer gesetzt werden, nur wenn mehrere Stores selbes model benutzen und sich Rückgabe unterscheidet  */
+/* Warum hier proxy? Setzt Standardproxy, muss dann nicht von Stores immer gesetzt werden, nur wenn mehrere Stores selbes model benutzen und sich RÃ¼ckgabe unterscheidet  */
 
 /**
- * ! Wenn sich etwas am Model ändert müssen evtl auch andere Stellen angepasst werden, da diese 
+ * ! Wenn sich etwas am Model Ã¤ndert mÃ¼ssen evtl auch andere Stellen angepasst werden, da diese 
  * auf die Felder ja zugreifen (z.B. die Detail-Fenster zu Personen bei Doppelklick @ Controller) 
  * */
 
@@ -107,6 +107,8 @@ Ext.define('AM.model.ColumnsFachgebiete', {
     }    
 });
 
+
+/* ################## HiWi ################### */
 Ext.define('AM.model.DashboardData', {
     extend: 'Ext.data.Model',
     fields: [
@@ -132,15 +134,20 @@ Ext.define('AM.model.DashboardData', {
 Ext.define('AM.model.TaskDetails', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'id', type: 'string'},
+        {name: 'id', type: 'int', useNull: true},
         {name: 'date', type: 'date', dateFormat: 'd.m.y'},
         {name: 'worked',type: 'string'},
         {name: 'description', type: 'string'},       
     ],
     
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/dashboardTaskDetails.json',
+        type: 'rest',
+        api: {
+            create: 'test', // Called when saving new records
+            read: 'resources/data/dashboardTaskDetails.json', // Called when reading existing records
+            update: 'myBackend.php?action=update', // Called when updating existing records
+            destroy: 'myBackend.php?action=destroy' // Called when deleting existing records
+        },        
         reader: {
             type: 'json',
             root: 'results'
@@ -151,3 +158,27 @@ Ext.define('AM.model.TaskDetails', {
     }    
 });
 
+
+/* ################## Mitarbeiter ################### */
+Ext.define('AM.model.Vertragsdaten', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'vorname', type: 'string'},
+        {name: 'name', type: 'string'},
+        {name: 'matrikel', type: 'int'},
+        {name: 'beginn', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'ende', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'stunden',type: 'int'},
+        {name: 'tarif',type: 'string'},
+    ],
+    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/vertragsdaten.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});

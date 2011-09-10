@@ -15,21 +15,10 @@ Ext.define('AM.view.Viewport', {
 		// Toolbar/Menue
 		xtype: 'menue',
 		width: 700,
-	},
-//	{
-//		// Filterbereich
-//		xtype: 'filterbereich',
-//		width: 700,
-//	},
-	{
-		// Inhaltsbereich (Tabelle/Grid)
-		xtype: 'contentGrid',
+	},	        
+	{   	
+		xtype: 'dashboardHiWi',
 		width: 700,
-		padding: '10 0 5 0',
-	},
-	{
-		xtype: 'dashboard'
-	}
-	],				
+	}]
 	
 });

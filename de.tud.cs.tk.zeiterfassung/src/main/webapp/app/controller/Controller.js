@@ -21,8 +21,9 @@ Ext.define('AM.controller.Controller', {
 		'personen.ComboFachgebiete',
 		'personen.ComboPersonentypen',
 		'personen.DetailsWindow',
-		'dashboard.Dashboard',
-		'dashboard.TaskDetailsWindow'
+		'dashboard.HiWi',
+		'dashboard.HiWiTaskDetailsWindow',
+		'dashboard.Mitarbeiter'
     ],
 	
 	models: [
@@ -168,7 +169,7 @@ Ext.define('AM.controller.Controller', {
     		// TO DO ! Siehe oben...
     	
     	}else if(Ext.ComponentQuery.query('#listOfTasks').length!=0){
-    		var detailsWindow = Ext.create('AM.view.dashboard.TaskDetailsWindow');
+    		var detailsWindow = Ext.create('AM.view.dashboard.HiWiTaskDetailsWindow');
 		}
 
     	/* zeige Fenster */
