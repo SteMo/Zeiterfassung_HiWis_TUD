@@ -170,6 +170,7 @@ Ext.define('AM.model.Vertragsdaten', {
         {name: 'beginn', type: 'date', dateFormat: 'd.m.y'},
         {name: 'ende', type: 'date', dateFormat: 'd.m.y'},
         {name: 'stunden',type: 'int'},
+        {name: 'offeneStunden',type: 'int'},
         {name: 'tarif',type: 'string'},
     ],
     
