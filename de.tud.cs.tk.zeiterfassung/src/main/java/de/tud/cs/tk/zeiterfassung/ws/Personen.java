@@ -90,7 +90,7 @@ public class Personen {
         List<Person> peopleDAO = PersonDAO.retrieveAll();
         if (principal != null) { // Benutzer ist per OpenID identifiziert
             List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people != null && people.size() != 1) {
+            if (people == null || people.size() != 1) {
                 pl.success = false;
                 return pl;
             }
