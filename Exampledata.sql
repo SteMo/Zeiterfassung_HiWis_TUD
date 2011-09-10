@@ -25,7 +25,7 @@ INSERT INTO rolle(
     VALUES (2, 'Mitarbeiter', 30);
 INSERT INTO rolle(
             id, "name", significance)
-    VALUES (3, 'Hiwi', 30);
+    VALUES (3, 'Hiwi', 40);
 
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id)
@@ -39,4 +39,7 @@ INSERT INTO person(
     VALUES (2, 'Herr', 'Mitarbeiter', 'ccc', 0, 2, 1);
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id, supervisor_id)
-    VALUES (3, 'Herr', 'Hiwi', 'https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU', 0, 0, 2);
+    VALUES (3, 'Herr', 'Hiwi', 'https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU', 0, 3, 2);
+ INSERT INTO person(
+            id, firstname, givenname, principal, fachgebiet_id, rolle_id, supervisor_id)
+    VALUES (4, 'Stephan', 'M', 'https://www.google.com/accounts/o8/id?id=AItOawnHXIx1clex8SIcPQnK74vE8W4OJ4xSoUM', 0, 3, 2);
