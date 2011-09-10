@@ -42,7 +42,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
         var storeAufgaben = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
-            model: 'AM.model.HiWiAufgaben',  
+            model: 'AM.model.HiWiAufgabe',  
         });              
         
         me.items = [
@@ -161,7 +161,8 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'hiwi',
-                        text: 'HiWi'
+                        text: 'HiWi',
+                        renderer: getPerson
                     },
                     {
                         xtype: 'datecolumn',

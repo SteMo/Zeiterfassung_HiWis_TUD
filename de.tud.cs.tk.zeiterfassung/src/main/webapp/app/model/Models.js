@@ -185,20 +185,44 @@ Ext.define('AM.model.Vertragsdaten', {
         }
     }    
 });
-Ext.define('AM.model.HiWiAufgaben', {
+Ext.define('AM.model.HiWiAufgabe', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id', type: 'int'},
-        {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
         {name: 'title', type: 'string'},
-        {name: 'hiwi', type: 'string'},
+        {name: 'description', type: 'string'},
+        {name: 'supervisor', type: 'int'}, /* seine ID */
+        {name: 'hiwi', type: 'int'},        
+        {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
         {name: 'assignedOn', type: 'date', dateFormat: 'd.m.y'},
-        {name: 'priority', type: 'int'}
+        {name: 'priority', type: 'int'},
+        {name: 'status', type: 'int'}
     ],
     
     proxy: {
         type: 'ajax',
         url: 'resources/data/hiwiAufgaben.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
+Ext.define('AM.model.HiWiVertrag', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'hiwi', type: 'int'},        
+        {name: 'supervisor', type: 'int'}, /* seine ID */        
+        {name: 'begin', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'end', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'hoursPerMonth', type: 'int'},
+        {name: 'rate', type: 'int'} /* Tarifgruppe */
+    ],
+    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/HiWiVertraege.json',
         reader: {
             type: 'json',
             root: 'results'
