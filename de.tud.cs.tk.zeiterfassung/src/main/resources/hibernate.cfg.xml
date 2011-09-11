@@ -38,6 +38,6 @@
 		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Tarif" />
 		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Vertrag" />
 		<mapping class="de.tud.cs.tk.zeiterfassung.entities.Rolle" />
-
+                <mapping class="de.tud.cs.tk.zeiterfassung.entities.AufgabeDetails" />
 	</session-factory>
 </hibernate-configuration>

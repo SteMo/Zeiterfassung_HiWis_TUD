@@ -1,4 +1,5 @@
-﻿DELETE FROM aufgabe;
+﻿DELETE FROM aufgabedetails;
+DELETE FROM aufgabe;
 DELETE FROM vertrag;
 DELETE FROM person;
 DELETE FROM fachgebiet;
@@ -64,5 +65,13 @@ INSERT INTO aufgabe(
             worked, assignedfrom_id, verantwortlicher_id)
     VALUES (3, '1999-01-08 04:05:06', 'Das ist die vierte Aufgabe', '1999-01-08 04:05:06', false, 3, 'Die vierte Aufgabe', 
             4, 1, 3);
+
+INSERT INTO aufgabedetails(
+            id, beschreibung, datum, worked, aufgabe_id)
+    VALUES (0, 'Aufgabendetails 1 zu A1', '1999-05-04', 4, 0);
+INSERT INTO aufgabedetails(
+            id, beschreibung, datum, worked, aufgabe_id)
+    VALUES (1, 'Aufgabendetails 1 zu A2', '1999-05-04', 5, 1);
+
 
 

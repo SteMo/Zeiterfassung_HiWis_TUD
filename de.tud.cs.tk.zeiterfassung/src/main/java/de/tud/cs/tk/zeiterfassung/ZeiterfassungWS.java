@@ -5,6 +5,7 @@
 package de.tud.cs.tk.zeiterfassung;
 
 import de.tud.cs.tk.zeiterfassung.ws.Aufgaben;
+import de.tud.cs.tk.zeiterfassung.ws.AufgabenDetails;
 import de.tud.cs.tk.zeiterfassung.ws.Fachgebiete;
 import de.tud.cs.tk.zeiterfassung.ws.Menu;
 import de.tud.cs.tk.zeiterfassung.ws.Personen;
@@ -26,7 +27,9 @@ public class ZeiterfassungWS extends Application  {
        this.singletons.add(new Menu());
        this.singletons.add(new Fachgebiete());
        this.singletons.add(new Aufgaben());
+       this.singletons.add(new AufgabenDetails());
        
+       this.classes.add(AufgabenDetails.class);
        this.classes.add(Aufgaben.class);
        this.classes.add(Personen.class);
        this.classes.add(Menu.class);
