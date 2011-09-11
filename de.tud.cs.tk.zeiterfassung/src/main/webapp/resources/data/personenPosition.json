@@ -1,0 +1,9 @@
+{
+    'success': true,
+    'results': [
+	  {"id":"1", "position":"Leiter"},
+	  {"id":"2", "position":"Stellvertreter"},
+	  {"id":"3", "position":"Mitarbeiter"},
+	  {"id":"4", "position":"HiWi"}
+    ]
+}

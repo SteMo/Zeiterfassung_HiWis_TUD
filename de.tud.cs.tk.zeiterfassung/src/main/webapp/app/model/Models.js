@@ -244,6 +244,36 @@ Ext.define('AM.model.PersonenZuweisung', {
     }    
 });
 
+Ext.define('AM.model.PersonenTitel', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'title', type: 'string'},        
+    ],    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/personenTitel.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
 
+Ext.define('AM.model.PersonenPosition', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'position', type: 'string'},        
+    ],    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/personenPosition.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
 
 

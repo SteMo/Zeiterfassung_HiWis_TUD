@@ -1,0 +1,8 @@
+{
+    'success': true,
+    'results': [
+	  {"id":"1", "title":"Doktor"},
+	  {"id":"2", "title":"Professor"},
+	  {"id":"3", "title":"MSc."},
+    ]
+}
