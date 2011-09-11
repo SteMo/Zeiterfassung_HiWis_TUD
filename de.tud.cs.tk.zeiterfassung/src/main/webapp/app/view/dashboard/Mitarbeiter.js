@@ -86,11 +86,11 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                         dataIndex: 'remainingTasks',
                         text: 'Offene Aufgaben'
                     },                    
-                    {
-                        xtype: 'gridcolumn',
-                        text: 'Tarif',
-                        dataIndex: 'rate',
-                    }
+//                    {
+//                        xtype: 'gridcolumn',
+//                        text: 'Tarif',
+//                        dataIndex: 'rate',
+//                    }
                 ],
                 viewConfig: {
 
