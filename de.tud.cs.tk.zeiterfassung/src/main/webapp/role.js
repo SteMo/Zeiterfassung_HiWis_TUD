@@ -43,8 +43,10 @@ if(role=="hiwi"){
 }else if(role=="mitarbeiter"){
 	 	controller = new Array("MitarbeiterController");
 	 	dashboard = "dashboardMitarbeiter"; 
+}else if(role=="admin"){
+ 	controller = new Array("AdminController");
+ 	dashboard = "personenAdmin"; 
 }
-
 //
 //
 //'layout.Filterbereich',

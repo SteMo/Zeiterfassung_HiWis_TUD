@@ -27,6 +27,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
                 		console.log("create!");
+                		/* hier muss ein model definiert werden und verschickt, also evtl das bestehende, oder ein angepasstes */
                 		storeAufgaben.insert(0, data);
                     }
                 },    
@@ -80,8 +81,23 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                   items: [
                                           {
                    						   xtype: 'tbfill'
-                   					  },                                             
-                                         {
+                   					  }, 
+                   					{
+                                          xtype: 'button',
+                                          itemId: 'btnStundenEintragen',
+                                          text: 'Aufgabe zuweisen',
+                                          icon: 'resources/images/drop-add.gif',
+                                          handler: function(){
+                                          	console.log("TaskDetailsWindow > onCreate");
+                                              var form = me.getComponent("formAddTask").getForm();
+                                              // prüfen ob Pflichtfelder ausgefüllt sind (allowBlank-Attribut) und evtl Validitätsbedingung im Model
+                                              console.log("Form valid: " + form.isValid());
+                                              if (form.isValid()) {
+                                            	  me.getComponent("formAddTask").fireEvent('create', me.getComponent("formAddTask"), form.getValues());
+                                                  form.reset();
+                                              }
+                                          }
+                                      }  , '-', {
                                           xtype: 'button',
                                           itemId: 'btnReset',
                                           text: 'Reset',
@@ -90,22 +106,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
 //                                              this.setActiveRecord(null);
                                               me.getComponent("formAddTask").getForm().reset();
                                           }
-                                      }, '-', {
-                                              xtype: 'button',
-                                              itemId: 'btnStundenEintragen',
-                                              text: 'Aufgabe zuweisen',
-                                              icon: 'resources/images/drop-add.gif',
-                                              handler: function(){
-                                              	console.log("TaskDetailsWindow > onCreate");
-                                                  var form = me.getComponent("formAddTask").getForm();
-                                                  // prüfen ob Pflichtfelder ausgefüllt sind (allowBlank-Attribut) und evtl Validitätsbedingung im Model
-                                                  console.log("Form valid: " + form.isValid());
-                                                  if (form.isValid()) {
-                                                	  me.getComponent("formAddTask").fireEvent('create', me.getComponent("formAddTask"), form.getValues());
-                                                      form.reset();
-                                                  }
-                                              }
-                                          }                               
+                                      }                             
 
 
                                   ]
@@ -165,8 +166,8 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                              {
                                                   xtype: 'button',
                                                   itemId: 'btnTaskUpdate',
-                                                  text: 'Editieren',
-                                                  icon: 'resources/images/drop-add.gif',
+                                                  text: 'Markierten Eintrag editieren',
+                                                  icon: 'resources/images/edit.png',
                                                   disabled: true,
                                                   handler: function(){
                                                 	  var grid = me.getComponent('aufgabenGrid');
