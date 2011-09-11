@@ -7,6 +7,7 @@ Ext.define('AM.controller.MitarbeiterController', {
     stores: [
          'Personen',
          'Menu',
+         'PersonenZuweisung'
     ],
 	
     views: [
@@ -14,12 +15,14 @@ Ext.define('AM.controller.MitarbeiterController', {
 	        'layout.ContentGrid',
 	        'dashboard.Mitarbeiter',
 	        'aufgaben.Mitarbeiter',
-	        'vertraege.Vertraege'
+	        'vertraege.Vertraege',
+	        'dashboard.MitarbeiterTaskEditWindow'
             ],
 	
 	models: [
 		'Personen',
 		'Personentypen',
+		'PersonenZuweisung',
 		'Fachgebiete',
 		'MenuModel'
 	],
@@ -48,8 +51,9 @@ Ext.define('AM.controller.MitarbeiterController', {
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
         	'menue button[id="btnVertraege"]': 		{ click: this.showVertraege  },
         	'menue button[id="btnAufgaben"]': 		{ click: this.showAufgaben  }, 	
-        	'menue button[id="btnStundenEintragen"]': { click: this.showHiWiStundenEintragen  },
         	'contentGrid':							{ itemdblclick: this.showContentDetails },
+            '#aufgabenDeadlineGrid':				{ itemdblclick: this.showTaskEditWindow },             	
+        	'#personenGrid':						{ itemdblclick: this.showPersonenDetails },
         	'#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged}
         });       	
     },
@@ -100,13 +104,11 @@ Ext.define('AM.controller.MitarbeiterController', {
 
     showPersonen: function(){
     	console.log("Personen clicked");
-    	this.getContent().id = "listOfPeople";
-    	/* reconfigure bindet einen neuen Store + columns an Grid */
-    	this.getContent().reconfigure(this.getPersonenStore(), columnsPersonen);
-    	/* PagingToolbar aktualisieren: 1. an geänderten Store binden, 2. Ansicht refreshen */
-    	this.getContent().getDockedComponent("pagingtoolbar").bindStore(this.getPersonenStore());
-    	this.getContent().getDockedComponent("pagingtoolbar").doRefresh();
-    	
+    	var layout = Ext.getCmp('viewport');
+    	/* lösche Komponenten um aktuelle hinzufügen zu können - definiert in functions.js */
+    	clearContentArea(layout); 	
+    	layout.add(Ext.create('AM.view.personen.Personen'));
+    	layout.doLayout();
     },
     
     showVertraege: function(){
@@ -129,18 +131,9 @@ Ext.define('AM.controller.MitarbeiterController', {
     
     
     showContentDetails: function(a, item){
-//    	console.log("showContentDetails:");
-//    	console.log(item.data);
-
     	var detailsWindow = Ext.create('widget.detailsWindow', { title: 'Details &uuml;ber ' + item.data.name });
 
     	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-    	/**
-    	 * ToDo: 
-    	 * Was soll alles angezeigt werden? Beim Store/Model muss man mal sehen, in dem Beispiel von unseren
-    	 * Betreuern (glaub da war das) haben die einfach alle Daten im Store, im Grid werden nicht alle angezeigt
-    	 *  - so wäre hier ja auch sinnvoll um bei den Details dann "alles" anzeigen zu können
-    	 */
     	
     	
     	/* Abfrage welches Grid gerade geladen ist um entsprechendes Detailfenster anzuzeigen */
@@ -173,6 +166,52 @@ Ext.define('AM.controller.MitarbeiterController', {
     	detailsWindow.show();
     },
     
+    
+    
+    showTaskEditWindow: function(a, item){
+    	var detailsWindow = Ext.create('widget.mitarbeiterTaskEditWindow');
+
+    	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+    	
+    	
+    	/* Abfrage welches Grid gerade geladen ist um entsprechendes Detailfenster anzuzeigen */
+		/* Packagenotation geht in query nicht, CSS-like... */
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
+//    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0]).setValue(item.data.fachgebiet);
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
+		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
+		/* vorauswahl des momentan eingetragenen HiWis */
+		combo.store.load(function(records, operation, success) {
+		    combo.setValue(item.data.hiwi);
+		});
+    	/* zeige Fenster */
+    	detailsWindow.show();    	
+    },    
+    
+    
+    showPersonenDetails: function(a, item){    	
+    	Ext.create('Ext.window.Window', {
+    	    width: 379,
+    	    bodyPadding: 10,
+    	    title: 'Personendetails',
+    	    items: [
+    	            {
+    	                xtype: 'displayfield',
+    	                name: 'name',
+    	                value: item.data.hiwi,
+    	                fieldLabel: 'Name'
+    	            },
+    	            {
+    	                xtype: 'displayfield',
+    	                name: 'mail',
+    	                value: item.data.hiwiMail,
+    	                fieldLabel: 'E-Mail'
+    	            }
+    	        ],
+    	}).show();
+    },
     
     
     /* ----------- HiWi ------------ */

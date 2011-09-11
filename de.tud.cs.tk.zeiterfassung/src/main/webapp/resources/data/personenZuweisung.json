@@ -1,0 +1,7 @@
+{
+    'success': true,
+    'results': [
+	  {"id":"1", "name":"Klaus Kleber"},
+	  {"id":"2", "name":"Gundula Gause"}
+    ]
+}
