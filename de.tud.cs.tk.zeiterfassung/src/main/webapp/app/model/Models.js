@@ -172,7 +172,7 @@ Ext.define('AM.model.HiWiAufgabe', {
         {name: 'supervisor', type: 'string'},
         {name: 'hiwi', type: 'string'},        
         {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
-        {name: 'assignedOn', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'assignedAt', type: 'date', dateFormat: 'd.m.y'},
         {name: 'priority', type: 'int'},
         {name: 'status', type: 'string'}
     ],    

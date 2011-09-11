@@ -51,6 +51,7 @@ public class Aufgaben {
         public float worked;
         public long responsible;
         public boolean done;
+        public String hiwi;
 
         public AufgabenEntry(long id, int priority, String deadline, String title, String assignedFrom, String assignedAt, float worked, long resp, String desc, boolean done) {
             this.id = id;
@@ -63,6 +64,20 @@ public class Aufgaben {
             this.responsible = resp;
             this.desc = desc;
             this.done = done;
+        }
+
+        private AufgabenEntry(long id, int priority, String deadline, String title, String assignedFrom, String assignedAt, float worked, long resp, String desc, boolean done, String hiwi) {
+            this.id = id;
+            this.priority = priority;
+            this.deadline = deadline;
+            this.title = title;
+            this.assignedFrom = assignedFrom;
+            this.assignedAt = assignedAt;
+            this.worked = worked;
+            this.responsible = resp;
+            this.desc = desc;
+            this.done = done;
+            this.hiwi = hiwi;
         }
     }
 
@@ -106,10 +121,12 @@ public class Aufgaben {
             Person me = people.get(0);
             List<Aufgabe> aufgaben = AufgabeDAO.retrieveAll();
             for (Aufgabe a : aufgaben) {
-                if (me.id == a.verantwortlicher.id
-                        || (me.getRolle().significance <= 30 && me.id == a.assignedFrom.id)) {
+                if (me.id == a.verantwortlicher.id) { // Ich bin der, dem die Aufgabe zugewiesen wurde
                     al.results.add(new AufgabenEntry(a.id, a.priority, new SimpleDateFormat("dd.mm.yy").format(a.deadline.getTime()), a.titel, a.assignedFrom.firstName + " " + a.assignedFrom.givenName, new SimpleDateFormat("dd.mm.yy").format(a.assignedAt.getTime()), a.worked, a.verantwortlicher.id, a.beschreibung, a.erledigt));
+                }else if(me.getRolle().significance <= 30 && me.id == a.assignedFrom.id) {
+                    al.results.add(new AufgabenEntry(a.id, a.priority, new SimpleDateFormat("dd.mm.yy").format(a.deadline.getTime()), a.titel, a.assignedFrom.firstName + " " + a.assignedFrom.givenName, new SimpleDateFormat("dd.mm.yy").format(a.assignedAt.getTime()), a.worked, a.verantwortlicher.id, a.beschreibung, a.erledigt, a.verantwortlicher.firstName+" "+a.verantwortlicher.givenName));
                 }
+                   
             }
             al.success = true;
             al.total = al.results.size();

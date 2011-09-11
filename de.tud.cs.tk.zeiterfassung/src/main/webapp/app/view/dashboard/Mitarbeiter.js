@@ -170,7 +170,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     },
                     {
                         xtype: 'datecolumn',
-                        dataIndex: 'assignedOn',
+                        dataIndex: 'assignedAt',
                         text: 'Zugewiesen am',
                         format: 'd.m.y',
                     },   
