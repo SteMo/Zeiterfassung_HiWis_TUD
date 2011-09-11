@@ -9,6 +9,7 @@ import de.tud.cs.tk.zeiterfassung.ws.AufgabenDetails;
 import de.tud.cs.tk.zeiterfassung.ws.Fachgebiete;
 import de.tud.cs.tk.zeiterfassung.ws.Menu;
 import de.tud.cs.tk.zeiterfassung.ws.Personen;
+import de.tud.cs.tk.zeiterfassung.ws.Vertraege;
 import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -28,7 +29,9 @@ public class ZeiterfassungWS extends Application  {
        this.singletons.add(new Fachgebiete());
        this.singletons.add(new Aufgaben());
        this.singletons.add(new AufgabenDetails());
+       this.singletons.add(new Vertraege());
        
+       this.classes.add(Vertraege.class);
        this.classes.add(AufgabenDetails.class);
        this.classes.add(Aufgaben.class);
        this.classes.add(Personen.class);
