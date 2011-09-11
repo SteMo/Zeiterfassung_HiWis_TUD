@@ -1,9 +1,9 @@
-Ext.define('AM.view.dashboard.MitarbeiterTaskEditWindow', {
+Ext.define('AM.view.vertraege.MitarbeiterContractEditWindow', {
     extend: 'Ext.window.Window',
 
-    alias: 'widget.mitarbeiterTaskEditWindow',
+    alias: 'widget.mitarbeiterContractEditWindow',
     
-    width: 370,
+    width: 500,
     bodyPadding: '',
     title: 'Aufgaben: Details & Editieren',
 
@@ -58,9 +58,9 @@ Ext.define('AM.view.dashboard.MitarbeiterTaskEditWindow', {
                 xtype: 'toolbar',
                 dock: 'bottom',
                 items: [
-                        {
-							   xtype: 'tbfill'
-						  },                                
+                    {
+						   xtype: 'tbfill'
+					  },                                
                     {
                         xtype: 'button',
                         itemId: 'btnDone',

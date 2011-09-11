@@ -15,8 +15,9 @@ Ext.define('AM.controller.MitarbeiterController', {
 	        'layout.ContentGrid',
 	        'dashboard.Mitarbeiter',
 	        'aufgaben.Mitarbeiter',
+	        'aufgaben.MitarbeiterTaskEditWindow',
 	        'vertraege.Vertraege',
-	        'dashboard.MitarbeiterTaskEditWindow'
+	        'vertraege.MitarbeiterContractEditWindow'
             ],
 	
 	models: [
