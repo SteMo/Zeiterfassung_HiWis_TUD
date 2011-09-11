@@ -143,12 +143,12 @@ Ext.define('AM.model.TaskDetails', {
     ],
     
     proxy: {
-        type: 'rest',
+        type: 'jsonp',
         api: {
-            create: 'test', // Called when saving new records
-            read: 'resources/data/dashboardTaskDetails.json', // Called when reading existing records
-            update: 'myBackend.php?action=update', // Called when updating existing records
-            destroy: 'myBackend.php?action=destroy' // Called when deleting existing records
+            create: 'ws/aufgabendetails', // Called when saving new records
+            read: 'ws/aufgabendetails', // Called when reading existing records
+            update: 'ws/aufgabendetails', // Called when updating existing records
+            destroy: 'ws/aufgabendetails' // Called when deleting existing records
         },        
         reader: {
             type: 'json',
