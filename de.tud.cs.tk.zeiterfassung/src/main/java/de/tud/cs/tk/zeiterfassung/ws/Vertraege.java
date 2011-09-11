@@ -101,6 +101,10 @@ public class Vertraege {
             for(Vertrag v : vs) {
                 vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), v.getTarif().name, v.stundenProMonat));
             }
+            vs = me.getVertragssteller();
+            for(Vertrag v : vs) {
+                vl.results.add(new VertraegeEntry(v.id, v.vertragspartner.firstName+" "+v.vertragspartner.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), v.getTarif().name, v.stundenProMonat));
+            }
             vl.success = true;
             vl.total = vl.results.size();
         }

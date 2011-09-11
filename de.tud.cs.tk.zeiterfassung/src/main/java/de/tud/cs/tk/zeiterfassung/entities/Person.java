@@ -93,6 +93,10 @@ public class Person {
 	public List<Vertrag> getVertragspartner() {
 		return vertragspartner;
 	}
+        
+        public List<Vertrag> getVertragssteller() {
+		return vertragssteller;
+	}
 	
 	public void setFachgebiet(Fachgebiet fachgebiet) {
 		fachgebiet.people.add(this);
