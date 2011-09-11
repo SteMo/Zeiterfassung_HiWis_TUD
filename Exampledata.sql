@@ -1,4 +1,6 @@
-﻿DELETE FROM aufgabedetails;
+﻿DELETE FROM vertrag;
+DELETE FROM tarif;
+DELETE FROM aufgabedetails;
 DELETE FROM aufgabe;
 DELETE FROM vertrag;
 DELETE FROM person;
@@ -73,5 +75,19 @@ INSERT INTO aufgabedetails(
             id, beschreibung, datum, worked, aufgabe_id)
     VALUES (1, 'Aufgabendetails 1 zu A2', '1999-05-04', 5, 1);
 
+INSERT INTO tarif(
+            id, "name", stufe, stundensatz)
+    VALUES (0, 'Hiwi@9Euro', 0, 9);
+
+INSERT INTO vertrag(
+            id, ende, "start", stundenpromonat, tarif_id, vertragspartner_id, 
+            vertragssteller_id)
+    VALUES (0, '2011-09-30', '2011-09-01', 30, 0, 3, 
+            2);
+INSERT INTO vertrag(
+            id, ende, "start", stundenpromonat, tarif_id, vertragspartner_id, 
+            vertragssteller_id)
+    VALUES (1, '2011-09-30', '2011-09-01', 30, 0, 4, 
+            2);
 
 

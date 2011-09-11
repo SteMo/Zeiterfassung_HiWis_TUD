@@ -2,11 +2,13 @@ package de.tud.cs.tk.zeiterfassung.entities;
 
 import java.util.Date;
 
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Vertrag {
@@ -16,7 +18,10 @@ public class Vertrag {
 	public long id;
 	
 	@ManyToOne
-	public Person vertragspartner;
+	public Person vertragssteller;
+        
+        @ManyToOne
+        public Person vertragspartner;
 	
 	@ManyToOne
 	private Tarif tarif;

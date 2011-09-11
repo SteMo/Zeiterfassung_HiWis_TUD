@@ -145,7 +145,7 @@ Ext.define('AM.model.TaskDetails', {
     proxy: {
         type: 'jsonp',
         api: {
-            create: 'ws/aufgabendetails', // Called when saving new records
+            create: 'ws/aufgabendetail', // Called when saving new records
             read: 'ws/aufgabendetails', // Called when reading existing records
             update: 'ws/aufgabendetails', // Called when updating existing records
             destroy: 'ws/aufgabendetails' // Called when deleting existing records
@@ -177,8 +177,8 @@ Ext.define('AM.model.HiWiAufgabe', {
         {name: 'status', type: 'string'}
     ],    
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/hiwiAufgaben.json',
+        type: 'jsonp',
+        url: 'ws/aufgaben',
         reader: {
             type: 'json',
             root: 'results'
@@ -201,8 +201,8 @@ Ext.define('AM.model.HiWiVertrag', {
         {name: 'rate', type: 'string'} /* Tarifgruppe */
     ],    
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/hiwiVertraege.json',
+        type: 'jsonp',
+        url: 'ws/vertraege',
         reader: {
             type: 'json',
             root: 'results'
