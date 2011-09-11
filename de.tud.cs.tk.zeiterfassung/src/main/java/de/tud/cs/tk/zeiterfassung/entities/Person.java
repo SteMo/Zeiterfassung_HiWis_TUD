@@ -38,7 +38,11 @@ public class Person {
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="vertragspartner", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<Vertrag> vertraege;
+	private List<Vertrag> vertragspartner;
+        
+        @OneToMany(cascade=CascadeType.ALL, mappedBy="vertragssteller", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Vertrag> vertragssteller;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="supervisor", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
@@ -61,9 +65,9 @@ public class Person {
 		this.mitarbeiter.add(employee);
 	}
 	
-	public void addVertrag(Vertrag vertrag) {
+	public void addVertragspartner(Vertrag vertrag) {
 		vertrag.vertragspartner = this;
-		this.vertraege.add(vertrag);
+		this.vertragspartner.add(vertrag);
 	}
 	
 	public List<Aufgabe> getAufgaben() {
@@ -86,8 +90,8 @@ public class Person {
 		return supervisor;
 	}
 
-	public List<Vertrag> getVertraege() {
-		return vertraege;
+	public List<Vertrag> getVertragspartner() {
+		return vertragspartner;
 	}
 	
 	public void setFachgebiet(Fachgebiet fachgebiet) {
