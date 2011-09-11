@@ -17,7 +17,8 @@ Ext.define('AM.controller.MitarbeiterController', {
 	        'aufgaben.Mitarbeiter',
 	        'aufgaben.MitarbeiterTaskEditWindow',
 	        'vertraege.Vertraege',
-	        'vertraege.MitarbeiterContractEditWindow'
+	        'vertraege.MitarbeiterContractEditWindow',
+	        'layout.LiveSearchGridPanel'
             ],
 	
 	models: [

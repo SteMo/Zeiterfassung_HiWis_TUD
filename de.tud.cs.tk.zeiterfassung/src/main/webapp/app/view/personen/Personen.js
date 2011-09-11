@@ -42,7 +42,7 @@ Ext.define('AM.view.personen.Personen', {
         
         me.items = [
             {
-                xtype: 'gridpanel',
+                xtype: 'liveSearchGridPanel',
                 itemId: 'personenGrid',
                 title: 'Eingestellte HiWis',
                 margin: '10 0 10 0',
@@ -53,7 +53,7 @@ Ext.define('AM.view.personen.Personen', {
                         xtype: 'gridcolumn',
                         dataIndex: 'hiwi',
                         text: 'Name',
-                        width: 170,
+                        flex: 1,
                     },
                     {
                         xtype: 'datecolumn',

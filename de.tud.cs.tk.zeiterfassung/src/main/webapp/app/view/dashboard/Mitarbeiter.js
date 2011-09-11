@@ -58,12 +58,13 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                           dataIndex: 'end',
                           text: 'Vertragsende',
                           format: 'd.m.y',
+                          width: 80,
                       },                          
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'hiwi',
                         text: 'Name',
-                        width: 200,
+                        flex: 1,
 //                        renderer: function(val, meta, record) {
 //                            return record.data.vorname + " " + record.data.name;
 //                      }
@@ -79,12 +80,11 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     {
                         xtype: 'numbercolumn',
                         dataIndex: 'remainingHours',
-                        text: 'Offene Stunden'
-                    },
+                        text: 'Offene Stunden',                    },
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'remainingTasks',
-                        text: 'Offene Aufgaben'
+                        text: 'Offene Aufgaben',
                     },                    
 //                    {
 //                        xtype: 'gridcolumn',
@@ -152,20 +152,21 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     {
                         xtype: 'datecolumn',
                         dataIndex: 'deadline',
-                        width: 80,
+                        width: 65,
                         text: 'Deadline',
                         format: 'd.m.y',
                     },
                     {
                         xtype: 'gridcolumn',
-                        width: 290,
                         dataIndex: 'title',
-                        text: 'Aufgabe'
+                        text: 'Aufgabe',
+                        flex: 1
                     },
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'hiwi',
                         text: 'HiWi',
+                        width: 170,
                     },
                     {
                         xtype: 'datecolumn',
@@ -178,6 +179,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                         dataIndex: 'priority',
                         text: 'Priorität',
                         format: '0',
+                        width: 60
 //                        allowNegative: false,                    	
                     }                    
                 ],

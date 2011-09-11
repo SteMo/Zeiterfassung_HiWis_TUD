@@ -26,6 +26,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                 listeners: {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
+                		console.log("create!");
                 		storeAufgaben.insert(0, data);
                     }
                 },    
@@ -112,7 +113,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                           ],
             },
                 {
-                    xtype: 'gridpanel',
+                    xtype: 'liveSearchGridPanel',
                     itemId: 'aufgabenGrid',
                     title: 'Eingetragene Aufgaben',
                     margin: '10 0 0 0',
@@ -121,13 +122,13 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                         {
                             xtype: 'datecolumn',
                             dataIndex: 'deadline',
-                            width: 80,
+                            width: 60,
                             text: 'Deadline',
                             format: 'd.m.y',
                         },
                         {
                             xtype: 'gridcolumn',
-                            width: 290,
+                            flex: 1,
                             dataIndex: 'title',
                             text: 'Aufgabe',
                         },
@@ -135,6 +136,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                             xtype: 'gridcolumn',
                             dataIndex: 'hiwi',
                             text: 'HiWi',
+                            width: 170,
                         },
                         {
                             xtype: 'datecolumn',
@@ -147,6 +149,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                             dataIndex: 'priority',
                             text: 'Priorität',
                             format: '0',
+                            width: 60
 //                            allowNegative: false,                    	
                         }                    
                     ],

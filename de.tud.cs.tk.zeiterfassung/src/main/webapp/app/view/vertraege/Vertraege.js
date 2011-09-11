@@ -141,18 +141,19 @@ Ext.define('AM.view.vertraege.Vertraege', {
 
                     },
                     {
-                        xtype: 'gridpanel',
+                        xtype: 'liveSearchGridPanel',
                         itemId: 'vertragsGrid',
                         title: 'Vorhandene Vertr&auml;ge',
-                        margin: '10 0 10 0',
+                        margin: '10 0 10 0',                        
                         store: storeVertragsdaten,
                         columns: [
                          
                             {
                                 xtype: 'gridcolumn',
                                 dataIndex: 'hiwi',
+                                itemIndex: 'hiwi',
                                 text: 'Name',
-                                width: 200,
+                                flex: 1,
 //                                renderer: function(val, meta, record) {
 //                                    return record.data.vorname + " " + record.data.name;
 //                              }
@@ -180,7 +181,7 @@ Ext.define('AM.view.vertraege.Vertraege', {
                             {
                                 xtype: 'gridcolumn',
                                 text: 'Tarif',
-                                dataIndex: 'rate',
+                                dataIndex: 'rate',                                
                             }
                         ],
                         viewConfig: {
