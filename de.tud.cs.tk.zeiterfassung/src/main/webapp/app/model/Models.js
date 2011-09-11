@@ -177,8 +177,8 @@ Ext.define('AM.model.HiWiAufgabe', {
         {name: 'status', type: 'string'}
     ],    
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/hiwiAufgaben.json',
+        type: 'jsonp',
+        url: 'ws/aufgaben',
         reader: {
             type: 'json',
             root: 'results'
@@ -201,8 +201,8 @@ Ext.define('AM.model.HiWiVertrag', {
         {name: 'rate', type: 'string'} /* Tarifgruppe */
     ],    
     proxy: {
-        type: 'ajax',
-        url: 'resources/data/hiwiVertraege.json',
+        type: 'jsonp',
+        url: 'ws/vertraege',
         reader: {
             type: 'json',
             root: 'results'

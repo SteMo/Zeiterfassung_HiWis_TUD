@@ -42,15 +42,18 @@ public class Vertraege {
 
     public class VertraegeEntry {
         public long id;
-        public String title, description, supervisor, hiwi, deadline;
+        public String hiwi, hiwiMail, supervisor, begin, end, rate;
+        public int hoursPerMonth;
 
-        public VertraegeEntry(long id, String title, String description, String supervisor, String hiwi, String deadline) {
+        public VertraegeEntry(long id, String hiwi, String hiwiMail, String supervisor, String begin, String end, String rate, int hoursPerMonth) {
             this.id = id;
-            this.title = title;
-            this.description = description;
-            this.supervisor = supervisor;
             this.hiwi = hiwi;
-            this.deadline = deadline;
+            this.hiwiMail = hiwiMail;
+            this.supervisor = supervisor;
+            this.begin = begin;
+            this.end = end;
+            this.rate = rate;
+            this.hoursPerMonth = hoursPerMonth;
         }
         
     }
@@ -96,7 +99,7 @@ public class Vertraege {
             List<Vertrag> vs = me.getVertragspartner(); // Alle Verträge, bei denen ich vertragspartner bin
             List<Person> ps = PersonDAO.retrieveAll();
             for(Vertrag v : vs) {
-                vl.results.add(new VertraegeEntry(v.id, "Vertrag #"+v.id, "Eine Beschreibung für den Vertrag", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, me.firstName+" "+me.givenName, new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime())));
+                vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), v.getTarif().name, v.stundenProMonat));
             }
             vl.success = true;
             vl.total = vl.results.size();
