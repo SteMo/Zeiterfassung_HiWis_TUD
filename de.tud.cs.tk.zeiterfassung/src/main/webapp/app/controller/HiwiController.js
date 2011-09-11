@@ -38,7 +38,7 @@ Ext.define('AM.controller.HiwiController', {
         	'menue': 								{ render : this.menuLoadItemsFromDB,
         											  'itemsLoaded': this.menuLoadItems},
             'menue button[id="btnDashboard"]': 		{ click: this.showDashboard  },
-            'contentGrid':							{ itemdblclick: this.showContentDetails },
+            '#listOfTasks':							{ itemdblclick: this.showContentDetails },
         	'#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged}
         });       	
     },

@@ -5,19 +5,16 @@ Ext.define('AM.controller.MitarbeiterController', {
     extend: 'Ext.app.Controller',
 
     stores: [
-         'Fachgebiete',
-         'Personentypen',
          'Personen',
-         'FachgebieteData',
          'Menu',
-         'DashboardData',
-         'TaskDetails'
     ],
 	
     views: [
 	        'layout.Menu',
 	        'layout.ContentGrid',
-	        'dashboard.Mitarbeiter'            
+	        'dashboard.Mitarbeiter',
+	        'aufgaben.Mitarbeiter',
+	        'vertraege.Vertraege'
             ],
 	
 	models: [
@@ -49,8 +46,8 @@ Ext.define('AM.controller.MitarbeiterController', {
             'menue button[id="btnDashboard"]': 		{ click: this.showDashboard  },
         	'menue button[id="btnFachbereiche"]': 	{ click: this.showFachgebiete  },
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
-        	'menue button[id="btnVertraege"]': 		{ click: this.showDashboard  },
-        	'menue button[id="btnAufgaben"]': 		{ click: this.showDashboard  }, 	
+        	'menue button[id="btnVertraege"]': 		{ click: this.showVertraege  },
+        	'menue button[id="btnAufgaben"]': 		{ click: this.showAufgaben  }, 	
         	'menue button[id="btnStundenEintragen"]': { click: this.showHiWiStundenEintragen  },
         	'contentGrid':							{ itemdblclick: this.showContentDetails },
         	'#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged}
@@ -114,12 +111,20 @@ Ext.define('AM.controller.MitarbeiterController', {
     
     showVertraege: function(){
     	console.log("Verträge clicked");
-        this.getContent().bindStore(this.getFachgebieteDataStore());
+    	var layout = Ext.getCmp('viewport');
+    	/* lösche Komponenten um aktuelle hinzufügen zu können - definiert in functions.js */
+    	clearContentArea(layout); 	
+    	layout.add(Ext.create('AM.view.vertraege.Vertraege'));
+    	layout.doLayout();
     },
     
     showAufgaben: function(){
     	console.log("Aufgaben clicked");
-        this.getContent().bindStore(this.getFachgebieteDataStore());
+    	var layout = Ext.getCmp('viewport');
+    	/* lösche Komponenten um aktuelle hinzufügen zu können - definiert in functions.js */
+    	clearContentArea(layout); 	
+    	layout.add(Ext.create('AM.view.aufgaben.Mitarbeiter'));
+    	layout.doLayout();
     },    
     
     

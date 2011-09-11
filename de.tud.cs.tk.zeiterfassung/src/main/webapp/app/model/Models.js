@@ -162,40 +162,20 @@ Ext.define('AM.model.TaskDetails', {
 
 
 /* ################## Mitarbeiter ################### */
-Ext.define('AM.model.Vertragsdaten', {
+
+Ext.define('AM.model.HiWiAufgabe', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id', type: 'int'},
-        {name: 'vorname', type: 'string'},
-        {name: 'name', type: 'string'},
-        {name: 'matrikel', type: 'int'},
-        {name: 'beginn', type: 'date', dateFormat: 'd.m.y'},
-        {name: 'ende', type: 'date', dateFormat: 'd.m.y'},
-        {name: 'stunden',type: 'int'},
-        {name: 'offeneStunden',type: 'int'},
-        {name: 'tarif',type: 'string'},
-    ],
-    
-    proxy: {
-        type: 'ajax',
-        url: 'resources/data/vertragsdaten.json',
-        reader: {
-            type: 'json',
-            root: 'results'
-        }
-    }    
-});
-Ext.define('AM.model.HiWiAufgaben', {
-    extend: 'Ext.data.Model',
-    fields: [
-        {name: 'id', type: 'int'},
-        {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
         {name: 'title', type: 'string'},
-        {name: 'hiwi', type: 'string'},
+        {name: 'description', type: 'string'},
+        {name: 'supervisor', type: 'string'},
+        {name: 'hiwi', type: 'string'},        
+        {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
         {name: 'assignedOn', type: 'date', dateFormat: 'd.m.y'},
-        {name: 'priority', type: 'int'}
-    ],
-    
+        {name: 'priority', type: 'int'},
+        {name: 'status', type: 'string'}
+    ],    
     proxy: {
         type: 'ajax',
         url: 'resources/data/hiwiAufgaben.json',
@@ -205,4 +185,45 @@ Ext.define('AM.model.HiWiAufgaben', {
         }
     }    
 });
+
+Ext.define('AM.model.HiWiVertrag', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'hiwi', type: 'string'},        
+        {name: 'supervisor', type: 'string'}, /* seine ID */        
+        {name: 'begin', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'end', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'hoursPerMonth', type: 'int'},
+        {name: 'remainingHours',type: 'int'},	/* noch zu verrichtende Stunden */
+        {name: 'remainingTasks',type: 'string'}, /* ich denke so im Stil: x/y (also x von y offen), nur sortieren im Grid wird dann evtl schwierig */
+        {name: 'rate', type: 'string'} /* Tarifgruppe */
+    ],    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/hiwiVertraege.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
+
+Ext.define('AM.model.HiwiTarifgruppe', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'group', type: 'string'},        
+    ],    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/hiwiTarifgruppen.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
+
+
 

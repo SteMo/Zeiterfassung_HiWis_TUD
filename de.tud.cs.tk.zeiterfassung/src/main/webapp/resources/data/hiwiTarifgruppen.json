@@ -1,0 +1,7 @@
+{
+    'success': true,
+    'results': [
+	  {"id": "1", "group": "Werkstudent"},
+	  {"id": "2", "group": "TVÖD"},
+    ]
+}

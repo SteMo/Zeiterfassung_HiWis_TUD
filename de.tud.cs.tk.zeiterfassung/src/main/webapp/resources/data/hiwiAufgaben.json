@@ -1,6 +1,6 @@
 {
     'success': true,
     'results': [
-	  {"id": "1", "deadline": "22.09.11", "title": "Mach mal, dass das hier gehen tut", "hiwi":"Klaus Kleber", "assignedOn":"22.05.11", "priority": "3"},
+	  {"id": "1", "deadline": "22.09.11", "title": "Mach mal, dass das hier gehen tut", "description": "Mach mal, dass das hier gehen tut! Mach mal, dass das hier gehen tut!", "supervisor":"Shorn Stein", "hiwi":"Klaus Kleber", "assignedOn":"22.05.11", "priority": "3", "status":"offen"},
     ]
 }

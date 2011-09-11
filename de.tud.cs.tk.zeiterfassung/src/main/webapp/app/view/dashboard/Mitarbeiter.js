@@ -37,12 +37,12 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
         var storeVertragsdaten = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
-            model: 'AM.model.Vertragsdaten',  
+            model: 'AM.model.HiWiVertrag',  
         });      
         var storeAufgaben = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
-            model: 'AM.model.HiWiAufgaben',  
+            model: 'AM.model.HiWiAufgabe',  
         });              
         
         me.items = [
@@ -55,19 +55,18 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                 columns: [
                       {
                           xtype: 'datecolumn',
-                          dataIndex: 'ende',
+                          dataIndex: 'end',
                           text: 'Vertragsende',
                           format: 'd.m.y',
                       },                          
                     {
                         xtype: 'gridcolumn',
-                        dataIndex: 'vorname',
+                        dataIndex: 'hiwi',
                         text: 'Name',
                         width: 200,
-                        renderer: function(val, meta, record) {
-                            return record.data.vorname + " " + record.data.name;
-//                        	var userId = record.data.user_id;
-                      }
+//                        renderer: function(val, meta, record) {
+//                            return record.data.vorname + " " + record.data.name;
+//                      }
 
                     },
 
@@ -79,13 +78,13 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
 //                    },
                     {
                         xtype: 'numbercolumn',
-                        dataIndex: 'offeneStunden',
+                        dataIndex: 'remainingHours',
                         text: 'Offene Stunden'
                     },
                     {
                         xtype: 'gridcolumn',
                         text: 'Tarif',
-                        dataIndex: 'tarif',
+                        dataIndex: 'rate',
                     }
                 ],
                 viewConfig: {
@@ -161,7 +160,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'hiwi',
-                        text: 'HiWi'
+                        text: 'HiWi',
                     },
                     {
                         xtype: 'datecolumn',
