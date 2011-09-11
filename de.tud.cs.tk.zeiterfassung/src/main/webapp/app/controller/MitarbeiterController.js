@@ -46,7 +46,7 @@ Ext.define('AM.controller.MitarbeiterController', {
             'menue button[id="btnDashboard"]': 		{ click: this.showDashboard  },
         	'menue button[id="btnFachbereiche"]': 	{ click: this.showFachgebiete  },
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
-        	'menue button[id="btnVertraege"]': 		{ click: this.showDashboard  },
+        	'menue button[id="btnVertraege"]': 		{ click: this.showVertraege  },
         	'menue button[id="btnAufgaben"]': 		{ click: this.showAufgaben  }, 	
         	'menue button[id="btnStundenEintragen"]': { click: this.showHiWiStundenEintragen  },
         	'contentGrid':							{ itemdblclick: this.showContentDetails },
@@ -110,7 +110,7 @@ Ext.define('AM.controller.MitarbeiterController', {
     },
     
     showVertraege: function(){
-    	console.log("Aufgaben clicked");
+    	console.log("Verträge clicked");
     	var layout = Ext.getCmp('viewport');
     	/* lösche Komponenten um aktuelle hinzufügen zu können - definiert in functions.js */
     	clearContentArea(layout); 	

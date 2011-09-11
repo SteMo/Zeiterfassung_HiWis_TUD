@@ -1,0 +1,6 @@
+{
+    'success': true,
+    'results': [
+	  {"id": "1", "hiwi": "Klaus Kleber", "supervisor": "Timo Beil", "begin": "01.01.11", "end": "01.03.11", "hoursPerMonth": "12", "remainingHours": "14", "rate": "xyz"},
+    ]
+}

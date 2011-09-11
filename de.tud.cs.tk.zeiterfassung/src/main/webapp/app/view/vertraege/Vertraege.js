@@ -13,16 +13,27 @@ Ext.define('AM.view.vertraege.Vertraege', {
             autoLoad: true,
             autoSync: true,
             model: 'AM.model.HiWiVertrag',  
-        });              
+        });       
+        
+        var storeHiwiTarifgruppe = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.HiwiTarifgruppe',  
+        });       
         
         me.items = [
             {
                 xtype: 'form',
-                id: 'formAddTask',
+                id: 'formAddContract',
                 bodyPadding: 10,
                 margin: '10 0 10 0',
                 title: 'Neuen HiWi-Vertrag eintragen',
-                               
+                
+//                fieldDefaults: {
+//                    anchor: '100%',
+//                    labelAlign: 'right'
+//                },                
+                
                 listeners: {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
@@ -31,45 +42,56 @@ Ext.define('AM.view.vertraege.Vertraege', {
                 },    
                 
                 items: [
+                        {
+                            xtype: 'combobox',
+                            name: 'cbHiwi',
+                            fieldLabel: 'Vertragspartner',
+                            store: 'Personen',
+                            queryMode: 'local',
+                            displayField: 'name',
+                            valueField: 'name',
+                            allowBlank: false,
+                            anchor: '100%'
+                        },                        
+                        {
+                            xtype: 'combobox',
+                            margin: '20 0 10 0',
+                            name: 'cbRate',
+                            fieldLabel: 'Tarifgruppe',
+                            store: storeHiwiTarifgruppe,
+                            queryMode: 'local',
+                            displayField: 'group',
+                            valueField: 'group',
+                            allowBlank: false,
+                            anchor: '100%'
+                        }, 
+                        {
+                            xtype: 'numberfield',
+                            name: 'edHoursPerMonth',
+                            fieldLabel: 'Stunden/Monat',
+                            allowBlank: false,
+                            allowNegative: false,
+                            anchor: '100%'
+                        },                        
                     {
-                        xtype: 'textfield',
-                        name: 'edTitle',
-                        fieldLabel: 'Titel',
+                        xtype: 'datefield',
+                        margin: '20 0 10 0',
+                        name: 'edBegin',
+                        format: 'd.m.y',
+                        fieldLabel: 'Vertragsbeginn',
                         allowBlank: false,
-                        anchor: '100%'
-                    },
-                    {
-                        xtype: 'textareafield',
-                        name: 'txtDescription',
-                        fieldLabel: 'Beschreibung',
+                        align: 'right',
                         anchor: '100%'
                     },
                     {
                         xtype: 'datefield',
-                        name: 'edDate',
+                        name: 'edEnd',
                         format: 'd.m.y',
-                        fieldLabel: 'Deadline',
+                        fieldLabel: 'Vertragsende',
                         allowBlank: false,
                         anchor: '100%'
-                    },
-                    {
-                        xtype: 'numberfield',
-                        name: 'edPriority',
-                        fieldLabel: 'Priorität',
-                        allowBlank: false,
-                        anchor: '100%'
-                    },
-                    {
-                        xtype: 'combobox',
-                        name: 'cbHiwi',
-                        fieldLabel: 'HiWi',
-                        store: 'Personen',
-//                        queryMode: 'local',
-                        displayField: 'name',
-                        valueField: 'name',
-                        allowBlank: false,
-                        anchor: '100%'
-                    }
+                    },                    
+
                 ],
                 dockedItems: [
                               {
@@ -78,17 +100,20 @@ Ext.define('AM.view.vertraege.Vertraege', {
                                   dock: 'bottom',
                                   items: [
                                           {
+											   xtype: 'tbfill'
+										  },                                          
+                                          {
                                               xtype: 'button',
                                               itemId: 'btnStundenEintragen',
-                                              text: 'Stunden eintragen',
+                                              text: 'Vertrag eintragen',
                                               icon: 'resources/images/drop-add.gif',
                                               handler: function(){
                                               	console.log("TaskDetailsWindow > onCreate");
-                                                  var form = me.getComponent("formAddTask").getForm();
+                                                  var form = me.getComponent("formAddContract").getForm();
                                                   // prüfen ob Pflichtfelder ausgefüllt sind (allowBlank-Attribut) und evtl Validitätsbedingung im Model
                                                   console.log("Form valid: " + form.isValid());
                                                   if (form.isValid()) {
-                                                	  me.getComponent("formAddTask").fireEvent('create', me.getComponent("formAddTask"), form.getValues());
+                                                	  me.getComponent("formAddContract").fireEvent('create', me.getComponent("formAddContract"), form.getValues());
                                                       form.reset();
                                                   }
                                               }
@@ -100,7 +125,7 @@ Ext.define('AM.view.vertraege.Vertraege', {
                                           icon: 'resources/images/Arrow_undo.png',
                                           handler: function(){
 //                                              this.setActiveRecord(null);
-                                              me.getComponent("formAdd").getForm().reset();
+                                              me.getComponent("formAddContract").getForm().reset();
                                           }
                                       },
 

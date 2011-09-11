@@ -100,7 +100,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                           icon: 'resources/images/Arrow_undo.png',
                                           handler: function(){
 //                                              this.setActiveRecord(null);
-                                              me.getComponent("formAdd").getForm().reset();
+                                              me.getComponent("formAddTask").getForm().reset();
                                           }
                                       },
 

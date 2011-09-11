@@ -1,6 +1,0 @@
-{
-    'success': true,
-    'results': [
-	  {"id": "1", "vorname": "Klaus", "name":"Kleber", "matrikel":"0123456789", "beginn": "01.01.11", "ende": "01.03.11", "stunden": "50", "offeneStunden": "7", "tarif": "xyz"},
-    ]
-}
