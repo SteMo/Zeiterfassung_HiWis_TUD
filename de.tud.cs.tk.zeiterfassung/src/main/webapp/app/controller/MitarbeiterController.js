@@ -17,7 +17,8 @@ Ext.define('AM.controller.MitarbeiterController', {
 	        'aufgaben.Mitarbeiter',
 	        'aufgaben.MitarbeiterTaskEditWindow',
 	        'vertraege.Vertraege',
-	        'vertraege.MitarbeiterContractEditWindow'
+	        'vertraege.MitarbeiterContractEditWindow',
+	        'layout.LiveSearchGridPanel'
             ],
 	
 	models: [
@@ -35,7 +36,7 @@ Ext.define('AM.controller.MitarbeiterController', {
        { ref: "filterbereich", selector: "filterbereich"},
        { ref: 'menu',      selector: 'menue'		},
        { ref: 'dashboard', selector: 'dashboard'},
-       { ref: 'taskDetailsGrid', selector: '#taskDetailsGrid'}
+       { ref: 'aufgabenGrid', selector: '#aufgabenGrid'}
 //       { ref: 'detailsWindow', selector: 'detailsWindow'}
     ],
 
@@ -55,7 +56,8 @@ Ext.define('AM.controller.MitarbeiterController', {
         	'contentGrid':							{ itemdblclick: this.showContentDetails },
             '#aufgabenDeadlineGrid':				{ itemdblclick: this.showTaskEditWindow },             	
         	'#personenGrid':						{ itemdblclick: this.showPersonenDetails },
-        	'#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged}
+        	'#aufgabenGrid':						{ itemdblclick: this.showTaskEditWindow,
+        											  selectionchange: this.taskDetailsGridSelectionChanged},
         });       	
     },
     
@@ -171,15 +173,9 @@ Ext.define('AM.controller.MitarbeiterController', {
     
     showTaskEditWindow: function(a, item){
     	var detailsWindow = Ext.create('widget.mitarbeiterTaskEditWindow');
-
     	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-    	
-    	
-    	/* Abfrage welches Grid gerade geladen ist um entsprechendes Detailfenster anzuzeigen */
-		/* Packagenotation geht in query nicht, CSS-like... */
     	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
     	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
-//    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0]).setValue(item.data.fachgebiet);
     	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
 		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
 		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
@@ -224,7 +220,7 @@ Ext.define('AM.controller.MitarbeiterController', {
 //    },
     
     taskDetailsGridSelectionChanged: function(selModel, selections){
-        this.getTaskDetailsGrid().down('#delete').setDisabled(selections.length === 0);     
-    },        
+        this.getAufgabenGrid().down('#btnTaskUpdate').setDisabled(selections.length === 0);     
+    },             
     
 });

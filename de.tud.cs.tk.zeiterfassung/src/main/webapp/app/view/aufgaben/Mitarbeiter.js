@@ -26,6 +26,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                 listeners: {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
+                		console.log("create!");
                 		storeAufgaben.insert(0, data);
                     }
                 },    
@@ -78,9 +79,21 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                   dock: 'bottom',
                                   items: [
                                           {
+                   						   xtype: 'tbfill'
+                   					  },                                             
+                                         {
+                                          xtype: 'button',
+                                          itemId: 'btnReset',
+                                          text: 'Reset',
+                                          icon: 'resources/images/Arrow_undo.png',
+                                          handler: function(){
+//                                              this.setActiveRecord(null);
+                                              me.getComponent("formAddTask").getForm().reset();
+                                          }
+                                      }, '-', {
                                               xtype: 'button',
                                               itemId: 'btnStundenEintragen',
-                                              text: 'Stunden eintragen',
+                                              text: 'Aufgabe zuweisen',
                                               icon: 'resources/images/drop-add.gif',
                                               handler: function(){
                                               	console.log("TaskDetailsWindow > onCreate");
@@ -92,22 +105,97 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                                       form.reset();
                                                   }
                                               }
-                                          }, '-',                                
-                                      {
-                                          xtype: 'button',
-                                          itemId: 'btnReset',
-                                          text: 'Reset',
-                                          icon: 'resources/images/Arrow_undo.png',
-                                          handler: function(){
-//                                              this.setActiveRecord(null);
-                                              me.getComponent("formAddTask").getForm().reset();
-                                          }
-                                      },
+                                          }                               
+
 
                                   ]
                               }
                           ],
-            }
+            },
+                {
+                    xtype: 'liveSearchGridPanel',
+                    itemId: 'aufgabenGrid',
+                    title: 'Eingetragene Aufgaben',
+                    margin: '10 0 0 0',
+                    store: storeAufgaben,
+                    columns: [
+                        {
+                            xtype: 'datecolumn',
+                            dataIndex: 'deadline',
+                            width: 60,
+                            text: 'Deadline',
+                            format: 'd.m.y',
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            flex: 1,
+                            dataIndex: 'title',
+                            text: 'Aufgabe',
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'hiwi',
+                            text: 'HiWi',
+                            width: 170,
+                        },
+                        {
+                            xtype: 'datecolumn',
+                            dataIndex: 'assignedOn',
+                            text: 'Zugewiesen am',
+                            format: 'd.m.y',
+                        },   
+                        {
+                            xtype: 'numbercolumn',
+                            dataIndex: 'priority',
+                            text: 'Priorität',
+                            format: '0',
+                            width: 60
+//                            allowNegative: false,                    	
+                        }                    
+                    ],
+                    dockedItems: [
+                                  {
+                                      xtype: 'toolbar',
+                                      anchor: '100%',
+                                      dock: 'bottom',
+                                      items: [
+                                              {
+                       						   xtype: 'tbfill'
+                       					  },                                             
+                                             {
+                                                  xtype: 'button',
+                                                  itemId: 'btnTaskUpdate',
+                                                  text: 'Editieren',
+                                                  icon: 'resources/images/drop-add.gif',
+                                                  disabled: true,
+                                                  handler: function(){
+                                                	  var grid = me.getComponent('aufgabenGrid');
+                                                      var item = grid.getView().getSelectionModel().getSelection()[0];
+                                                      if (item) {
+                                                      	  var win = Ext.create('widget.mitarbeiterTaskEditWindow');
+	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
+	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
+	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
+	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+	                                                  		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
+	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
+	                                                  		combo.store.load(function(records, operation, success) {
+	                                                  		    combo.setValue(item.data.hiwi);
+	                                                  		});                                                   
+	                                                  		win.show();
+                                                      }
+                                                  }
+                                              }                               
+
+
+                                      ]
+                                  }
+                              ],                    
+                    viewConfig: {
+
+                    }
+                }            	
         ];
         me.callParent(arguments);
     }
