@@ -190,8 +190,9 @@ Ext.define('AM.model.HiWiVertrag', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id', type: 'int'},
-        {name: 'hiwi', type: 'string'},        
-        {name: 'supervisor', type: 'string'}, /* seine ID */        
+        {name: 'hiwi', type: 'string'},     
+        {name: 'hiwiMail', type: 'string'},
+        {name: 'supervisor', type: 'string'},        
         {name: 'begin', type: 'date', dateFormat: 'd.m.y'},
         {name: 'end', type: 'date', dateFormat: 'd.m.y'},
         {name: 'hoursPerMonth', type: 'int'},
@@ -224,6 +225,25 @@ Ext.define('AM.model.HiwiTarifgruppe', {
         }
     }    
 });
+
+
+
+Ext.define('AM.model.PersonenZuweisung', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'name', type: 'string'},        
+    ],    
+    proxy: {
+        type: 'ajax',
+        url: 'resources/data/personenZuweisung.json',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    
+});
+
 
 
 

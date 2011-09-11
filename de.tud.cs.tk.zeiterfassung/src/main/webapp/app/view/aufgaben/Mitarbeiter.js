@@ -63,7 +63,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                         xtype: 'combobox',
                         name: 'cbHiwi',
                         fieldLabel: 'HiWi',
-                        store: 'Personen',
+                        store: 'PersonenZuweisung',
 //                        queryMode: 'local',
                         displayField: 'name',
                         valueField: 'name',
