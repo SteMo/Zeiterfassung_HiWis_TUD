@@ -52,6 +52,13 @@ public class OpenIdAuthenticationFilter implements Filter {
 			byte[] mac = null;
 			String alias = null;
                         
+                        // DO NOT send insert, update or delete-requests to jopenid-provider!
+                        if(((HttpServletRequest) servletRequest).getRequestURI().contains("insert")
+                                || ((HttpServletRequest) servletRequest).getRequestURI().contains("update")
+                                || ((HttpServletRequest) servletRequest).getRequestURI().contains("delete")) {
+                            chain.doFilter(servletRequest, servletResponse);
+                            return;
+                        }
                         
 
 			// Cast to the proper type
