@@ -20,11 +20,14 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -36,7 +39,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 @Path("/aufgabendetails")
 public class AufgabenDetails {
     
-        public class AufgabenDetailsList {
+    public class AufgabenDetailsList {
         public boolean success = false;
         public List<AufgabenDetailsEntry> results = new ArrayList<AufgabenDetailsEntry>();
         public int total = 0;
@@ -68,11 +71,11 @@ public class AufgabenDetails {
         try {
             result = PojoMapper.toJson(al, true);
         } catch (JsonMappingException ex) {
-            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JsonGenerationException ex) {
-            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (cb != null) {
             resp.setContentType("text/javascript");
@@ -108,18 +111,32 @@ public class AufgabenDetails {
         return al;
     }
     
-    @POST
-    @Path("/")
-    @Consumes("application/json")
-    public long insertAufgabenDetails(@Context HttpServletRequest req, AufgabenDetailsEntry ae) {
-        // TODO implement me
-        return -1;
+    /**
+     * Do not try this at home!
+     * Note: THIS IS NOT RESTful! THIS IS EXTJS-BULLSHIT!
+     */
+    @GET
+    @Path("/insert")
+    public String insertAufgabenDetails(@QueryParam("records") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @QueryParam("aufgabe") String aufgabeId) {
+        // TODO implement authentication
+
+        Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE,"Inserting new AufgabeDetails: "+date+" | "+desc+" | "+worked+" | "+aufgabeId);
+        
+        AufgabeDetails a = new AufgabeDetails();
+        a.aufgabe = AufgabeDAO.retrieve(Long.getLong(aufgabeId));
+        a.beschreibung = desc;
+        a.datum = null;
+        a.worked = Integer.parseInt(worked);
+        
+        long result = AufgabeDetailsDAO.create(a);
+        
+        return String.valueOf(result);
     }
     
-    @PUT
-    @Path("/")
-    @Consumes("application/json")
-    public void updateAufgabenDetails(@Context HttpServletRequest req, AufgabenDetailsEntry ae) {
+    @GET
+    @Path("/update")
+    @Produces("text/plain")
+    public void updateAufgabenDetails(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
         // TODO implement me
     }
 }
