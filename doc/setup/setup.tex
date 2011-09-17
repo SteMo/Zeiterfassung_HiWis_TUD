@@ -1,0 +1,131 @@
+\documentclass[article,colorback,accentcolor=tud2c]{tudreport}
+\usepackage{ngerman}
+
+\usepackage[stable]{footmisc}
+\usepackage[ngerman]{hyperref}
+\usepackage[utf8]{inputenc}
+
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{booktabs}
+
+\setlength{\parindent}{0pt}
+
+\hypersetup{%
+  pdftitle={Zeiterfassungsportal für HiWis},
+  pdfauthor={Jan Dillmann, Fabian Letzkus, Stephan Moczygemba},
+  pdfsubject={Setup-Information},
+  pdfview=FitH,
+  pdfstartview=FitV
+}
+
+\setcounter{seclinedepth}{1}
+
+%%% Zum Tester der Marginalien %%%
+  \newif\ifTUDmargin\TUDmarginfalse
+  %%% Wird der Folgende Zeile einkommentiert,
+  %%% werden Marginalien gesetzt.
+  % \TUDmargintrue
+  \ifTUDmargin\makeatletter
+    \TUD@setmarginpar{2}
+  \makeatother\fi
+%%% ENDE: Zum Tester der Marginalien %%%
+
+\newlength{\longtablewidth}
+\setlength{\longtablewidth}{0.7\linewidth}
+\addtolength{\longtablewidth}{-\marginparsep}
+\addtolength{\longtablewidth}{-\marginparwidth}
+
+
+% \settitlepicture{tudreport-pic}
+% \printpicturesize
+
+\title{Zeiterfassung für HiWis}
+\subtitle{Setup-Information}
+\subsubtitle{Jan Dillmann\\Fabian Letzkus\\Stephan Moczygemba}
+%\setinstitutionlogo[width]{TUD_sublogo}
+\uppertitleback{(\textaccent{\textbackslash uppertitleback})}
+\lowertitleback{(\textaccent{\textbackslash lowertitleback})\hfill\today}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Das Projekt} % (fold)
+\label{sec:das_projekt}
+
+Das Projekt ``Zeiterfassungsportal für HiWis'' wurde im Rahmen des Internet-Praktikums des Fachbereichs Telekooperation der TU Darmstadt im Sommersemester 2011 von Jan Dillmann, Fabian Letzkus und Stephan Moczygemba entwickelt.
+
+Zweck des Portals ist es, den Mitarbeitern aller Fachbereiche eine Übersicht ihrer studentischen Mitarbeiter (``HiWis'') zu geben sowie deren Aufgaben zu verwalten.
+
+Studentische Mitarbeiter, welche ebenfalls Zugriff auf dieses Portal erhalten, können ihren Zeitaufwand pro Aufgabe erfassen und erhalten ebenso wie die Mitarbeiter der Fachbereiche eine Übersicht ihrer gearbeiteten bzw. noch zu leistenden Stunden.
+
+% section das_projekt (end)
+
+\section{Verwendete Technologien} % (fold)
+\label{sec:verwendete_technologien}
+
+Im Projekt werden verschiedene Technologien eingesetzt. Diese sind im einzelnen:
+
+\begin{itemize}
+    \item Hibernate\footnote{\url{http://www.hibernate.org/}} als Abstraktionsschicht zur Datenbank
+    \item extJS\footnote{\url{http://www.sencha.com/products/extjs/}} als Client-Framework für die GUI
+    \item JOpenID\footnote{\url{http://code.google.com/p/jopenid/}} zur Benutzerauthentifizierung
+    \item Resteasy\footnote{\url{http://www.jboss.org/resteasy}} zur Bereitstellung eines REST-Servers für extJS
+\end{itemize}
+
+% section verwendete_technologien (end)
+
+\section{Projektstruktur} % (fold)
+\label{sec:projektstruktur}
+
+Der gesamte Quellcode des Projekts sowie die Dokumentation sind als öffentliches Repository auf dem Dienst \emph{GitHub}\footnote{\url{https://github.com}} unter der URL \url{https://github.com/SteMo/Zeiterfassung_HiWis_TUD} frei verfügbar.
+
+Neben dem Kommandozeilen-Befehl \texttt{git} stehen Clients für verschiedene Betriebssysteme zur Verfügung, beispielsweise
+
+\begin{itemize}
+    \item Tower für OS X (\url{http://www.git-tower.com})
+    \item SmartGit für Windows (\url{http://www.syntevo.com/smartgit/index.html})
+\end{itemize}
+
+Um den Quellcode des Projekts zu erhalten kann das gesamte Repository von der URL \url{git@github.com:SteMo/Zeiterfassung_HiWis_TUD.git} geklont werden.
+
+% section projektstruktur (end)
+
+\section{Projekt-Setup in Eclipse} % (fold)
+\label{sec:projekt_setup_in_eclipse}
+
+Das Projekt kann mit Hilfe des Build-Management-Tools \emph{Maven}\footnote{\url{http://maven.apache.org/}} erstellt werden. Für die Integration in \emph{Eclipse IDE}\footnote{\url{http://www.eclipse.org/}} werden die folgenden Plugins benötigt:
+
+\begin{itemize}
+    \item m2e (\url{http://download.eclipse.org/technology/m2e/milestones/1.0})
+    \item m2e-wtp (\url{http://download.jboss.org/jbosstools/updates/m2eclipse-wtp})
+\end{itemize}
+
+Nach dem Clonen des Repositories (zu finden unter der URL ) kann das Projekt in Eclipse importiert werden.
+
+Dazu ist der Befehl \texttt{Import} $\rightarrow$ \texttt{Maven} $\rightarrow$ \texttt{Existing Maven Projects} auszuführen. Als Root-Directory muss das Verzeichnis \texttt{de.tud.cs.tk.zeiterfassung} gewählt und unter \texttt{Advanced} $\rightarrow$ \texttt{Naming template} das Template \texttt{[groupId].[artifactId]} verwendet werden.
+
+Wenn noch nicht vorhanden muss noch ein Apache Tomcat v6.0 Server installiert werden. Dazu kann im \emph{Servers}-View von Eclipse über \texttt{New} $\rightarrow$ \texttt{Server} ein solcher hinzugefügt werden.
+
+Das Portal kann dann über \texttt{Run As} $\rightarrow$ \texttt{Run on Server} gestartet werden.
+
+% section projekt_setup_in_eclipse (end)
+
+\section{Datenbank-Setup} % (fold)
+\label{sec:datenbank_setup}
+
+Vom Portal verwaltete Daten werden in einer PostgreSQL-Datenbank gespeichert. Das voreingestellte Setup erwartet eine Datenbank namens \texttt{Zeiterfassung} mit dem Eigentümer \texttt{zeiterfassung} und dem Passwort \texttt{hiwi} auf dem PostgreSQL-Server \texttt{localhost:5432}.
+
+Diese Daten können und sollten in der Datei \texttt{/src/main/resources/hibernate.cfg.xml} angepasst werden.
+
+Initiale Daten liegen als SQL-Insert-Skripte im Verzeichnis \texttt{/sql} des Repositories. Diese müssen in die Datenbank eingefügt werden.
+
+Die Datei \texttt{/sql/Personen.insert.sql} enthält unter dem Namen \emph{Herr Mitarbeiter} den Benutzer, der zum erstmaligen Login benötigt wird. Der \emph{principal}, also der OpenID-Identifier dieses Benutzers, muss für den ersten Login dort eingetragen werden.
+
+% section datenbank_setup (end)
+
+\end{document}
