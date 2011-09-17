@@ -23,6 +23,6 @@ Für Mac beispielsweise [Tower][3], für Windows [SmartGit][4].
 
 
 [1]: http://download.eclipse.org/technology/m2e/milestones/1.0
-[2]: https://repository.sonatype.org/content/repositories/forge-sites/m2eclipse-wtp/0.13.0/S/0.13.0.20110623-0455
+[2]: http://download.jboss.org/jbosstools/updates/m2eclipse-wtp
 [3]: http://www.git-tower.com/
 [4]: http://www.syntevo.com/smartgit/index.html
