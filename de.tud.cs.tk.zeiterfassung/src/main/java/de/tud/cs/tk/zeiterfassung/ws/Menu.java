@@ -87,20 +87,20 @@ public class Menu {
                 return result;
             }
             Person p = people.get(0);
-            if(p.getRolle().significance<=40) { // Hiwi=40
-               result.results.add(new MenuItem("btnDashboard", "Dashboard","","button"));
-                if(p.getRolle().significance<=30) { // Mitarbeiter=30                   
-                    if(p.getRolle().significance<=20) { // Professor=20
-                        if(p.getRolle().significance<=10) { // Administrator=10
-                            result.results.add(new MenuItem("btnFachbereiche", "Fachgebiete","","button"));
-                        }
-                    }
-                    result.results.add(new MenuItem("btnPersonen", "Personen","","button"));
-                    result.results.add(new MenuItem("btnVertraege", "Vertr&auml;ge","","button"));
-                    result.results.add(new MenuItem("btnAufgaben", "Aufgaben","","button"));
-                }
-               
-                
+            if(p.getRolle().significance<=10) { // Administrator=10
+            	result.results.add(new MenuItem("btnPersonen", "Personen","","button"));
+                result.results.add(new MenuItem("btnFachbereiche", "Fachgebiete","","button"));
+            }else{            
+	            if(p.getRolle().significance<=40) { // Hiwi=40
+	               result.results.add(new MenuItem("btnDashboard", "Dashboard","","button"));
+	                if(p.getRolle().significance<=30) { // Mitarbeiter=30                   
+	                    result.results.add(new MenuItem("btnPersonen", "Personen","","button"));
+	                    result.results.add(new MenuItem("btnVertraege", "Vertr&auml;ge","","button"));
+	                    result.results.add(new MenuItem("btnAufgaben", "Aufgaben","","button"));
+	                }
+	               
+	                
+	            }
             }
         }else{
             result.success=false;
