@@ -145,7 +145,15 @@ Ext.define('AM.view.personen.Admin', {
 //    		                                    }
 		                                }
 		                            }        		                            
-                                },                                    
+                                },
+    		                    {
+    		                        xtype: 'textfield',
+    		                        name: 'edOpenID',
+    		                        fieldLabel: 'OpenID',
+    		                        allowBlank: false,
+    		                        anchor: '100%',
+    		                        margin: '20 0 10 0',
+    		                    },   
     		                    
     		                    
         		            ],
