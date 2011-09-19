@@ -5,15 +5,14 @@
 package de.tud.cs.tk.zeiterfassung.entities;
 
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-/**
- *
- * @author letzkus
- */
+import javax.persistence.ManyToOne;
+
+
 @Entity
 public class AufgabeDetails {
     
@@ -30,7 +29,7 @@ public class AufgabeDetails {
     @Basic
     public int worked;
     
-    @OneToOne(targetEntity = Aufgabe.class)
+    @ManyToOne
     public Aufgabe aufgabe;
         
 }
