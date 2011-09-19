@@ -14,8 +14,10 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
     
     
 
-    initComponent: function() {
+    initComponent: function(arguments) {
     	this.addEvents('create');
+    	
+    	console.log("Gewählte Aufgabe (id): " + this.chosenTask);
     	
     	var rowEditing = Ext.create('Ext.grid.plugin.RowEditing');
     	// store hier, weil wir auf ihn referenzieren müssen
@@ -24,6 +26,14 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
             autoSync: true,
             model: 'AM.model.TaskDetails',  
         });         	  
+        
+        /* setze den Proxy entsprechend auf den konkreten Task für read/update/delete, Model wird vorher geladen, kann da also
+         * so nicht einfach schon rein. Vielleicht könnte man es oben direkt beim store create machen, aber so wie hier geht es
+         * jedenfalls auch. */
+        store.getProxy().api.read = 'ws/aufgabendetails/'+this.chosenTask; // Called when reading existing records
+        store.getProxy().api.update= 'ws/aufgabendetails/'+this.chosenTask; // Called when updating existing records
+        store.getProxy().api.destroy= 'ws/aufgabendetails/'+this.chosenTask; // Called when deleting existing records       
+        store.load(); 	  
         
     	var me = this;
     	

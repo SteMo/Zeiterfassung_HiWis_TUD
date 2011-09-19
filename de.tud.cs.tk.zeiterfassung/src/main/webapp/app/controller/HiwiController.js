@@ -80,7 +80,7 @@ Ext.define('AM.controller.HiwiController', {
       
     
     showContentDetails: function(a, item){
-    	var detailsWindow = Ext.create('AM.view.dashboard.HiWiTaskDetailsWindow');
+    	var detailsWindow = Ext.create('AM.view.dashboard.HiWiTaskDetailsWindow', {chosenTask: item.data.id});
     	detailsWindow.show();
     },
 
