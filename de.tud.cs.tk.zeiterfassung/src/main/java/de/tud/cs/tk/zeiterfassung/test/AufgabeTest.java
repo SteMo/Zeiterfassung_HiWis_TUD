@@ -52,6 +52,12 @@ public class AufgabeTest {
 		Aufgabe a = aufgaben.get(aufgaben.size() / 2);
 		a.erledigt = true;
 		
+		AufgabeDetails d2 = new AufgabeDetails();
+		d2.beschreibung = "sdf";
+		d2.worked = 40;
+		
+		a.addDetails(d2);
+		
 		long id = AufgabeDAO.update(a);
 		
 		a = AufgabeDAO.retrieve(id);
