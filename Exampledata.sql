@@ -32,7 +32,7 @@ INSERT INTO rolle(
 
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id)
-    VALUES (0, 'Fabian', 'Letzkus', 'bbb', 0, 0);
+    VALUES (0, 'Fabian', 'Letzkus', 'https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU', 2, 3);
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id)
     VALUES (1, 'Frau', 'Professor', 'aaa', 0, 1);
@@ -42,7 +42,7 @@ INSERT INTO person(
     VALUES (2, 'Herr', 'Mitarbeiter', 'ccc', 0, 2, 1);
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id, supervisor_id)
-    VALUES (3, 'Herr', 'Hiwi', 'https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU', 0, 3, 2);
+    VALUES (3, 'Herr', 'Hiwi', 'aaa', 0, 3, 0);
 INSERT INTO person(
             id, firstname, givenname, principal, fachgebiet_id, rolle_id, supervisor_id)
     VALUES (4, 'Stephan', 'M', 'https://www.google.com/accounts/o8/id?id=AItOawnHXIx1clex8SIcPQnK74vE8W4OJ4xSoUM', 0, 3, 2);
@@ -61,12 +61,12 @@ INSERT INTO aufgabe(
             id, assignedat, beschreibung, deadline, erledigt, priority, titel, 
             worked, assignedfrom_id, verantwortlicher_id)
     VALUES (2, '1999-01-08 04:05:06', 'Das ist die dritte Aufgabe', '1999-01-08 04:05:06', false, 4, 'Die dritte Aufgabe', 
-            4, 1, 4);
+            4, 0, 4);
 INSERT INTO aufgabe(
             id, assignedat, beschreibung, deadline, erledigt, priority, titel, 
             worked, assignedfrom_id, verantwortlicher_id)
     VALUES (3, '1999-01-08 04:05:06', 'Das ist die vierte Aufgabe', '1999-01-08 04:05:06', false, 3, 'Die vierte Aufgabe', 
-            4, 1, 3);
+            4, 0, 3);
 
 INSERT INTO aufgabedetails(
             id, beschreibung, datum, worked, aufgabe_id)
@@ -88,6 +88,6 @@ INSERT INTO vertrag(
             id, ende, "start", stundenpromonat, tarif_id, vertragspartner_id, 
             vertragssteller_id)
     VALUES (1, '2011-09-30', '2011-09-01', 30, 0, 4, 
-            2);
+            0);
 
 
