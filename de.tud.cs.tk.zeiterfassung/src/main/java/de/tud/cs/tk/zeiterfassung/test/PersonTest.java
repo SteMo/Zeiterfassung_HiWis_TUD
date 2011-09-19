@@ -49,14 +49,14 @@ public class PersonTest {
 	public void updateBudSpencer() {
 		Person p = PersonDAO.findByName("Bud", "Spencer").get(0);
 		p.addAufgabe(AufgabeDAO.retrieveAll().get(0));
-		p.addVertrag(VertragDAO.retrieveAll().get(0));
+		p.addVertragspartner(VertragDAO.retrieveAll().get(0));
 		
 		long id = PersonDAO.update(p);
 
 		p = PersonDAO.retrieve(id);
 
 		assertFalse(p.getAufgaben().size() == 0);
-		assertFalse(p.getVertraege().size() == 0);
+		assertFalse(p.getVertragspartner().size() == 0);
 	}
 	
 }

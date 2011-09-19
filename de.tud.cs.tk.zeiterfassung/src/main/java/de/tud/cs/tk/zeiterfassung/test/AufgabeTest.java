@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
+import de.tud.cs.tk.zeiterfassung.entities.AufgabeDetails;
 
 public class AufgabeTest {
 
@@ -24,6 +25,12 @@ public class AufgabeTest {
 		a.titel = todo.substring(0, 6);
 		a.deadline = new Date();
 		a.erledigt = false;
+		
+		AufgabeDetails d1 = new AufgabeDetails();
+		d1.beschreibung = "asd";
+		d1.worked = 15;
+		
+		a.addDetails(d1);
 		
 		long id = AufgabeDAO.create(a);
 
