@@ -120,10 +120,10 @@ public class AufgabenDetails {
      */
     @GET
     @Path("/insert/{aufgabe}")
-    public String insertAufgabenDetails(@QueryParam("records") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @PathParam("aufgabe") long aufgabeId) {
+    public void insertAufgabenDetails(@QueryParam("records") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @PathParam("aufgabe") long aufgabeId) {
         // TODO implement authentication
 
-        Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE,"Inserting new AufgabeDetails: "+date+" | "+desc+" | "+worked+" | "+aufgabeId);
+        //Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE,"Inserting new AufgabeDetails: "+date+" | "+desc+" | "+worked+" | "+aufgabeId);
         
         AufgabeDetails a = new AufgabeDetails();
         a.beschreibung = desc;
@@ -132,10 +132,10 @@ public class AufgabenDetails {
         
         Aufgabe af = AufgabeDAO.retrieve(aufgabeId);
         af.addDetails(a);
+        af.worked += a.worked;
         
-        AufgabeDAO.update(af);
+        long id = AufgabeDAO.update(af);
         
-        return "bla blubb";
     }
     
     @GET
