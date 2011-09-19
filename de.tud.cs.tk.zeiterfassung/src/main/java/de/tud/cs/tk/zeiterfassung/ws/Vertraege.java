@@ -99,11 +99,11 @@ public class Vertraege {
             List<Vertrag> vs = me.getVertragspartner(); // Alle Verträge, bei denen ich vertragspartner bin
             List<Person> ps = PersonDAO.retrieveAll();
             for(Vertrag v : vs) {
-                vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), v.getTarif().name, v.stundenProMonat));
+                vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat));
             }
             vs = me.getVertragssteller();
             for(Vertrag v : vs) {
-                vl.results.add(new VertraegeEntry(v.id, v.vertragspartner.firstName+" "+v.vertragspartner.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), v.getTarif().name, v.stundenProMonat));
+                vl.results.add(new VertraegeEntry(v.id, v.vertragspartner.firstName+" "+v.vertragspartner.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat));
             }
             vl.success = true;
             vl.total = vl.results.size();
@@ -114,21 +114,7 @@ public class Vertraege {
     @POST
     @Path("/")
     @Consumes("application/json")
-    public long insertVertrag(@Context HttpServletRequest req, VertraegeEntry ve) {
-        OpenIdPrincipal principal = null;
-        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
-            principal = (OpenIdPrincipal) req.getUserPrincipal();
-        }
-        if (principal != null) {
-            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people == null || people.size() != 1 || people.get(0).getRolle().significance>30) { // nur >=Mitarbeiter darf Aufgaben anlegen
-                return -1;
-            }
-            Person me = people.get(0);
-            Vertrag v = new Vertrag();
-            // TODO Implement me
-            return VertragDAO.create(v);
-        }
-        return -1;
+    public String insertVertrag(@Context HttpServletRequest req, VertraegeEntry ve) {
+        return Long.toString(-1);
     }
 }

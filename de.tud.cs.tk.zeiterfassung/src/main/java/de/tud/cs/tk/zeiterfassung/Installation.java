@@ -8,13 +8,16 @@ import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.RolleDAO;
+import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.AufgabeDetails;
 import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.entities.Rolle;
+import de.tud.cs.tk.zeiterfassung.entities.Vertrag;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -43,30 +46,42 @@ public class Installation {
         Rolle rolleHiwi = new Rolle(); 
         rolleHiwi.name = "Hiwi";
         rolleHiwi.significance = 40;
-        rolleHiwi.personen = new ArrayList();
         long id_rolleHiwi = RolleDAO.create(rolleHiwi);
         
         Rolle rolleMitarbeiter = new Rolle();
         rolleMitarbeiter.name = "Mitarbeiter";
-        rolleMitarbeiter.personen = new ArrayList();
         rolleMitarbeiter.significance = 30;
         long id_rolleMitarbeiter = RolleDAO.create(rolleMitarbeiter);
+        
+        Rolle rolleAdministrator = new Rolle();
+        rolleMitarbeiter.name = "Administrator";
+        rolleMitarbeiter.significance = 10;
+        long id_rolleAdministrator = RolleDAO.create(rolleAdministrator);
         
         /**
          * Personen
          */
+        
+        Person administrator = new Person();
+        administrator.firstName = "Königin";
+        administrator.givenName = "Administrator";
+        administrator.principal = "this-is-my-principal";
+        administrator.setRolle(RolleDAO.retrieve(id_rolleAdministrator));  
+        administrator.setFachgebiet(FachgebietDAO.retrieve(id_tk));
+        long id_administartor = PersonDAO.create(administrator);
+        
         Person mitarbeiter = new Person();
         mitarbeiter.firstName = "Frau";
         mitarbeiter.givenName = "Mitarbeiterin";
-        mitarbeiter.principal = "Hier_steht_ihr_principal"; 
-        mitarbeiter.setRolle(rolleMitarbeiter);
-        mitarbeiter.setFachgebiet(tk);
+        mitarbeiter.principal = "https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU"; 
+        mitarbeiter.setRolle(RolleDAO.retrieve(id_rolleMitarbeiter));
+        mitarbeiter.setFachgebiet(FachgebietDAO.retrieve(id_tk));
         long id_mitarbeiter = PersonDAO.create(mitarbeiter);
         
         Person hiwi = new Person();
         hiwi.firstName = "Herr";
         hiwi.givenName = "Hiwi";
-        hiwi.principal = "https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU"; 
+        hiwi.principal = "this-is-my-principal"; 
         hiwi.setRolle(RolleDAO.retrieve(id_rolleHiwi));
         hiwi.setFachgebiet(FachgebietDAO.retrieve(id_tk));
         long id_hiwi = PersonDAO.create(hiwi);   
@@ -79,6 +94,7 @@ public class Installation {
         /**
          * Aufgaben
          */
+        hiwi = PersonDAO.retrieve(id_hiwi);
         Aufgabe aufgabeFuerHiwi = new Aufgabe();
         aufgabeFuerHiwi.titel = "Die erste Aufgabe für den Hiwi vom Mitarbeiter";
         aufgabeFuerHiwi.beschreibung = "Jag das Schnitzel in der Mensa";
@@ -105,10 +121,27 @@ public class Installation {
         aufgabeFuerHiwi.addDetails(aufgabeDetailsFuerAufgabe1);      
         AufgabeDAO.update(aufgabeFuerHiwi);
         
+        /**
+         * Verträge
+         */
+        mitarbeiter = PersonDAO.retrieve(id_mitarbeiter);
+        hiwi = PersonDAO.retrieve(id_hiwi);
+
+        Vertrag vertragMitarbeiterHiwi = new Vertrag();
+        vertragMitarbeiterHiwi.start = new Date();
+        vertragMitarbeiterHiwi.ende = new Date();
+        vertragMitarbeiterHiwi.stundenProMonat = 40;
+        vertragMitarbeiterHiwi.vertragspartner = PersonDAO.retrieve(id_hiwi);
+        mitarbeiter.addVertragssteller(vertragMitarbeiterHiwi);
+        hiwi.addVertragspartner(vertragMitarbeiterHiwi);
+        VertragDAO.create(vertragMitarbeiterHiwi);
+        
     }
     
     public boolean alreadyInstalled() {
-        // do things like receiving things and so on...
+        Fachgebiet f = FachgebietDAO.findByName("tk");
+        if(f != null)
+            return true;
         return false;
     }
 }
