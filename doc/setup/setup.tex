@@ -91,7 +91,7 @@ Neben dem Kommandozeilen-Befehl \texttt{git} stehen Clients für verschiedene Be
     \item SmartGit für Windows (\url{http://www.syntevo.com/smartgit/index.html})
 \end{itemize}
 
-Um den Quellcode des Projekts zu erhalten kann das gesamte Repository von der URL \url{git@github.com:SteMo/Zeiterfassung_HiWis_TUD.git} geklont werden.
+Um den Quellcode des Projekts zu erhalten kann das gesamte Repository geklont werden (zu finden unter \url{git@github.com:SteMo/Zeiterfassung_HiWis_TUD.git}).
 
 % section projektstruktur (end)
 
@@ -126,6 +126,46 @@ Initiale Daten liegen als SQL-Insert-Skripte im Verzeichnis \texttt{/sql} des Re
 
 Die Datei \texttt{/sql/Personen.insert.sql} enthält unter dem Namen \emph{Herr Mitarbeiter} den Benutzer, der zum erstmaligen Login benötigt wird. Der \emph{principal}, also der OpenID-Identifier dieses Benutzers, muss für den ersten Login dort eingetragen werden.
 
+Dieser Identifier (``principal'') kann momentan wie folgt ermittelt werden:
+
+\begin{enumerate}
+    \item Öffnen der URL~\url{http://localhost:8080/zeiterfassung/JOpenIdTest}
+    \item Authentifizieren gegenüber Google
+    \item Nach erfolgreicher Authentifizierung die URL mit dem Schema \texttt{https://www.google.com/accounts/o8/id?id=...} kopieren und in die Datenbank einfügen
+\end{enumerate}
+
 % section datenbank_setup (end)
+
+\section{Screenshots} % (fold)
+\label{sec:screenshots}
+
+Das Dashboard eines als Mitarbeiter eingeloggten Benutzers bietet in erster Linie eine Übersicht der ihm zugeteilten studentischen Mitarbeiter sowie deren Aufgaben.
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.8]{img/mitarbeiter-dashboard}
+    \end{center}
+\end{figure}
+
+\newpage
+
+Neue Aufgaben können einzelnen HiWis mit Deadline und Priorität zugeteilt werden.
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.7]{img/mitarbeiter-aufgaben}
+    \end{center}
+\end{figure}
+
+Studentische Mitarbeiter sehen eine Übersicht ihrer Aufgaben und können gearbeitete Stunden erfassen.
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.7]{img/hiwi-dashboard}
+    \end{center}
+\end{figure}
+
+
+% section screenshots (end)
 
 \end{document}
