@@ -8,12 +8,14 @@ import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.AufgabeDetailsDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
+import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.AufgabeDetails;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,10 +64,10 @@ public class AufgabenDetails {
     }
     
     @GET
-    @Path("/")
+    @Path("/{id}")
     @Produces({"application/json", "text/javascript"})
-    public String processGetDetails(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
-        AufgabenDetailsList al = getDetails(req);
+    public String processGetDetails(@Context HttpServletRequest req, @Context HttpServletResponse resp, @PathParam("id") long aid) {
+        AufgabenDetailsList al = getDetails(req, aid);
         String cb = req.getParameter("callback");
         String result = "";
         try {
@@ -85,7 +87,7 @@ public class AufgabenDetails {
         return result;
     }
     
-    public AufgabenDetailsList getDetails(@Context HttpServletRequest req) {
+    public AufgabenDetailsList getDetails(@Context HttpServletRequest req, long aid) {
         AufgabenDetailsList al = new AufgabenDetailsList();
         OpenIdPrincipal principal = null;
         if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
@@ -101,7 +103,8 @@ public class AufgabenDetails {
             for(AufgabeDetails a : lds) {
                 if(me.id == AufgabeDAO.retrieve(a.aufgabe.id).verantwortlicher.id
                         || me.id == AufgabeDAO.retrieve(a.aufgabe.id).assignedFrom.id) {
-                    al.results.add(new AufgabenDetailsEntry(a.id, new SimpleDateFormat("dd.mm.yy").format(a.datum.getTime()), a.beschreibung, a.worked, a.aufgabe.id));
+                    if(a.aufgabe.id == aid)
+                        al.results.add(new AufgabenDetailsEntry(a.id, new SimpleDateFormat("dd.mm.yy").format(a.datum.getTime()), a.beschreibung, a.worked, a.aufgabe.id));
                 }
             }
             al.success = true;
@@ -116,21 +119,23 @@ public class AufgabenDetails {
      * Note: THIS IS NOT RESTful! THIS IS EXTJS-BULLSHIT!
      */
     @GET
-    @Path("/insert")
-    public String insertAufgabenDetails(@QueryParam("records") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @QueryParam("aufgabe") String aufgabeId) {
+    @Path("/insert/{aufgabe}")
+    public String insertAufgabenDetails(@QueryParam("records") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @PathParam("aufgabe") long aufgabeId) {
         // TODO implement authentication
 
         Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE,"Inserting new AufgabeDetails: "+date+" | "+desc+" | "+worked+" | "+aufgabeId);
         
         AufgabeDetails a = new AufgabeDetails();
-        a.aufgabe = AufgabeDAO.retrieve(Long.getLong(aufgabeId));
         a.beschreibung = desc;
-        a.datum = null;
+        a.datum = new Date();
         a.worked = Integer.parseInt(worked);
         
-        long result = AufgabeDetailsDAO.create(a);
+        Aufgabe af = AufgabeDAO.retrieve(aufgabeId);
+        af.addDetails(a);
         
-        return String.valueOf(result);
+        AufgabeDAO.update(af);
+        
+        return "bla blubb";
     }
     
     @GET

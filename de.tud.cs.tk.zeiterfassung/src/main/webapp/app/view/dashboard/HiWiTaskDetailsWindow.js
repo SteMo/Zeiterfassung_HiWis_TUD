@@ -31,8 +31,9 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
          * so nicht einfach schon rein. Vielleicht könnte man es oben direkt beim store create machen, aber so wie hier geht es
          * jedenfalls auch. */
         store.getProxy().api.read = 'ws/aufgabendetails/'+this.chosenTask; // Called when reading existing records
-        store.getProxy().api.update= 'ws/aufgabendetails/'+this.chosenTask; // Called when updating existing records
+        store.getProxy().api.update= 'ws/aufgabendetails/update/'+this.chosenTask; // Called when updating existing records
         store.getProxy().api.destroy= 'ws/aufgabendetails/'+this.chosenTask; // Called when deleting existing records       
+        store.getProxy().api.create = 'ws/aufgabendetails/insert/'+this.chosenTask; // Called when adding
         store.load(); 	  
         
     	var me = this;
