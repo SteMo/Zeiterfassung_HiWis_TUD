@@ -16,7 +16,10 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
             autoSync: true,
             model: 'AM.model.LoggedInPerson',  
         });         
-        console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));        
+        storeGetIdOfLoggedInPerson.load(function(records, operation, success) {
+            console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));  
+            (Ext.ComponentQuery.query('#authorID')[0]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
+    	});        
         
         me.items = [
             {
@@ -29,7 +32,6 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                     {
                         xtype: 'hiddenfield',
                         name: 'authorID',
-                        value: storeGetIdOfLoggedInPerson.getAt(0).get("id")                    	
                     },                        
                     {
                         xtype: 'textfield',
