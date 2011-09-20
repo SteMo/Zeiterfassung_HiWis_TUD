@@ -61,6 +61,7 @@ Ext.define('AM.view.vertraege.Vertraege', {
                 items: [
                         {
                             xtype: 'hiddenfield',
+                            itemId: 'authorID',
                             name: 'authorID',
                         },                        
                         {

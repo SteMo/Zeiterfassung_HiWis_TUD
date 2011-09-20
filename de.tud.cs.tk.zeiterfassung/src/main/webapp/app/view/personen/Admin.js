@@ -80,6 +80,7 @@ Ext.define('AM.view.personen.Admin', {
                         items: [
                                 {
                                     xtype: 'hiddenfield',
+                                    itemId: 'authorID',
                                     name: 'authorID',
                                 },                                
 //                                {
