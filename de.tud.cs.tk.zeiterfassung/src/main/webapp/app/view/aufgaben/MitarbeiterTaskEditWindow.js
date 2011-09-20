@@ -31,6 +31,7 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                 items: [
                     {
                         xtype: 'hiddenfield',
+                        itemId: 'authorID',
                         name: 'authorID',
                     },                        
                     {

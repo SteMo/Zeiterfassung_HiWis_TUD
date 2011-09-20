@@ -60,6 +60,7 @@ Ext.define('AM.view.fachgebiete.Admin', {
                         items: [
                                 {
                                     xtype: 'hiddenfield',
+                                    itemId: 'authorID',
                                     name: 'authorID',
                                 },                                
     		                    {

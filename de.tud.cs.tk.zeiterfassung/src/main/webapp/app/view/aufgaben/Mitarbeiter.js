@@ -46,6 +46,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                 items: [
                     {
                         xtype: 'hiddenfield',
+                        itemId: 'authorID',
                         name: 'authorID',                  	
                     },
                     {
