@@ -19,12 +19,11 @@ Ext.define('AM.view.fachgebiete.Admin', {
     
     initComponent: function() {    	
     	var me = this;
-      
-       
+          	
         var storeFachgebiet = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
-            model: 'AM.model.PersonenPosition',  
+            model: 'AM.model.fachgebiete.FachgebieteData',  
         });         
                     
         me.items = [
@@ -43,7 +42,7 @@ Ext.define('AM.view.fachgebiete.Admin', {
                         listeners: {
                             // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                         	create: function(form, data){
-                        		storeAufgaben.insert(0, data);
+                        		storeFachgebiet.insert(0, data);
                             }
                         },    
                         

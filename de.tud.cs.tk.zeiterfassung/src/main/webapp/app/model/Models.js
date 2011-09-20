@@ -56,13 +56,21 @@ Ext.define('AM.model.fachgebiete.FachgebieteData', {
     extend: 'Ext.data.Model',
     fields:['id', 'name', 'budget', 'leiter', 'stellv'],
     proxy: {
-        type: 'jsonp',
-        url: 'ws/fachgebiete',
-        reader: {
+		type: 'jsonp',
+		api: {
+            create: 'ws/fachgebiete/insert', // Called when saving new records
+            read: 'ws/fachgebiete', // Called when reading existing records
+            update: 'ws/fachgebiete/update', // Called when updating existing records
+            destroy: 'ws/fachgebiete/delete' // Called when deleting existing records
+		},        
+		reader: {
             type: 'json',
             root: 'results',
             totalProperty: 'total'
-        }
+		},
+		writer: {
+		    type: 'json'
+		}  
     }
 });
 
@@ -178,11 +186,20 @@ Ext.define('AM.model.HiWiAufgabe', {
     ],    
     proxy: {
         type: 'jsonp',
-        url: 'ws/aufgaben',
-        reader: {
-            type: 'json',
-            root: 'results'
-        }
+		api: {
+		    create: 'ws/aufgaben/insert', // Called when saving new records
+		    read: 'ws/aufgaben', // Called when reading existing records
+		    update: 'ws/aufgaben/update', // Called when updating existing records
+		    destroy: 'ws/aufgaben/delete' // Called when deleting existing records
+		},        
+		reader: {
+		    type: 'json',
+		    root: 'results',
+		},
+		writer: {
+		    type: 'json'
+		}  
+
     }    
 });
 
@@ -202,11 +219,19 @@ Ext.define('AM.model.HiWiVertrag', {
     ],    
     proxy: {
         type: 'jsonp',
-        url: 'ws/vertraege',
-        reader: {
-            type: 'json',
-            root: 'results'
-        }
+		api: {
+		    create: 'ws/vertraege/insert', // Called when saving new records
+		    read: 'ws/vertraege', // Called when reading existing records
+		    update: 'ws/vertraege/update', // Called when updating existing records
+		    destroy: 'ws/vertraege/delete' // Called when deleting existing records
+		},        
+		reader: {
+		    type: 'json',
+		    root: 'results',
+		},
+		writer: {
+		    type: 'json'
+		}  
     }    
 });
 
@@ -273,6 +298,36 @@ Ext.define('AM.model.PersonenPosition', {
             type: 'json',
             root: 'results'
         }
+    }    
+});
+
+
+/* ################## Admin ################### */
+Ext.define('AM.model.PersonData', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'title', type: 'string'},
+        {name: 'name', type: 'string'},
+        {name: 'surname', type: 'string'},
+        {name: 'department', type: 'string'},        
+        {name: 'role', type: 'string'},
+        {name: 'supervisor', type: 'string'},
+        {name: 'openid', type: 'string'},
+        {name: 'status', type: 'string'}
+    ],    
+    proxy: {
+    	type: 'jsonp',
+		api: {
+		    create: 'ws/aufgabendetails/insert', // Called when saving new records
+		},        
+		reader: {
+		    type: 'json',
+		    root: 'results'
+		},
+		writer: {
+		    type: 'json'
+		}  
     }    
 });
 

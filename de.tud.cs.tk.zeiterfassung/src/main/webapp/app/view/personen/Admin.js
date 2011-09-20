@@ -22,6 +22,12 @@ Ext.define('AM.view.personen.Admin', {
       
         
     	
+        var storePersonen = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.PersonData',  
+        });         	
+    	
         var storePersonenTitel = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
@@ -55,7 +61,8 @@ Ext.define('AM.view.personen.Admin', {
                         listeners: {
                             // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                         	create: function(form, data){
-                        		storeAufgaben.insert(0, data);
+                        		console.log(data);
+                        		storePersonen.insert(0, data);
                             }
                         },    
                         
