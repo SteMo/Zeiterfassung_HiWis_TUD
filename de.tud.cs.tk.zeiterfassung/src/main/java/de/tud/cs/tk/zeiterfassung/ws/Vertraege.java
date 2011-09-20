@@ -122,7 +122,7 @@ public class Vertraege {
      */
     @GET
     @Path("/insert")
-    public long insertVertrag(@Context HttpServletRequest req, @QueryParam("cbHiwi") String hiwi, @QueryParam("cbRate") String rate, @QueryParam("edHoursPerMonth") String hours, @QueryParam("edBegin") String begin, @QueryParam("edEnd") String end) {
+    public long insertVertrag(@Context HttpServletRequest req, @QueryParam("cbHiwi") String hiwi, @QueryParam("cbRate") String rate, @QueryParam("edHoursPerMonth") String hours, @QueryParam("edBegin") String begin, @QueryParam("edEnd") String end, @QueryParam("authorID") int sv) {
         Vertrag v = new Vertrag();
         try {
             DateFormat formatter = new SimpleDateFormat("dd.mm.yy");
@@ -137,7 +137,7 @@ public class Vertraege {
         v.stundenProMonat = Integer.parseInt(hours);
         String firstName = "";
         String givenName = "";
-        String[] names = hiwi.split(" "); // Todo: Implement Supervisor-Argument or do OAuth-Things...
+        String[] names = hiwi.split(" ");
         if (names.length >= 1) {
             firstName = names[0];
             if (names.length >= 2) {
@@ -153,8 +153,11 @@ public class Vertraege {
         if(ps == null || ps.isEmpty() || ps.size()>1)
             return -1;
         Person vp = ps.get(0);
+        Person vs = PersonDAO.retrieve(sv);
         vp.addVertragspartner(v);
-        // do the same for supervisor!!!
+        if(vs!=null) {
+            vs.addVertragssteller(v);
+        }
         
         return VertragDAO.create(v);
     }
