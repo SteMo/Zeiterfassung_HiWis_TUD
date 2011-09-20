@@ -11,11 +11,10 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
         type: 'vbox'
     },
     title: 'Aufgaben: Übersicht & Stunden eintragen',
-    
-    
 
     initComponent: function(arguments) {
     	this.addEvents('create');
+    	this.addEvents('itemsLoaded2');
     	var me = this;
     	
     	console.log("Gewählte Aufgabe (id): " + this.chosenTask);
@@ -45,14 +44,15 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
     	
         /* muss wegen OpenID so gemacht werden, bei insert können wir über OpenID nicht gehen */
         var storeGetIdOfLoggedInPerson  = Ext.create('Ext.data.Store', {
-            autoLoad: true,
+            autoLoad: false,
             autoSync: true,
             model: 'AM.model.LoggedInPerson',  
         });         
-        console.log(storeGetIdOfLoggedInPerson);
-        storeGetIdOfLoggedInPerson.load();
-        console.log(storeGetIdOfLoggedInPerson.getAt(0));        
-        console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));    	
+        storeGetIdOfLoggedInPerson.load(function(records, operation, success) {
+            console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));  
+            (Ext.ComponentQuery.query('#authorID')[0]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
+    	});        
+
     	
     	me.items = [
             {
@@ -75,13 +75,13 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
 			                    			description: data.edDescription
 			                    		}));
                         
-                    }
+                    },
                 },                
                 items: [
                     {
                         xtype: 'hiddenfield',
+                        itemId: 'authorID',
                         name: 'authorID',
-                        value: storeGetIdOfLoggedInPerson.getAt(0).get("id")                    	
                     },                        
                     {
                         xtype: 'datefield',
