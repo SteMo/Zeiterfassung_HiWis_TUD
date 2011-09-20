@@ -112,5 +112,10 @@ public class Person {
 		supervisor.mitarbeiter.add(this);
 		this.supervisor = supervisor;
 	}
-	
-}
+
+        public void addVertragssteller(Vertrag vertrag) {
+                    vertrag.vertragssteller = this;
+                    this.vertragssteller.add(vertrag);
+        }
+    }
+
