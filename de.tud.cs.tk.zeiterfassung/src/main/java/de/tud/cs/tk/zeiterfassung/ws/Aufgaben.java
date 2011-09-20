@@ -12,6 +12,8 @@ import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import de.tud.cs.tk.zeiterfassung.ws.Aufgaben.AufgabenEntry;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +27,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -134,27 +137,19 @@ public class Aufgaben {
         return al;
     }
     
-    @POST
-    @Path("/")
-    @Consumes("application/json")
-    public long insertAufgabe(@Context HttpServletRequest req, AufgabenEntry ae) {
-        OpenIdPrincipal principal = null;
-        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
-            principal = (OpenIdPrincipal) req.getUserPrincipal();
-        }
-        if (principal != null) {
-            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people == null || people.size() != 1 || people.get(0).getRolle().significance>30) { // nur >=Mitarbeiter darf Aufgaben anlegen
-                return -1;
-            }
-            Person me = people.get(0);
+    /* Example:
+     * GET /ws/aufgaben/insert?_dc=1316546787375&edTitle=titel&txtDescription=beschreibung&edDate=30.09.11&edPriority=1&cbHiwi=Stephan%20M&id=0&title=&description=&supervisor=&hiwi=&deadline=&assignedAt=&priority=0&status=&callback=Ext.data.JsonP.callback14 HTTP/1.1 
+     */
+    @GET
+    @Path("/insert")
+    public long insertAufgabe(@Context HttpServletRequest req, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("supervisor") String supervisor) {       
             Aufgabe a = new Aufgabe();
-            a.titel = ae.title;
-            a.verantwortlicher = PersonDAO.retrieve(ae.responsible);
-            a.deadline = new Date(ae.deadline);
-            a.assignedAt = new Date(ae.assignedAt);
             String firstName = "", givenName = "";
-            String[] names = ae.assignedFrom.split(" ");
+            String[] names;
+            a.titel = title;
+            firstName = "";
+            givenName = "";
+            names = hiwi.split(" ");
             if (names.length >= 1) {
                 firstName = names[0];
                 if (names.length >= 2) {
@@ -167,16 +162,37 @@ public class Aufgaben {
                 }
             }
             List<Person> ps = PersonDAO.findByName(firstName, givenName);
+            a.verantwortlicher = (ps!=null && !ps.isEmpty())? ps.get(0) : null;
+            try {
+                DateFormat formatter = new SimpleDateFormat("dd.mm.yy");
+                a.deadline = formatter.parse(date);
+            } catch (ParseException ex) {
+                a.deadline = new Date();
+            }
+            a.assignedAt = new Date();
+            firstName = "";
+            givenName = "";
+            names = supervisor.split(" "); // Todo: Implement Supervisor-Argument or do OAuth-Things...
+            if (names.length >= 1) {
+                firstName = names[0];
+                if (names.length >= 2) {
+                    givenName = names[1];
+                    if (names.length >= 3) {
+                        for (int i = 2; i < names.length - 3; i++) {
+                            givenName = givenName.concat(names[i]);
+                        }
+                    }
+                }
+            }
+            ps = PersonDAO.findByName(firstName, givenName);
             if(ps.isEmpty()) {
                 return -1;
             }
             a.assignedFrom = ps.get(0);
-            a.beschreibung = ae.desc;
-            a.erledigt = ae.done;
-            a.priority = ae.priority;
-            a.worked = ae.worked;
+            a.beschreibung = desc;
+            a.erledigt = false;
+            a.priority = prio;
+            a.worked = 0;
             return AufgabeDAO.create(a);
-        }
-        return -1;
     }
 }
