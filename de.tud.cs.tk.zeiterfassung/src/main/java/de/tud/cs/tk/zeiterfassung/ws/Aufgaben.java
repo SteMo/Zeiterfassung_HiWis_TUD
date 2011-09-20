@@ -125,9 +125,9 @@ public class Aufgaben {
             List<Aufgabe> aufgaben = AufgabeDAO.retrieveAll();
             for (Aufgabe a : aufgaben) {
                 if (me.id == a.verantwortlicher.id) { // Ich bin der, dem die Aufgabe zugewiesen wurde
-                    al.results.add(new AufgabenEntry(a.id, a.priority, new SimpleDateFormat("dd.mm.yy").format(a.deadline.getTime()), a.titel, a.assignedFrom.firstName + " " + a.assignedFrom.givenName, new SimpleDateFormat("dd.mm.yy").format(a.assignedAt.getTime()), a.worked, a.verantwortlicher.id, a.beschreibung, a.erledigt));
+                    al.results.add(new AufgabenEntry(a.id, a.priority, new SimpleDateFormat("dd.MM.yy").format(a.deadline), a.titel, a.assignedFrom.firstName + " " + a.assignedFrom.givenName, new SimpleDateFormat("dd.MM.yy").format(a.assignedAt), a.worked, a.verantwortlicher.id, a.beschreibung, a.erledigt));
                 }else if(me.getRolle().significance <= 30 && me.id == a.assignedFrom.id) {
-                    al.results.add(new AufgabenEntry(a.id, a.priority, new SimpleDateFormat("dd.mm.yy").format(a.deadline.getTime()), a.titel, a.assignedFrom.firstName + " " + a.assignedFrom.givenName, new SimpleDateFormat("dd.mm.yy").format(a.assignedAt.getTime()), a.worked, a.verantwortlicher.id, a.beschreibung, a.erledigt, a.verantwortlicher.firstName+" "+a.verantwortlicher.givenName));
+                    al.results.add(new AufgabenEntry(a.id, a.priority, new SimpleDateFormat("dd.MM.yy").format(a.deadline), a.titel, a.assignedFrom.firstName + " " + a.assignedFrom.givenName, new SimpleDateFormat("dd.MM.yy").format(a.assignedAt), a.worked, a.verantwortlicher.id, a.beschreibung, a.erledigt, a.verantwortlicher.firstName+" "+a.verantwortlicher.givenName));
                 }
                    
             }
@@ -142,7 +142,7 @@ public class Aufgaben {
      */
     @GET
     @Path("/insert")
-    public long insertAufgabe(@Context HttpServletRequest req, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("supervisor") String supervisor) {       
+    public long insertAufgabe(@Context HttpServletRequest req, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor) {       
             Aufgabe a = new Aufgabe();
             String firstName = "", givenName = "";
             String[] names;
@@ -164,31 +164,13 @@ public class Aufgaben {
             List<Person> ps = PersonDAO.findByName(firstName, givenName);
             a.verantwortlicher = (ps!=null && !ps.isEmpty())? ps.get(0) : null;
             try {
-                DateFormat formatter = new SimpleDateFormat("dd.mm.yy");
+                DateFormat formatter = new SimpleDateFormat("dd.MM.yy");
                 a.deadline = formatter.parse(date);
             } catch (ParseException ex) {
                 a.deadline = new Date();
             }
             a.assignedAt = new Date();
-            firstName = "";
-            givenName = "";
-            names = supervisor.split(" "); // Todo: Implement Supervisor-Argument or do OAuth-Things...
-            if (names.length >= 1) {
-                firstName = names[0];
-                if (names.length >= 2) {
-                    givenName = names[1];
-                    if (names.length >= 3) {
-                        for (int i = 2; i < names.length - 3; i++) {
-                            givenName = givenName.concat(names[i]);
-                        }
-                    }
-                }
-            }
-            ps = PersonDAO.findByName(firstName, givenName);
-            if(ps.isEmpty()) {
-                return -1;
-            }
-            a.assignedFrom = ps.get(0);
+            a.assignedFrom = PersonDAO.retrieve(supervisor);
             a.beschreibung = desc;
             a.erledigt = false;
             a.priority = prio;

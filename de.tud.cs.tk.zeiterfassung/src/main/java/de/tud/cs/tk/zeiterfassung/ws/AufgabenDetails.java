@@ -13,6 +13,7 @@ import de.tud.cs.tk.zeiterfassung.entities.AufgabeDetails;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,7 +105,7 @@ public class AufgabenDetails {
                 if(me.id == AufgabeDAO.retrieve(a.aufgabe.id).verantwortlicher.id
                         || me.id == AufgabeDAO.retrieve(a.aufgabe.id).assignedFrom.id) {
                     if(a.aufgabe.id == aid)
-                        al.results.add(new AufgabenDetailsEntry(a.id, new SimpleDateFormat("dd.mm.yy").format(a.datum.getTime()), a.beschreibung, a.worked, a.aufgabe.id));
+                        al.results.add(new AufgabenDetailsEntry(a.id, new SimpleDateFormat("dd.MM.yy").format(a.datum.getTime()), a.beschreibung, a.worked, a.aufgabe.id));
                 }
             }
             al.success = true;
@@ -120,14 +121,18 @@ public class AufgabenDetails {
      */
     @GET
     @Path("/insert/{aufgabe}")
-    public void insertAufgabenDetails(@QueryParam("records") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @PathParam("aufgabe") long aufgabeId) {
+    public void insertAufgabenDetails(@QueryParam("date") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @PathParam("aufgabe") long aufgabeId) {
         // TODO implement authentication
 
         //Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE,"Inserting new AufgabeDetails: "+date+" | "+desc+" | "+worked+" | "+aufgabeId);
         
         AufgabeDetails a = new AufgabeDetails();
         a.beschreibung = desc;
-        a.datum = new Date();
+        try {
+            a.datum = new SimpleDateFormat("dd.MM.yy").parse(date);
+        } catch (ParseException ex) {
+            a.datum = new Date();
+        }
         a.worked = Integer.parseInt(worked);
         
         Aufgabe af = AufgabeDAO.retrieve(aufgabeId);
