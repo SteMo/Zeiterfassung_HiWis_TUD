@@ -43,7 +43,17 @@ Ext.define('AM.view.personen.Admin', {
             autoLoad: true,
             autoSync: true,
             model: 'AM.model.PersonenPosition',  
+        });        
+        
+        /* muss wegen OpenID so gemacht werden, bei insert können wir über OpenID nicht gehen */
+        var storeGetIdOfLoggedInPerson  = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.LoggedInPerson',  
         });         
+        console.log(storeGetIdOfLoggedInPerson);
+        storeGetIdOfLoggedInPerson.load();
+        console.log(storeGetIdOfLoggedInPerson.getAt(0));        
                     
         me.items = [
                     {
@@ -68,16 +78,21 @@ Ext.define('AM.view.personen.Admin', {
                         
                         items: [
                                 {
-    		                        xtype: 'combobox',
-    		                        name: 'cbTitel',
-    		                        fieldLabel: 'Titel',
-    		                        store: storePersonenTitel,
-//    		                        queryMode: 'local',
-    		                        displayField: 'title',
-    		                        valueField: 'title',
-    		                        allowBlank: false,
-    		                        anchor: '50%'
-                                },
+                                    xtype: 'hiddenfield',
+                                    name: 'authorID',
+                                    value: storeGetIdOfLoggedInPerson.getAt(0).get("id")                    	
+                                },                                
+//                                {
+//    		                        xtype: 'combobox',
+//    		                        name: 'cbTitel',
+//    		                        fieldLabel: 'Titel',
+//    		                        store: storePersonenTitel,
+////    		                        queryMode: 'local',
+//    		                        displayField: 'title',
+//    		                        valueField: 'title',
+//    		                        allowBlank: false,
+//    		                        anchor: '50%'
+//                                },
     		                    {
     		                        xtype: 'textfield',
     		                        name: 'edVorname',
@@ -118,17 +133,17 @@ Ext.define('AM.view.personen.Admin', {
 		                                }
 		                            }        		                            
                                 },
-                                {
-    		                        xtype: 'combobox',
-    		                        name: 'cbHiwi',
-    		                        fieldLabel: 'Position',
-    		                        store: storePersonenPosition,
-//    		                        queryMode: 'local',
-    		                        displayField: 'position',
-    		                        valueField: 'position',
-    		                        allowBlank: false,
-    		                        anchor: '50%'
-                                },
+//                                {
+//    		                        xtype: 'combobox',
+//    		                        name: 'cbHiwi',
+//    		                        fieldLabel: 'Position',
+//    		                        store: storePersonenPosition,
+////    		                        queryMode: 'local',
+//    		                        displayField: 'position',
+//    		                        valueField: 'position',
+//    		                        allowBlank: false,
+//    		                        anchor: '50%'
+//                                },
                                 {
 		                            xtype: 'combobox',
 		                            name: 'cbVorgesetzter',

@@ -24,7 +24,16 @@ Ext.define('AM.view.fachgebiete.Admin', {
             autoLoad: true,
             autoSync: true,
             model: 'AM.model.fachgebiete.FachgebieteData',  
+        });        
+        
+        /* muss wegen OpenID so gemacht werden, bei insert können wir über OpenID nicht gehen */
+        var storeGetIdOfLoggedInPerson  = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.LoggedInPerson',  
         });         
+        
+        console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));        
                     
         me.items = [
                     {
@@ -47,6 +56,11 @@ Ext.define('AM.view.fachgebiete.Admin', {
                         },    
                         
                         items: [
+                                {
+                                    xtype: 'hiddenfield',
+                                    name: 'authorID',
+                                    value: storeGetIdOfLoggedInPerson.getAt(0).get("id")                    	
+                                },                                
     		                    {
     		                        xtype: 'textfield',
     		                        name: 'edFachgebiet',
