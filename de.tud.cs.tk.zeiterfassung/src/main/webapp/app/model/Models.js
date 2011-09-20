@@ -69,7 +69,7 @@ Ext.define('AM.model.fachgebiete.FachgebieteData', {
             totalProperty: 'total'
 		},
 		writer: {
-		    type: 'json'
+		    type: 'jsonp'
 		}  
     }
 });
@@ -163,7 +163,7 @@ Ext.define('AM.model.TaskDetails', {
             root: 'results'
         },
         writer: {
-            type: 'json'
+            type: 'jsonp'
         }        
     }    
 });
@@ -197,7 +197,7 @@ Ext.define('AM.model.HiWiAufgabe', {
 		    root: 'results',
 		},
 		writer: {
-		    type: 'json'
+		    type: 'jsonp'
 		}  
 
     }    
@@ -230,7 +230,7 @@ Ext.define('AM.model.HiWiVertrag', {
 		    root: 'results',
 		},
 		writer: {
-		    type: 'json'
+		    type: 'jsonp'
 		}  
     }    
 });
@@ -295,7 +295,7 @@ Ext.define('AM.model.PersonenPosition', {
         type: 'ajax',
         url: 'resources/data/personenPosition.json',
         reader: {
-            type: 'json',
+            type: 'jsonp',
             root: 'results'
         }
     }    
@@ -326,7 +326,7 @@ Ext.define('AM.model.PersonData', {
 		    root: 'results'
 		},
 		writer: {
-		    type: 'json'
+		    type: 'jsonp'
 		}  
     }    
 });

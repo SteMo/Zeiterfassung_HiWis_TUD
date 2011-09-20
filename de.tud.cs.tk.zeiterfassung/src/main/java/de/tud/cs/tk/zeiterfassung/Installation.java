@@ -76,12 +76,12 @@ public class Installation {
         mitarbeiter.principal = "https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU"; 
         mitarbeiter.setRolle(RolleDAO.retrieve(id_rolleMitarbeiter));
         mitarbeiter.setFachgebiet(FachgebietDAO.retrieve(id_tk));
-        long id_mitarbeiter = PersonDAO.create(mitarbeiter);
+        long id_mitarbeiter = PersonDAO.create(mitarbeiter);        
         
         Person hiwi = new Person();
-        hiwi.firstName = "Herr";
-        hiwi.givenName = "Hiwi";
-        hiwi.principal = "this-is-my-principal"; 
+        hiwi.firstName = "Stephan";
+        hiwi.givenName = "M";
+        mitarbeiter.principal = "https://www.google.com/accounts/o8/id?id=AItOawnHXIx1clex8SIcPQnK74vE8W4OJ4xSoUM"; 
         hiwi.setRolle(RolleDAO.retrieve(id_rolleHiwi));
         hiwi.setFachgebiet(FachgebietDAO.retrieve(id_tk));
         long id_hiwi = PersonDAO.create(hiwi);   
