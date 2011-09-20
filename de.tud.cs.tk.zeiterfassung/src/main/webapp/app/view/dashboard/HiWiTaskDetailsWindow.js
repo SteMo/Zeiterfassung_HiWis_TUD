@@ -24,7 +24,11 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
         var store = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
-            model: 'AM.model.TaskDetails',  
+            model: 'AM.model.TaskDetails',
+            sorters: [{
+                    property: 'date',
+                    direction: 'ASC',
+            }]
         });         	  
         
         /* setze den Proxy entsprechend auf den konkreten Task für read/update/delete, Model wird vorher geladen, kann da also
