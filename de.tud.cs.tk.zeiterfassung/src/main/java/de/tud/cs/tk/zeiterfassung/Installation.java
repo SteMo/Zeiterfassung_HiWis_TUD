@@ -56,13 +56,20 @@ public class Installation {
         long id_rolleMitarbeiter = RolleDAO.create(rolleMitarbeiter);
         
         Rolle rolleAdministrator = new Rolle();
-        rolleMitarbeiter.name = "Administrator";
-        rolleMitarbeiter.significance = 10;
+        rolleAdministrator.name = "Administrator";
+        rolleAdministrator.significance = 10;
         long id_rolleAdministrator = RolleDAO.create(rolleAdministrator);
         
         /**
          * Personen
          */
+//        Person tkFachgebietsLeiter = new Person();
+//        tkFachgebietsLeiter.firstName = "Max";
+//        tkFachgebietsLeiter.givenName = "Mühlhäuser";
+//        tkFachgebietsLeiter.principal = "this-is-my-principal";
+//        tkFachgebietsLeiter.setRolle(rolleMitarbeiter);
+//        tkFachgebietsLeiter.setFachgebiet(FachgebietDAO.retrieve(id_tk));
+//        long id_tkLeiter = PersonDAO.create(tkFachgebietsLeiter);
         
         Person administrator = new Person();
         administrator.firstName = "Königin";
@@ -82,7 +89,7 @@ public class Installation {
         
         Person hiwi = new Person();
         hiwi.firstName = "Stephan";
-        hiwi.givenName = "M";
+        hiwi.givenName = "Moczygemba";
         hiwi.principal = "https://www.google.com/accounts/o8/id?id=AItOawnHXIx1clex8SIcPQnK74vE8W4OJ4xSoUM"; 
         hiwi.setRolle(RolleDAO.retrieve(id_rolleHiwi));
         hiwi.setFachgebiet(FachgebietDAO.retrieve(id_tk));
@@ -98,13 +105,25 @@ public class Installation {
          */
         hiwi = PersonDAO.retrieve(id_hiwi);
         Aufgabe aufgabeFuerHiwi = new Aufgabe();
-        aufgabeFuerHiwi.titel = "Die erste Aufgabe für den Hiwi vom Mitarbeiter";
-        aufgabeFuerHiwi.beschreibung = "Jag das Schnitzel in der Mensa";
+        aufgabeFuerHiwi.titel = "extJS erste Schritte";
+        aufgabeFuerHiwi.beschreibung = "Über http://docs.sencha.com/ext-js/4-0/ mit Hilfe von Tutorials in extJS einarbeiten";
         aufgabeFuerHiwi.assignedFrom = mitarbeiter;
         aufgabeFuerHiwi.deadline = new Date();
         aufgabeFuerHiwi.assignedAt = new Date();
         aufgabeFuerHiwi.worked = 0;
         aufgabeFuerHiwi.verantwortlicher = hiwi;
+        hiwi.addAufgabe(aufgabeFuerHiwi);
+        aufgabeFuerHiwi.titel = "extJS MVC umsetzen";
+        aufgabeFuerHiwi.beschreibung = "In extJS neu eingeführtes MVC Pattern entsprechend Tutorial für Zeitverwaltung einsetzen.";
+        hiwi.addAufgabe(aufgabeFuerHiwi);
+        aufgabeFuerHiwi.titel = "extJS HiWi-Ansicht";
+        aufgabeFuerHiwi.beschreibung = "Dashboard + Aufgabendetail-Fenster";        
+        hiwi.addAufgabe(aufgabeFuerHiwi);
+        aufgabeFuerHiwi.titel = "extJS Mitarbeiter-Ansicht";
+        aufgabeFuerHiwi.beschreibung = "Dashboard + Personen + Verträge + Aufgaben + Detail-Fenster dazu";    
+        hiwi.addAufgabe(aufgabeFuerHiwi);
+        aufgabeFuerHiwi.titel = "extJS Admin-Ansicht";
+        aufgabeFuerHiwi.beschreibung = "Personen + Fachgebiete";       
         hiwi.addAufgabe(aufgabeFuerHiwi);
         PersonDAO.update(hiwi);
         long id_aufgabeFuerHiwi = PersonDAO.retrieve(id_hiwi).getAufgaben().get(0).id;
