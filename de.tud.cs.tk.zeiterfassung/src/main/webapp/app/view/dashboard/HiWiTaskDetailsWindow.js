@@ -16,6 +16,7 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
 
     initComponent: function(arguments) {
     	this.addEvents('create');
+    	var me = this;
     	
     	console.log("Gewählte Aufgabe (id): " + this.chosenTask);
     	
@@ -40,7 +41,18 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
         store.getProxy().api.create = 'ws/aufgabendetails/insert/'+this.chosenTask; // Called when adding
         store.load(); 	  
         
-    	var me = this;
+    	
+    	
+        /* muss wegen OpenID so gemacht werden, bei insert können wir über OpenID nicht gehen */
+        var storeGetIdOfLoggedInPerson  = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.LoggedInPerson',  
+        });         
+        console.log(storeGetIdOfLoggedInPerson);
+        storeGetIdOfLoggedInPerson.load();
+        console.log(storeGetIdOfLoggedInPerson.getAt(0));        
+        console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));    	
     	
     	me.items = [
             {
@@ -66,6 +78,11 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
                     }
                 },                
                 items: [
+                    {
+                        xtype: 'hiddenfield',
+                        name: 'authorID',
+                        value: storeGetIdOfLoggedInPerson.getAt(0).get("id")                    	
+                    },                        
                     {
                         xtype: 'datefield',
                         name: 'edDate',

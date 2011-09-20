@@ -520,3 +520,20 @@ Ext.define('AM.model.PersonData', {
 });
 
 
+/* ################## LoggedInPerson ################### */
+Ext.define('AM.model.LoggedInPerson', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+    ],    
+    proxy: {
+        type: 'jsonp',
+        url: 'ws/whoami',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }    	  
+});
+
+

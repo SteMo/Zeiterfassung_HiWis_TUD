@@ -25,7 +25,15 @@ Ext.define('AM.view.vertraege.Vertraege', {
             autoLoad: true,
             autoSync: true,
             model: 'AM.model.HiWiVertrag',  
-        });              
+        });
+        
+        /* muss wegen OpenID so gemacht werden, bei insert können wir über OpenID nicht gehen */
+        var storeGetIdOfLoggedInPerson  = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.LoggedInPerson',  
+        });         
+        console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));        
         
         me.items = [
             {
@@ -48,6 +56,11 @@ Ext.define('AM.view.vertraege.Vertraege', {
                 },    
                 
                 items: [
+                        {
+                            xtype: 'hiddenfield',
+                            name: 'authorID',
+                            value: storeGetIdOfLoggedInPerson.getAt(0).get("id")                    	
+                        },                        
                         {
 		                            xtype: 'combobox',
 		                            name: 'cbHiwi',
