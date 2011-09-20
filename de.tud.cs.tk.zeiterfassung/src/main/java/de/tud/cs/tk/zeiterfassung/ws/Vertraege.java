@@ -6,11 +6,15 @@ package de.tud.cs.tk.zeiterfassung.ws;
 
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
+import de.tud.cs.tk.zeiterfassung.dao.TarifDAO;
 import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
+import de.tud.cs.tk.zeiterfassung.entities.Tarif;
 import de.tud.cs.tk.zeiterfassung.entities.Vertrag;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -111,10 +116,46 @@ public class Vertraege {
         return vl;
     }
     
-    @POST
-    @Path("/")
-    @Consumes("application/json")
-    public String insertVertrag(@Context HttpServletRequest req, VertraegeEntry ve) {
-        return Long.toString(-1);
+    /*
+     * Example
+     * cbHiwi=Stephan%20M&cbRate=Werkstudent&edHoursPerMonth=4&edBegin=28.09.11&edEnd=30.09.11&id=0&hiwi=&hiwiMail=&supervisor=&begin=&end=&hoursPerMonth=0&remainingHours=0&remainingTasks=&rate=&callback=Ext.data.JsonP.callback12 HTTP/1.1 
+     */
+    @GET
+    @Path("/insert")
+    public long insertVertrag(@Context HttpServletRequest req, @QueryParam("cbHiwi") String hiwi, @QueryParam("cbRate") String rate, @QueryParam("edHoursPerMonth") String hours, @QueryParam("edBegin") String begin, @QueryParam("edEnd") String end) {
+        Vertrag v = new Vertrag();
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd.mm.yy");
+            v.ende = formatter.parse(end);
+            v.start = formatter.parse(begin);
+        } catch (ParseException ex) {
+            Logger.getLogger(Vertraege.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Tarif t = TarifDAO.findByName(rate);
+        if(t!=null)
+            v.setTarif(t);
+        v.stundenProMonat = Integer.parseInt(hours);
+        String firstName = "";
+        String givenName = "";
+        String[] names = hiwi.split(" "); // Todo: Implement Supervisor-Argument or do OAuth-Things...
+        if (names.length >= 1) {
+            firstName = names[0];
+            if (names.length >= 2) {
+                givenName = names[1];
+                if (names.length >= 3) {
+                    for (int i = 2; i < names.length - 3; i++) {
+                        givenName = givenName.concat(names[i]);
+                    }
+                }
+            }
+        }
+        List<Person> ps = PersonDAO.findByName(firstName, givenName);
+        if(ps == null || ps.isEmpty() || ps.size()>1)
+            return -1;
+        Person vp = ps.get(0);
+        vp.addVertragspartner(v);
+        // do the same for supervisor!!!
+        
+        return VertragDAO.create(v);
     }
 }
