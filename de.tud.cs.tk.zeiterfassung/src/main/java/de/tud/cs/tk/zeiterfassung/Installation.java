@@ -8,12 +8,14 @@ import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.RolleDAO;
+import de.tud.cs.tk.zeiterfassung.dao.TarifDAO;
 import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.AufgabeDetails;
 import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.entities.Rolle;
+import de.tud.cs.tk.zeiterfassung.entities.Tarif;
 import de.tud.cs.tk.zeiterfassung.entities.Vertrag;
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,7 +83,7 @@ public class Installation {
         Person hiwi = new Person();
         hiwi.firstName = "Stephan";
         hiwi.givenName = "M";
-        mitarbeiter.principal = "https://www.google.com/accounts/o8/id?id=AItOawnHXIx1clex8SIcPQnK74vE8W4OJ4xSoUM"; 
+        hiwi.principal = "https://www.google.com/accounts/o8/id?id=AItOawnHXIx1clex8SIcPQnK74vE8W4OJ4xSoUM"; 
         hiwi.setRolle(RolleDAO.retrieve(id_rolleHiwi));
         hiwi.setFachgebiet(FachgebietDAO.retrieve(id_tk));
         long id_hiwi = PersonDAO.create(hiwi);   
@@ -134,7 +136,22 @@ public class Installation {
         vertragMitarbeiterHiwi.vertragspartner = PersonDAO.retrieve(id_hiwi);
         mitarbeiter.addVertragssteller(vertragMitarbeiterHiwi);
         hiwi.addVertragspartner(vertragMitarbeiterHiwi);
-        VertragDAO.create(vertragMitarbeiterHiwi);
+        long id_vertragMitarbeiterHiwi = VertragDAO.create(vertragMitarbeiterHiwi);
+        
+        /**
+         * Tarife
+         */
+        mitarbeiter = PersonDAO.retrieve(id_mitarbeiter);
+        hiwi = PersonDAO.retrieve(id_hiwi);
+        vertragMitarbeiterHiwi = VertragDAO.retrieve(id_vertragMitarbeiterHiwi);
+        Tarif tarifWerkstudent = new Tarif();
+        tarifWerkstudent.name = "Werkstudent";
+        tarifWerkstudent.stufe = 0;
+        tarifWerkstudent.stundensatz = 9;
+        long id_tarifWerkstudent = TarifDAO.create(tarifWerkstudent);
+        tarifWerkstudent = TarifDAO.retrieve(id_tarifWerkstudent);
+        vertragMitarbeiterHiwi.setTarif(tarifWerkstudent);
+        VertragDAO.update(vertragMitarbeiterHiwi);
         
     }
     
