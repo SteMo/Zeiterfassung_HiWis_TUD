@@ -39,6 +39,11 @@ Ext.define('AM.view.personen.Admin', {
             model: 'AM.model.PersonenZuweisung',  
         });
         
+        var fgds = Ext.create('Ext.data.Store', {
+            pageSize: 10,
+            model: 'AM.model.fachgebiete.FachgebieteData',            
+        })
+        
         var storePersonenPosition = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
@@ -114,7 +119,7 @@ Ext.define('AM.view.personen.Admin', {
 		                            xtype: 'combobox',
 		                            name: 'cbFachgebiet',
 		                            fieldLabel: 'Fachgebiet',
-		                            store: ds,
+		                            store: fgds,
 		                            displayField: 'name',
 		                            valueField: 'name',
 		                            typeAhead: false,
@@ -150,7 +155,7 @@ Ext.define('AM.view.personen.Admin', {
 		                            name: 'cbVorgesetzter',
 		                            fieldLabel: 'Vorgesetzter',
 		                            store: ds,
-		                            displayField: 'supervisor',
+		                            displayField: 'name',
 		                            valueField: 'supervisor',
 		                            typeAhead: false,
 //		                            hideLabel: true,
