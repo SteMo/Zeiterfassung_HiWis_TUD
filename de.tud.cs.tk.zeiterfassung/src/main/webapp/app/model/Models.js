@@ -219,6 +219,19 @@ Ext.define('AM.model.Personentypen', {
     }
 });
 
+Ext.define('AM.model.ZeitDiagramm', {
+    extend: 'Ext.data.Model',
+    fields:['geleisteteArbeit'],
+    proxy: {
+        type: 'jsonp',
+        url: 'ws/aufgaben/geleistet',
+        reader: {
+            type: 'json',
+            root: 'results'
+        }
+    }
+});
+
 
 Ext.define('AM.model.Personen', {
     extend: 'Ext.data.Model',

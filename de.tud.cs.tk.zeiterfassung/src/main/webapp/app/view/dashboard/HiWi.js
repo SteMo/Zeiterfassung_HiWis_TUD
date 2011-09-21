@@ -4,6 +4,11 @@ Ext.define('AM.view.dashboard.HiWi' ,{
     	
     	
     	initComponent: function(){
+                var ds = Ext.create('Ext.data.Store', {
+                             model: 'AM.model.ZeitDiagramm',
+                             autoLoad: true,
+                            });
+            
         	var me = this;
     		me.items = [
 
@@ -91,9 +96,7 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				                        width: 300,
 				                        animate: true,
 				                        insetPadding: 35,
-				                        store: Ext.create('Ext.data.Store', {
-						                            fields: ['geleisteteArbeit'],
-						                            data : [{'geleisteteArbeit': '80'}]}),
+				                        store: ds,
 				                        flex: 1,
 				                        axes: [
 				                            {

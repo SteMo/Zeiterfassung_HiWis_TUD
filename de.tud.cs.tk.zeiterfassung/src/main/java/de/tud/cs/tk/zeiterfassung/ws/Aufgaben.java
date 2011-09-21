@@ -7,8 +7,10 @@ package de.tud.cs.tk.zeiterfassung.ws;
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
+import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
+import de.tud.cs.tk.zeiterfassung.entities.Vertrag;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import de.tud.cs.tk.zeiterfassung.ws.Aufgaben.AufgabenEntry;
 import java.io.IOException;
@@ -39,11 +41,11 @@ import org.codehaus.jackson.map.JsonMappingException;
 @Path("/aufgaben")
 public class Aufgaben {
 
-    public class AufgabenList {
+    public class AufgabenList<T> {
 
         public boolean success = false;
         public int total = 0;
-        public List<AufgabenEntry> results = new ArrayList<AufgabenEntry>();
+        public List<T> results = new ArrayList<T>();
     }
 
     public class AufgabenEntry {
@@ -83,6 +85,15 @@ public class Aufgaben {
             this.hiwi = hiwi;
         }
     }
+    
+    public class ErledigtEntry {
+        public float geleisteteArbeit;
+
+        public ErledigtEntry(float geleisteteArbeit) {
+            this.geleisteteArbeit = geleisteteArbeit;
+        }
+        
+    }
 
     @GET
     @Path("/")
@@ -109,7 +120,7 @@ public class Aufgaben {
     }
 
     public AufgabenList getList(@Context HttpServletRequest req) {
-        AufgabenList al = new AufgabenList();
+        AufgabenList<AufgabenEntry> al = new AufgabenList<AufgabenEntry>();
         al.success = false;
         al.total = 0;
         OpenIdPrincipal principal = null;
@@ -176,5 +187,61 @@ public class Aufgaben {
             a.priority = prio;
             a.worked = 0;
             return AufgabeDAO.create(a);
+    }
+    
+    @GET
+    @Path("/geleistet")
+    public String getGeleisteteArbeit(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
+        OpenIdPrincipal principal = null;
+        String result = "";
+        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
+            principal = (OpenIdPrincipal) req.getUserPrincipal();
+        }
+        if (principal != null) {
+            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
+            if (people == null || people.size() != 1) {
+                return String.valueOf(0);
+            }
+            Person me = people.get(0);
+            
+            AufgabenList<AufgabenEntry> al = getList(req);
+            String cb = req.getParameter("callback");
+            AufgabenList<ErledigtEntry> res = new AufgabenList<ErledigtEntry>();
+            res.results = new ArrayList<ErledigtEntry>();
+            
+            float ist = 0f;
+            float soll = 0f;
+            List<Vertrag> vs = me.getVertragspartner();    
+            for(Vertrag v : vs) {
+                soll += v.stundenProMonat;
+            }
+            for(AufgabenEntry e : al.results) {
+                ist += e.worked;
+            }
+            
+            if(soll==0) {
+                soll=1f;
+            }
+            res.results.add(new ErledigtEntry(ist/soll*100));
+            res.total = 1;
+            res.success = true;
+            
+            try {
+                result = PojoMapper.toJson(res, true);
+            } catch (JsonMappingException ex) {
+                Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JsonGenerationException ex) {
+                Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (cb != null) {
+                resp.setContentType("text/javascript");
+                return cb + "(" + result + ");";
+            }
+            resp.setContentType("application/json");
+            return result;
+        }
+        return result;
     }
 }
