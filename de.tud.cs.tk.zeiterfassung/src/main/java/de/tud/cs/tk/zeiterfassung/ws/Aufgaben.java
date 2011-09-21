@@ -88,9 +88,12 @@ public class Aufgaben {
     
     public class ErledigtEntry {
         public float geleisteteArbeit;
+        public float ist, soll;
 
-        public ErledigtEntry(float geleisteteArbeit) {
+        public ErledigtEntry(float geleisteteArbeit, float ist, float soll) {
             this.geleisteteArbeit = geleisteteArbeit;
+            this.ist = ist;
+            this.soll = soll;
         }
         
     }
@@ -222,7 +225,7 @@ public class Aufgaben {
             if(soll==0) {
                 soll=1f;
             }
-            res.results.add(new ErledigtEntry(ist/soll*100));
+            res.results.add(new ErledigtEntry(ist/soll*100, ist, soll));
             res.total = 1;
             res.success = true;
             
