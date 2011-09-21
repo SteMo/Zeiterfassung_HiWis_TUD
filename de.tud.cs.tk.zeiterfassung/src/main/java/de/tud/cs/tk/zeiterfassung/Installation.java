@@ -63,17 +63,11 @@ public class Installation {
         /**
          * Personen
          */
-//        Person tkFachgebietsLeiter = new Person();
-//        tkFachgebietsLeiter.firstName = "Max";
-//        tkFachgebietsLeiter.givenName = "Mühlhäuser";
-//        tkFachgebietsLeiter.principal = "this-is-my-principal";
-//        tkFachgebietsLeiter.setRolle(rolleMitarbeiter);
-//        tkFachgebietsLeiter.setFachgebiet(FachgebietDAO.retrieve(id_tk));
-//        long id_tkLeiter = PersonDAO.create(tkFachgebietsLeiter);
         
         Person administrator = new Person();
-        administrator.firstName = "Königin";
+        administrator.firstName = "Admin";
         administrator.givenName = "Administrator";
+        /* hier die OpenID eintragen: !! */
         administrator.principal = "https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU";
         administrator.setRolle(RolleDAO.retrieve(id_rolleAdministrator));  
         administrator.setFachgebiet(FachgebietDAO.retrieve(id_tk));
