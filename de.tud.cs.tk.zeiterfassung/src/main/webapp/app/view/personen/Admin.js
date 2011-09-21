@@ -139,17 +139,17 @@ Ext.define('AM.view.personen.Admin', {
 		                                }
 		                            }        		                            
                                 },
-//                                {
-//    		                        xtype: 'combobox',
-//    		                        name: 'cbHiwi',
-//    		                        fieldLabel: 'Position',
-//    		                        store: storePersonenPosition,
-////    		                        queryMode: 'local',
-//    		                        displayField: 'position',
-//    		                        valueField: 'position',
-//    		                        allowBlank: false,
-//    		                        anchor: '50%'
-//                                },
+                                {
+    		                        xtype: 'combobox',
+    		                        name: 'cbHiwi',
+    		                        fieldLabel: 'Position',
+    		                        store: storePersonenPosition,
+//    		                        queryMode: 'local',
+    		                        displayField: 'position',
+    		                        valueField: 'position',
+    		                        allowBlank: false,
+    		                        anchor: '50%'
+                                },
                                 {
 		                            xtype: 'combobox',
 		                            name: 'cbVorgesetzter',
