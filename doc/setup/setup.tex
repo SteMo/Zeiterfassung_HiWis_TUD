@@ -122,17 +122,26 @@ Vom Portal verwaltete Daten werden in einer PostgreSQL-Datenbank gespeichert. Da
 
 Diese Daten können und sollten in der Datei \texttt{/src/main/resources/hibernate.cfg.xml} angepasst werden.
 
-Initiale Daten liegen als SQL-Insert-Skripte im Verzeichnis \texttt{/sql} des Repositories. Diese müssen in die Datenbank eingefügt werden.
+Beispieldaten können über http://localhost:8080/zeiterfassung/install automatisch in die Datenbank eingefügt werden. Hierbei werden drei Personen - für jede Rolle eine - angelegt. Die Daten sind momentan auf unsere OpenIDs ausgelegt, d.h. nur wir werden authentifiziert (und authorisiert). Um sich selbst hinzuzufügen müssen nur wenige Felder im Code entsprechend gesetzt werden, bevor die o.g. URL aufgerufen werden soll:\\
 
-Die Datei \texttt{/sql/Personen.insert.sql} enthält unter dem Namen \emph{Herr Mitarbeiter} den Benutzer, der zum erstmaligen Login benötigt wird. Der \emph{principal}, also der OpenID-Identifier dieses Benutzers, muss für den ersten Login dort eingetragen werden.
+Im Projekt unter ``Java Resources'' - src/main/java/de/tud/cs/tk/zeiterfassung/Installation.java können die Personen geändert werden. Insbesondere das Attribut ``principal'' muss auf die eigene OpenID gesetzt werden, um sich authentifizieren zu können.
 
 Dieser Identifier (``principal'') kann momentan wie folgt ermittelt werden:
 
 \begin{enumerate}
     \item Öffnen der URL~\url{http://localhost:8080/zeiterfassung/JOpenIdTest}
     \item Authentifizieren gegenüber Google
-    \item Nach erfolgreicher Authentifizierung die URL mit dem Schema \texttt{https://www.google.com/accounts/o8/id?id=...} kopieren und in die Datenbank einfügen
+    \item Nach erfolgreicher Authentifizierung die URL mit dem Schema \texttt{https://www.google.com/accounts/o8/id?id=...} kopieren und unter <person>.principal einfügen.
 \end{enumerate}
+
+Bevor man die Zeitverwaltungssoftware nun nutzen kann muss man sich bei Google einloggen, um die Authentifizierung über OpenID zu ermöglichen. Die Startseite lautet in der aktuellen Version je nach Rollenzugehörigkeit wie folgt:
+\begin{itemize}
+\item http://localhost:8080/zeiterfassung/?role=admin
+\item http://localhost:8080/zeiterfassung/?role=mitarbeiter
+\item http://localhost:8080/zeiterfassung/?role=hiwi
+\end{itemize}
+
+Möchte eine Person ihre Rolle wechseln, so muss momentan das Installationsskripts angepasst werden. Nach einer Änderung des Installationsskripts muss der tomcat-Server neu gestartet und anschließend http://localhost:8080/zeiterfassung/install erneut aufgerufen werden um eben die Datenbank entsprechend neu zu füllen.
 
 % section datenbank_setup (end)
 
