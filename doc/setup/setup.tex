@@ -122,13 +122,15 @@ Vom Portal verwaltete Daten werden in einer PostgreSQL-Datenbank gespeichert. Da
 
 Diese Daten können und sollten in der Datei \texttt{/src/main/resources/hibernate.cfg.xml} angepasst werden.
 
-Beispieldaten können über http://localhost:8080/zeiterfassung/install automatisch in die Datenbank eingefügt werden. Diese Daten gliedern sich auf in reine Beispieldaten und Daten die fix für die Benutzung gesetzt bleiben müssen. \\
-Die nötigen Daten umfassen die möglichen Rollen sowie die einen initialen Administrator. Alles Weitere kann über die Oberfläche angelegt werden (ein Administator muss für den initialen Login vorhanden sein und kann dann zusätzliche Personen anlegen). \\
-Die Beispieldaten umfassen Aufgaben, Verträge, Fachgebiete und Personen. Hierbei werden drei Personen - für jede Rolle eine - angelegt. Die Daten sind momentan auf unsere OpenIDs ausgelegt, d.h. nur wir werden authentifiziert (und authorisiert). 
+Beispieldaten können über \url{http://localhost:8080/zeiterfassung/install} automatisch in die Datenbank eingefügt werden. Diese Daten gliedern sich auf in reine Beispieldaten und Daten die fix für die Benutzung gesetzt bleiben müssen.
+
+Die nötigen Daten umfassen die möglichen Rollen sowie die einen initialen Administrator. Alles Weitere kann über die Oberfläche angelegt werden (ein Administator muss für den initialen Login vorhanden sein und kann dann zusätzliche Personen anlegen).
+
+Die Beispieldaten umfassen Aufgaben, Verträge, Fachgebiete und Personen. Hierbei werden drei Personen -- für jede Rolle eine -- angelegt. Die Daten sind momentan auf unsere OpenIDs ausgelegt, d.h. nur wir werden authentifiziert (und authorisiert). 
 
 Für den initialen Administrator muss als dessen ``principal'' (Identifier zur Authentifizierung) die eigene OpenID eingetragen werden. Um sich hier selbst hinzuzufügen, müssen nur wenige Felder im Code entsprechend gesetzt werden:
 
-Im Projekt unter ``Java Resources'' - src/main/java/de/tud/cs/tk/zeiterfassung/Installation.java können die (Beispiel-)Personen geändert werden. Insbesondere das Attribut ``principal'' muss auf die eigene OpenID gesetzt werden, um sich authentifizieren zu können.
+Im Projekt unter ``Java Resources'' - \texttt{src/main/java/de/tud/cs/tk/zeiterfassung/Installation.java} können die (Beispiel-)Personen geändert werden. Insbesondere das Attribut ``principal'' muss auf die eigene OpenID gesetzt werden, um sich authentifizieren zu können.
 
 Die eigene OpenID kann momentan wie folgt ermittelt werden:
 
@@ -145,9 +147,11 @@ Bevor man die Zeitverwaltungssoftware nun nutzen kann muss man sich bei Google e
 \item http://localhost:8080/zeiterfassung/?role=hiwi
 \end{itemize}
 
-Möchte eine Person ihre Rolle wechseln, so muss momentan das Installationsskripts angepasst werden. Nach einer Änderung des Installationsskripts muss der tomcat-Server neu gestartet und anschließend http://localhost:8080/zeiterfassung/install erneut aufgerufen werden um eben die Datenbank entsprechend neu zu füllen.
+Möchte eine Person ihre Rolle wechseln, so muss momentan das Installationsskripts angepasst werden. Nach einer Änderung des Installationsskripts muss der tomcat-Server neu gestartet und anschließend \url{http://localhost:8080/zeiterfassung/install} erneut aufgerufen werden um eben die Datenbank entsprechend neu zu füllen.
 
 % section datenbank_setup (end)
+
+\newpage
 
 \section{Screenshots} % (fold)
 \label{sec:screenshots}
@@ -187,7 +191,7 @@ Studentische Mitarbeiter sehen eine Übersicht ihrer Aufgaben und können gearbe
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[scale=0.65]{img/db}
+        \includegraphics[scale=0.6]{img/db}
     \end{center}
 \end{figure}
 
