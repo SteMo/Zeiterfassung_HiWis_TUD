@@ -186,7 +186,7 @@ public class Personen {
      */
     @GET
     @Path("/insert")
-    public String insertNewPerson(@Context HttpServletRequest req, @QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
+    public String insertNewPerson(@Context HttpServletRequest req, @QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
         Person p = new Person();
         // Name
         p.firstName = vorname;
@@ -212,7 +212,12 @@ public class Personen {
         }
         if(p.getSupervisor()==null) // Wenn kein Supervisor vorhanden ist, dann nimm Admin als Supervisor :>
             p.setSupervisor(PersonDAO.retrieve(adminId));
-
+        
+        // Rolle
+        Rolle r = RolleDAO.findByName(role);
+        if(r != null)
+            p.setRolle(r);
+        
         // Fachgebiet
         Fachgebiet f = FachgebietDAO.findByName(fg);
         if (f != null) {
