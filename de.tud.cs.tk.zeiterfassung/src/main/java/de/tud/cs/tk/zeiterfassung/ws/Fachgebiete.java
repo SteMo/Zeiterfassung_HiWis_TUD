@@ -109,26 +109,22 @@ public class Fachgebiete {
         return result;
     }
 
-    @POST
-    @Path("/")
-    @Consumes("application/json")
-    public long addFachgebiet(@Context HttpServletRequest req, @QueryParam("name") String name, @QueryParam("budget") int budget, @QueryParam("leiter") String leiter, @QueryParam("stellv") String stellv) {
-        OpenIdPrincipal principal = null;
-        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
-            principal = (OpenIdPrincipal) req.getUserPrincipal();
-        }
-        if (principal != null) { // Benutzer ist per OpenID identifiziert
-            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people != null && people.size() != 1 && people.get(0).getRolle().significance > 10) {
-                return -1;
-            }
-            Person me = people.get(0);
-            Fachgebiet f = new Fachgebiet();
-            // Name zuweisen
-            f.name = name;
-            // Id des Leiters zuweisen
-            String firstName = "", givenName = "";
-            String[] names = leiter.split(" ");
+    /*
+     * Example: 
+     * ws/fachgebiete/insert?authorID=5&edFachgebiet=Telekoop&edKuerzel=TK&edBudget=4&id=&name=&budget=&leiter=&stellv=&callback=Ext.data.JsonP.callback19 HTTP/1.1 
+     */
+    @GET
+    @Path("/insert")
+    public long addFachgebiet(@Context HttpServletRequest req, @QueryParam("authorID") String admin, @QueryParam("edKuerzel") String name, @QueryParam("edBudget") int budget, @QueryParam("leiter") String leiter, @QueryParam("stellv") String stellv) {
+        Fachgebiet f = new Fachgebiet();
+        // Name zuweisen
+        f.name = name;
+        // Id des Leiters zuweisen
+        String firstName = "", givenName = "";
+        String[] names;
+        List<Person> ps;
+        if(leiter!=null) {
+            names = leiter.split(" ");
             if (names.length >= 1) {
                 firstName = names[0];
                 if (names.length >= 2) {
@@ -140,15 +136,17 @@ public class Fachgebiete {
                     }
                 }
             }
-
-
-            List<Person> ps = PersonDAO.findByName(firstName, givenName);
+            ps = PersonDAO.findByName(firstName, givenName);
             if (ps != null && ps.size() == 1) {
                 f.leiter = ps.get(0).id;
             } else {
                 f.leiter = -1;
             }
+        }else{
+            f.leiter = Long.getLong(admin);
+        }
 
+        if(stellv!=null) {
             // Id des Stellvertreters zuweisen
             names = stellv.split(" ");
             if (names.length >= 1) {
@@ -170,11 +168,10 @@ public class Fachgebiete {
             } else {
                 f.stellv = -1;
             }
-
-            f.budget = budget;
-            
-            return FachgebietDAO.create(f);
         }
-        return -1;
+
+        f.budget = budget;
+
+        return FachgebietDAO.create(f);
     }
 }
