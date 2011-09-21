@@ -126,7 +126,11 @@ public class Personen {
 
     @PUT
     @Path("/{id}")
-    public long updatePerson(@Context HttpServletRequest req, @PathParam("id") int id, @QueryParam("name") String name, @QueryParam("fachgebiet") String fg, @QueryParam("position") String pos, @QueryParam("supervisor") long sup) {
+    public long updatePerson(@Context HttpServletRequest req, @PathParam("id") int id, PersonEntry pe) {
+        String name = pe.name,
+                fg = pe.fachgebiet,
+                pos = pe.position;
+        long sup = pe.supervisor;
         OpenIdPrincipal principal = null;
         if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
             principal = (OpenIdPrincipal) req.getUserPrincipal();
@@ -175,49 +179,49 @@ public class Personen {
         return -1;
     }
 
-    @POST
-    @Path("/")
-    @Consumes("application/json")
-    public long insertNewPerson(@Context HttpServletRequest req, @QueryParam("name") String name, @QueryParam("fachgebiet") String fg, @QueryParam("position") String pos, @QueryParam("supervisor") long sup) {
-        OpenIdPrincipal principal = null;
-        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
-            principal = (OpenIdPrincipal) req.getUserPrincipal();
-        }
-        if (principal != null) { // Benutzer ist per OpenID identifiziert
-            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people != null && people.size() != 1 && people.get(0).getRolle().significance > 10) {
-                return -1;
-            }
-            Person me = people.get(0);
-            Person p = new Person();
-            String[] names = name.split(" ");
+    /**
+     * Beispiel:
+     * ws/aufgabendetails/insert?authorID=5&edVorname=Vorname&edNachname=Nachname&cbFachgebiet=Fachgebiet&cbVorgesetzter=Vorgesetzter&edOpenID=openid&id=0&title=&name=&surname=&department=&role=&supervisor=&openid=&status=&callback=Ext.data.JsonP.callback7 HTTP/1.1 
+     * 
+     */
+    @GET
+    @Path("/insert")
+    public String insertNewPerson(@Context HttpServletRequest req, @QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
+        Person p = new Person();
+        // Name
+        p.firstName = vorname;
+        p.givenName = nachname;
+        // Supervisor
+        String svVorname = "", svNachname="";
+        if(sv!=null) {
+            String[] names = sv.split(" ");
             if (names.length >= 1) {
-                p.firstName = names[0];
+                svVorname = names[0];
                 if (names.length >= 2) {
-                    p.givenName = names[1];
+                    svNachname = names[1];
                     if (names.length >= 3) {
                         for (int i = 2; i < names.length - 3; i++) {
-                            p.givenName = p.givenName.concat(names[i]);
+                            svNachname = svNachname.concat(names[i]);
                         }
                     }
                 }
             }
-
-
-            Rolle rolle = RolleDAO.findByName(pos);
-            if (rolle != null) {
-                p.setRolle(rolle);
-            }
-            Person su = PersonDAO.retrieve(sup);
-            if (su != null) {
-                p.setSupervisor(su);
-            }
-            Fachgebiet f = FachgebietDAO.findByName(fg);
-            if (f != null) {
-                p.setFachgebiet(f);
-            }
-            return PersonDAO.create(p);
+            List<Person> svs = PersonDAO.findByName(svVorname, svNachname);
+            if(svs.size()==1)
+                p.setSupervisor(svs.get(0));               
         }
-        return 0;
+        if(p.getSupervisor()==null) // Wenn kein Supervisor vorhanden ist, dann nimm Admin als Supervisor :>
+            p.setSupervisor(PersonDAO.retrieve(adminId));
+
+        // Fachgebiet
+        Fachgebiet f = FachgebietDAO.findByName(fg);
+        if (f != null) {
+            p.setFachgebiet(f);
+        }
+
+        // Ident
+        p.principal = ident;
+
+        return Long.toString(PersonDAO.create(p));
     }
 }

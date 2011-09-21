@@ -507,7 +507,7 @@ Ext.define('AM.model.PersonData', {
     proxy: {
     	type: 'jsonp',
 		api: {
-		    create: 'ws/aufgabendetails/insert', // Called when saving new records
+		    create: 'ws/personen/insert', // Called when saving new records
 		},        
 		reader: {
 		    type: 'json',
