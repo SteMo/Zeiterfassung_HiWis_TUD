@@ -124,12 +124,12 @@ public class AufgabenDetails {
     public void insertAufgabenDetails(@QueryParam("date") String date, @QueryParam("worked") String worked, @QueryParam("description") String desc, @PathParam("aufgabe") long aufgabeId) {
         // TODO implement authentication
 
-        //Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE,"Inserting new AufgabeDetails: "+date+" | "+desc+" | "+worked+" | "+aufgabeId);
+        Logger.getLogger(AufgabenDetails.class.getName()).log(Level.SEVERE,"Inserting new AufgabeDetails: "+date+" | "+desc+" | "+worked+" | "+aufgabeId);
         
         AufgabeDetails a = new AufgabeDetails();
         a.beschreibung = desc;
         try {
-            a.datum = new SimpleDateFormat("dd.MM.yy").parse(date);
+            a.datum = new SimpleDateFormat("yyyy-MM-dd'T'00:00:00").parse(date);
         } catch (ParseException ex) {
             a.datum = new Date();
         }
