@@ -221,7 +221,7 @@ Ext.define('AM.model.Personentypen', {
 
 Ext.define('AM.model.ZeitDiagramm', {
     extend: 'Ext.data.Model',
-    fields:['geleisteteArbeit'],
+    fields:['geleisteteArbeit', 'ist', 'soll'],
     proxy: {
         type: 'jsonp',
         url: 'ws/aufgaben/geleistet',

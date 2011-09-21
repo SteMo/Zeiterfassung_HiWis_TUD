@@ -104,7 +104,7 @@ public class Installation {
         aufgabeFuerHiwi.assignedFrom = mitarbeiter;
         aufgabeFuerHiwi.deadline = new Date();
         aufgabeFuerHiwi.assignedAt = new Date();
-        aufgabeFuerHiwi.worked = 0;
+        aufgabeFuerHiwi.worked = 4;
         aufgabeFuerHiwi.verantwortlicher = hiwi;
         hiwi.addAufgabe(aufgabeFuerHiwi);
         id_hiwi = PersonDAO.update(hiwi);

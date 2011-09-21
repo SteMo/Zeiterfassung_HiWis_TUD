@@ -4,11 +4,29 @@ Ext.define('AM.view.dashboard.HiWi' ,{
     	
     	
     	initComponent: function(){
-                var ds = Ext.create('Ext.data.Store', {
-                             model: 'AM.model.ZeitDiagramm',
-                             autoLoad: true,
-                            });
+            var ds = Ext.create('Ext.data.Store', {
+                         model: 'AM.model.ZeitDiagramm',
+                         autoLoad: true,
+                        });
+            var vertragsdatenStore = Ext.create('Ext.data.Store', {
+                model: 'AM.model.HiWiVertrag',
+                autoLoad: false,
+            });
+            vertragsdatenStore.load(function(records, operation, success) {
+                (Ext.ComponentQuery.query('#vertragsbeginn')[0]).setValue(vertragsdatenStore.getAt(0).get("begin"));
+                (Ext.ComponentQuery.query('#vertragsende')[0]).setValue(vertragsdatenStore.getAt(0).get("end"));
+                (Ext.ComponentQuery.query('#stundenMonat')[0]).setValue(vertragsdatenStore.getAt(0).get("hoursPerMonth"));
+                (Ext.ComponentQuery.query('#tarif')[0]).setValue(vertragsdatenStore.getAt(0).get("rate"));
+        	});                
             
+            var geleisteteStundenMonatStore = Ext.create('Ext.data.Store', {
+                model: 'AM.model.ZeitDiagramm',
+                autoLoad: false,
+            });      
+            geleisteteStundenMonatStore.load(function(records, operation, success) {
+                (Ext.ComponentQuery.query('#geleisteteStunden')[0]).setValue(geleisteteStundenMonatStore.getAt(0).get("ist"));
+        	});    
+
         	var me = this;
     		me.items = [
 
@@ -61,7 +79,7 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				            	 text: ''
 				            },{
 				                        xtype: 'container',
-				                        height: 100,
+				                        height: 200,
 				                        id: 'hiwiDbInfoContainer',
 				                        layout: {
 				                            align: 'stretch',
@@ -71,16 +89,41 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				                        items: [
 				                            {
 				                                xtype: 'displayfield',
-				                                id: 'hiwiDbLblLetzterLogin',
 				                                width: 114,
+				                                itemId: 'vertragsbeginn',
 				                                value: 'Display Field',
-				                                fieldLabel: 'Letzter Login',
+				                                fieldLabel: 'Vertragsbeginn',
 				                                flex: 0
 				                            },
 				                            {
 				                                xtype: 'displayfield',
-				                                id: 'hiwiDbLblTarif',
 				                                width: 114,
+				                                itemId: 'vertragsende',
+				                                value: 'Display Field',
+				                                format: 'd.m.y',
+				                                fieldLabel: 'Vertragsende',
+				                                flex: 0
+				                            },	
+				                            {
+				                                xtype: 'displayfield',
+				                                width: 114,
+				                                itemId: 'stundenMonat',
+				                                value: 'Display Field',
+				                                fieldLabel: 'Stunden/Monat',
+				                                flex: 0
+				                            },		
+				                            {
+				                                xtype: 'displayfield',
+				                                width: 114,
+				                                itemId: 'geleisteteStunden',
+				                                value: 'Display Field',
+				                                fieldLabel: 'Geleistete Stunden',
+				                                flex: 0
+				                            },					                            
+				                            {
+				                                xtype: 'displayfield',
+				                                width: 114,
+				                                itemId: 'tarif',
 				                                value: 'Display Field',
 				                                fieldLabel: 'Tarif',
 				                                flex: 0
@@ -90,7 +133,7 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				                    {
 				                        xtype: 'chart',
 				                        frame: true,
-				                        height: 155,
+				                        height: 210,
 				                        id: 'hiwiDbZeitDiagramm',
 				                        margin: '0 0 0 100',              
 				                        width: 300,
