@@ -79,7 +79,7 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				            	 text: ''
 				            },{
 				                        xtype: 'container',
-				                        height: 200,
+				                        height: 250,
 				                        id: 'hiwiDbInfoContainer',
 				                        layout: {
 				                            align: 'stretch',
@@ -93,7 +93,8 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				                                itemId: 'vertragsbeginn',
 				                                value: 'Display Field',
 				                                fieldLabel: 'Vertragsbeginn',
-				                                flex: 0
+				                                flex: 0,
+				                                padding: '10 0 25 0'
 				                            },
 				                            {
 				                                xtype: 'displayfield',
@@ -102,7 +103,8 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				                                value: 'Display Field',
 				                                format: 'd.m.y',
 				                                fieldLabel: 'Vertragsende',
-				                                flex: 0
+				                                flex: 0,
+				                                padding: '10 0 25 0'
 				                            },	
 				                            {
 				                                xtype: 'displayfield',
