@@ -67,8 +67,8 @@ public class Installation {
         Person administrator = new Person();
         administrator.firstName = "Admin";
         administrator.givenName = "Administrator";
-        /* hier die OpenID eintragen: !! */
-        administrator.principal = "https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU";
+        /* hier die OpenID eintragen: !! */        
+        administrator.principal = "https://www.google.com/accounts/o8/id?id=AItOawkzzDmKva-6DR5CenIyX5UHeviMlSM6xxg";
         administrator.setRolle(RolleDAO.retrieve(id_rolleAdministrator));  
         administrator.setFachgebiet(FachgebietDAO.retrieve(id_tk));
         long id_administartor = PersonDAO.create(administrator);
@@ -76,7 +76,7 @@ public class Installation {
         Person mitarbeiter = new Person();
         mitarbeiter.firstName = "Frau";
         mitarbeiter.givenName = "Mitarbeiterin";
-        mitarbeiter.principal = "this-is-my-principal"; 
+        mitarbeiter.principal = "https://www.google.com/accounts/o8/id?id=AItOawlgjtpP9YGHgZBjjt9PT9gExv6k-01clVU";
         mitarbeiter.setRolle(RolleDAO.retrieve(id_rolleMitarbeiter));
         mitarbeiter.setFachgebiet(FachgebietDAO.retrieve(id_tk));
         long id_mitarbeiter = PersonDAO.create(mitarbeiter);        
