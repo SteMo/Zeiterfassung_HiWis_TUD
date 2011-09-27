@@ -14,7 +14,9 @@ Ext.define('AM.controller.AdminController', {
 	        'layout.Menu',
 	        'layout.ContentGrid',
 	        'personen.Admin',
-	        'fachgebiete.Admin'
+	        'fachgebiete.Admin',
+	        'layout.LiveSearchGridPanel',
+	        'personen.AdminEditPersonWindow'
             ],
 	
 	models: [
@@ -28,10 +30,8 @@ Ext.define('AM.controller.AdminController', {
 	/* mit refs kann man auf Views zugreifen, "ref" ist nur ein beliebiger Name, selector der xtype der Komponente (oder sonstiges, siehe "Ext.ComponentQuery")
 	 * -> Zugriff über: this.get<ref>(), erster Buchstabe von <ref> groß...	 */
     refs: [
-       { ref: "content",   selector: "contentGrid", },
        { ref: 'menu',      selector: 'menue'		},
-       { ref: 'aufgabenGrid', selector: '#aufgabenGrid'}
-//       { ref: 'detailsWindow', selector: 'detailsWindow'}
+       { ref: 'grid', 	   selector: '#adminGrid'}
     ],
 
     init: function() {
@@ -44,8 +44,8 @@ Ext.define('AM.controller.AdminController', {
         											  'itemsLoaded': this.menuLoadItems},
         	'menue button[id="btnFachbereiche"]': 	{ click: this.showFachgebiete  },
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
-        	'#aufgabenGrid':						{ itemdblclick: this.showTaskEditWindow,
-        											  selectionchange: this.taskDetailsGridSelectionChanged},
+            '#adminGrid':							{ itemdblclick: this.showEditPersonWindow, 
+        											  selectionchange: this.gridSelectionChanged},
         });       	
     },
     
@@ -95,8 +95,41 @@ Ext.define('AM.controller.AdminController', {
   
     
     
-    taskDetailsGridSelectionChanged: function(selModel, selections){
-        this.getAufgabenGrid().down('#btnTaskUpdate').setDisabled(selections.length === 0);     
-    },             
+    gridSelectionChanged: function(selModel, selections){
+        this.getGrid().down('#btnTaskUpdate').setDisabled(selections.length === 0);
+        this.getGrid().down('#btnDelete').setDisabled(selections.length === 0);  
+    },    
+    
+    showEditPersonWindow: function(a, item){
+    	var detailsWindow = Ext.create('widget.adminEditTaskWindow');
+    	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
+		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
+		/* vorauswahl des momentan eingetragenen HiWis */
+		combo.store.load(function(records, operation, success) {
+		    combo.setValue(item.data.hiwi);
+		});
+    	/* zeige Fenster */
+    	detailsWindow.show();    	
+    },    
+    
+    showEditDepartmentWindow: function(a, item){
+    	var detailsWindow = Ext.create('widget.adminEditDepartmentWindow');
+    	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
+		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
+		/* vorauswahl des momentan eingetragenen HiWis */
+		combo.store.load(function(records, operation, success) {
+		    combo.setValue(item.data.hiwi);
+		});
+    	/* zeige Fenster */
+    	detailsWindow.show();    	
+    },    
     
 });

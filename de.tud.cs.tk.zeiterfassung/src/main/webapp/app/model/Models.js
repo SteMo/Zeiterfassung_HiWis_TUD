@@ -521,6 +521,7 @@ Ext.define('AM.model.PersonData', {
     	type: 'jsonp',
 		api: {
 		    create: 'ws/personen/insert', // Called when saving new records
+		    read: 'ws/personen',
 		},        
 		reader: {
 		    type: 'json',

@@ -18,21 +18,7 @@ Ext.define('AM.view.personen.Personen', {
     width: 700,
     
     initComponent: function() {    	
-    	var me = this;
-        
-    	/* TODO: hier brauche ich die Daten für das Formular */
-    	Ext.Ajax.request({
-    	    url: 'ajax_demo/sample.json',
-    	    success: function(response, opts) {
-    	        var obj = Ext.decode(response.responseText);
-    	        console.dir(obj);
-    	    },
-    	    failure: function(response, opts) {
-    	        console.log('server-side failure with status code ' + response.status);
-    	    }
-    	});    	
-    	
-    	
+    	var me = this;   	
     	
         var storeVertragsdaten = Ext.create('Ext.data.Store', {
             autoLoad: true,

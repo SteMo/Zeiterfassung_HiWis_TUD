@@ -53,7 +53,7 @@ Ext.define('AM.controller.MitarbeiterController', {
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
         	'menue button[id="btnVertraege"]': 		{ click: this.showVertraege  },
         	'menue button[id="btnAufgaben"]': 		{ click: this.showAufgaben  }, 	
-        	'contentGrid':							{ itemdblclick: this.showContentDetails },
+//        	'contentGrid':							{ itemdblclick: this.showContentDetails },
             '#aufgabenDeadlineGrid':				{ itemdblclick: this.showTaskEditWindow },             	
         	'#personenGrid':						{ itemdblclick: this.showPersonenDetails },
         	'#aufgabenGrid':						{ itemdblclick: this.showTaskEditWindow,
@@ -133,41 +133,41 @@ Ext.define('AM.controller.MitarbeiterController', {
     },    
     
     
-    showContentDetails: function(a, item){
-    	var detailsWindow = Ext.create('widget.detailsWindow', { title: 'Details &uuml;ber ' + item.data.name });
-
-    	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-    	
-    	
-    	/* Abfrage welches Grid gerade geladen ist um entsprechendes Detailfenster anzuzeigen */
-    	if(Ext.ComponentQuery.query('#listOfPeople').length!=0){
-    		//Name:
-    		/* Packagenotation geht in query nicht, CSS-like... */
-        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonName')[0]).setValue(item.data.name);
-        	//Vorname:
-        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonVorname')[0]).setValue(item.data.name);
-        	//Fachgebiet:
-        	(Ext.ComponentQuery.query('#personenDetailsWindowUniFachgebiet')[0]).setValue(item.data.fachgebiet);
-        	//Position:
-        	(Ext.ComponentQuery.query('#personenDetailsWindowUniPosition')[0]).setValue(item.data.position);    	
-        	
-        	//zugeordneter Professor? Ist das entweder oder mit Mitarbeiter?
-        	if(item.data.prof_zuordnung!=-1)
-        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuProfessor')[0]).setValue(getPerson(item.data.prof_zuordnung));
-        	//zugeordneter Mitarbeiter?
-        	if(item.data.mitarbeiter_zuordnung!=-1)
-        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuMitarbeiter')[0]).setValue(getPerson(item.data.mitarbeiter_zuordnung));    	
-
-    	}else if(Ext.ComponentQuery.query('#listOfDepartments').length!=0){
-    		// TO DO ! Siehe oben...
-    	
-    	}else if(Ext.ComponentQuery.query('#listOfTasks').length!=0){
-    		var detailsWindow = Ext.create('AM.view.dashboard.HiWiTaskDetailsWindow');
-		}
-
-    	/* zeige Fenster */
-    	detailsWindow.show();
-    },
+//    showContentDetails: function(a, item){
+//    	var detailsWindow = Ext.create('widget.detailsWindow', { title: 'Details &uuml;ber ' + item.data.name });
+//
+//    	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+//    	
+//    	
+//    	/* Abfrage welches Grid gerade geladen ist um entsprechendes Detailfenster anzuzeigen */
+//    	if(Ext.ComponentQuery.query('#listOfPeople').length!=0){
+//    		//Name:
+//    		/* Packagenotation geht in query nicht, CSS-like... */
+//        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonName')[0]).setValue(item.data.name);
+//        	//Vorname:
+//        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonVorname')[0]).setValue(item.data.name);
+//        	//Fachgebiet:
+//        	(Ext.ComponentQuery.query('#personenDetailsWindowUniFachgebiet')[0]).setValue(item.data.fachgebiet);
+//        	//Position:
+//        	(Ext.ComponentQuery.query('#personenDetailsWindowUniPosition')[0]).setValue(item.data.position);    	
+//        	
+//        	//zugeordneter Professor? Ist das entweder oder mit Mitarbeiter?
+//        	if(item.data.prof_zuordnung!=-1)
+//        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuProfessor')[0]).setValue(getPerson(item.data.prof_zuordnung));
+//        	//zugeordneter Mitarbeiter?
+//        	if(item.data.mitarbeiter_zuordnung!=-1)
+//        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuMitarbeiter')[0]).setValue(getPerson(item.data.mitarbeiter_zuordnung));    	
+//
+//    	}else if(Ext.ComponentQuery.query('#listOfDepartments').length!=0){
+//    		// TO DO ! Siehe oben...
+//    	
+//    	}else if(Ext.ComponentQuery.query('#listOfTasks').length!=0){
+//    		var detailsWindow = Ext.create('AM.view.dashboard.HiWiTaskDetailsWindow');
+//		}
+//
+//    	/* zeige Fenster */
+//    	detailsWindow.show();
+//    },
     
     
     

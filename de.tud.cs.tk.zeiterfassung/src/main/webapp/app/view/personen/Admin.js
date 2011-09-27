@@ -28,12 +28,6 @@ Ext.define('AM.view.personen.Admin', {
             model: 'AM.model.PersonData',  
         });         	
     	
-        var storePersonenTitel = Ext.create('Ext.data.Store', {
-            autoLoad: true,
-            autoSync: true,
-            model: 'AM.model.PersonenTitel',  
-        }); 
-    	
         var ds = Ext.create('Ext.data.Store', {
             pageSize: 10,
             model: 'AM.model.PersonenZuweisung',  
@@ -42,7 +36,7 @@ Ext.define('AM.view.personen.Admin', {
         var fgds = Ext.create('Ext.data.Store', {
             pageSize: 10,
             model: 'AM.model.fachgebiete.FachgebieteData',            
-        })
+        });
         
         var storePersonenPosition = Ext.create('Ext.data.Store', {
             autoLoad: true,
@@ -90,17 +84,6 @@ Ext.define('AM.view.personen.Admin', {
                                     itemId: 'authorID',
                                     name: 'authorID',
                                 },                                
-//                                {
-//    		                        xtype: 'combobox',
-//    		                        name: 'cbTitel',
-//    		                        fieldLabel: 'Titel',
-//    		                        store: storePersonenTitel,
-////    		                        queryMode: 'local',
-//    		                        displayField: 'title',
-//    		                        valueField: 'title',
-//    		                        allowBlank: false,
-//    		                        anchor: '50%'
-//                                },
     		                    {
     		                        xtype: 'textfield',
     		                        name: 'edVorname',
@@ -128,18 +111,18 @@ Ext.define('AM.view.personen.Admin', {
 //		                            hideLabel: true,
 		                            hideTrigger:true,        		                            
 		                            anchor: '100%',
-		                            // override default onSelect to do redirect
-		                            listeners: {
-		                                select: function(combo, selection) {
-		                                    var post = selection[0];
-		                                    console.log(post);
-		                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
-//    		                                    if (post) {
-//    		                                        window.location =
-//    		                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
-//    		                                    }
-		                                }
-		                            }        		                            
+//		                            // override default onSelect to do redirect
+//		                            listeners: {
+//		                                select: function(combo, selection) {
+//		                                    var post = selection[0];
+//		                                    console.log(post);
+//		                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
+////    		                                    if (post) {
+////    		                                        window.location =
+////    		                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
+////    		                                    }
+//		                                }
+//		                            }        		                            
                                 },
                                 {
     		                        xtype: 'combobox',
@@ -227,7 +210,115 @@ Ext.define('AM.view.personen.Admin', {
         	                          ],        		            
         		            
 
-                            },                    
+                            },   
+                            {
+                                xtype: 'liveSearchGridPanel',
+                                id: 'adminGrid',
+                                title: '&Uuml;berblick bereits eingetragener Personen',
+                                margin: '10 0 10 0',
+                                store: storePersonen,
+                                columns: [
+                                       
+                                    {
+                                        xtype: 'gridcolumn',
+                                        dataIndex: 'name',
+                                        text: 'Vorname',
+                                    },
+                                    {
+                                        xtype: 'gridcolumn',
+                                        dataIndex: 'surname',
+                                        text: 'Name',
+                                        flex: 1,
+                                    },        
+                                    {
+                                        xtype: 'gridcolumn',
+                                        dataIndex: 'department',
+                                        text: 'Fachgebiet',
+                                    },      
+                                    {
+                                        xtype: 'gridcolumn',
+                                        dataIndex: 'role',
+                                        text: 'Position',
+                                    },           
+                                    {
+                                        xtype: 'gridcolumn',
+                                        dataIndex: 'supervisor',
+                                        text: 'Vorgesetzter',
+                                        renderer: getPerson
+                                    }
+                                ],
+                                viewConfig: {
+
+                                },
+                                
+            	                dockedItems: [
+            	                              {
+            	                                  xtype: 'toolbar',
+            	                                  anchor: '100%',
+            	                                  dock: 'bottom',
+            	                                  items: [
+            	                                          {
+            	                   						   xtype: 'tbfill'
+            	                   					  }, 
+            	                                      {
+            	                                          itemId: 'btnDelete',
+            	                                          text: 'Markierte Person löschen',
+            	                                          icon: 'resources/images/Delete-silk.png',
+            	                                          disabled: true,
+            	                                          /* das hier muss vermutlich über den Controller gemacht werden, this.getView() geht hier nicht... */
+            	                                          handler: function(){
+            	                                        	  var grid = me.getComponent('adminGrid');
+            	                                              var selection = grid.getView().getSelectionModel().getSelection()[0];
+            	                                              console.log("Ausgewählte Zeile/Objekt zum Löschen: ");
+            	                                              console.log(selection);
+            	                                              Ext.Msg.confirm('Löschen bestätigen', 'Soll wirklich gelöscht werden?',
+	            	                                            		  		function(btn, text){
+            	                                            	    				if (btn == 'yes'){
+            	                      	                                              if (selection) {
+            	                      	                                            	  storePersonen.remove(selection);
+            	                    	                                              }            	                                            	    					
+            	                      	                                          	}            	                                            	    				
+            	                                              });            	                                              
+            	                                          }
+            	                                      }, 
+            	                                      '-',                                              
+            	                                      {
+                                                          xtype: 'button',
+                                                          itemId: 'btnTaskUpdate',
+                                                          text: 'Markierte Person editieren',
+                                                          icon: 'resources/images/edit.png',
+                                                          disabled: true,
+                                                          handler: function(){
+                                                        	  var grid = me.getComponent('adminGrid');
+                                                              var item = grid.getView().getSelectionModel().getSelection()[0];
+                                                              if (item) {
+                                                            	  console.log('hi');
+                                                              	  var win = Ext.create('widget.adminEditPersonWindow');
+        	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+        	                                                      	(Ext.ComponentQuery.query('#name')[0]).setValue(item.data.name);
+        	                                                      	(Ext.ComponentQuery.query('#surname')[0]).setValue(item.data.surname);
+        	                                                  		(Ext.ComponentQuery.query('#supervisor')[0]).setValue(item.data.supervisor);
+        	                                                  		(Ext.ComponentQuery.query('#openID')[0]).setValue(item.data.openID);
+        	                                                  		var comboDepartm = Ext.ComponentQuery.query('#department')[0];
+        	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
+        	                                                  		combo.store.load(function(records, operation, success) {
+        	                                                  		    combo.setValue(item.data.department);
+        	                                                  		});                   
+        	                                                  		var comboPosition = Ext.ComponentQuery.query('#position')[0];
+        	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
+        	                                                  		combo.store.load(function(records, operation, success) {
+        	                                                  		    combo.setValue(item.data.position);
+        	                                                  		});               	                                                  		
+        	                                                  		win.show();
+                                                              }
+                                                          }
+                                                      }                               
+
+
+            	                                  ]
+            	                              }
+            	                          ],                                  
+                            },                  
         ];
         me.callParent(arguments);
     }
