@@ -31,7 +31,14 @@ Ext.define('AM.view.fachgebiete.Admin', {
             autoLoad: true,
             autoSync: true,
             model: 'AM.model.LoggedInPerson',  
-        });         
+        });  
+        
+        var ds  = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.Personen',  
+        }); 
+        
         storeGetIdOfLoggedInPerson.load(function(records, operation, success) {
             console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));  
             (Ext.ComponentQuery.query('#authorID')[0]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
@@ -65,22 +72,38 @@ Ext.define('AM.view.fachgebiete.Admin', {
                                 },                                
     		                    {
     		                        xtype: 'textfield',
-    		                        name: 'edFachgebiet',
+    		                        name: 'name',
     		                        fieldLabel: 'Fachgebiet',
     		                        allowBlank: false,
     		                        anchor: '100%',
     		                    }, 
     		                    {
-    		                        xtype: 'textfield',
-    		                        name: 'edKuerzel',
-    		                        fieldLabel: 'Kürzel',
-    		                        allowBlank: false,
-    		                        anchor: '100%',
-    		                        margin: '20 0 10 0',
-    		                    },      		                    
+    		                        xtype: 'combobox',
+    		                        name: 'leiter',
+    		                        fieldLabel: 'Leiter',
+    		                        store: ds,
+//    		                        queryMode: 'local',
+    		                        displayField: 'name',
+    		                        valueField: 'id',
+    		                        allowBlank: false, 
+                                        hideTrigger:true,                                        
+    		                        anchor: '100%'
+                                    }, 
+                                    {
+    		                        xtype: 'combobox',
+    		                        name: 'stellv',
+    		                        fieldLabel: 'Stellvertreter',
+    		                        store: ds,
+//    		                        queryMode: 'local',
+    		                        displayField: 'name',
+    		                        valueField: 'id',
+    		                        allowBlank: true,
+                                        hideTrigger:true,  
+    		                        anchor: '100%'
+                                    },    		                    
     		                    {
     		                        xtype: 'numberfield',
-    		                        name: 'edBudget',
+    		                        name: 'budget',
     		                        fieldLabel: 'Budget',
     		                        allowBlank: false,
     		                        allowNegative: false,
@@ -152,7 +175,7 @@ Ext.define('AM.view.fachgebiete.Admin', {
                                     },      
                                     {
                                         xtype: 'gridcolumn',
-                                        dataIndex: 'stellv',
+                                        dataIndex: 'stellvertreter',
                                         text: 'Stellvertreter',
                                     },
                                     {

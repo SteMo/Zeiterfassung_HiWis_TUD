@@ -263,7 +263,7 @@ Ext.define('AM.model.Personen', {
 
 Ext.define('AM.model.fachgebiete.FachgebieteData', {
     extend: 'Ext.data.Model',
-    fields:['id', 'name', 'budget', 'leiter', 'stellv'],
+    fields:['id', 'name', 'budget', 'leiter', 'stellvertreter'],
     proxy: {
 		type: 'jsonp',
 		api: {

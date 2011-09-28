@@ -115,60 +115,13 @@ public class Fachgebiete {
      */
     @GET
     @Path("/insert")
-    public long addFachgebiet(@Context HttpServletRequest req, @QueryParam("authorID") String admin, @QueryParam("edKuerzel") String name, @QueryParam("edBudget") int budget, @QueryParam("leiter") String leiter, @QueryParam("stellv") String stellv) {
+    public long addFachgebiet(@Context HttpServletRequest req, @QueryParam("authorID") String admin, @QueryParam("name") String name, @QueryParam("budget") int budget, @QueryParam("leiter") long leiter, @QueryParam("stellv") long stellv) {
         Fachgebiet f = new Fachgebiet();
         // Name zuweisen
         f.name = name;
         // Id des Leiters zuweisen
-        String firstName = "", givenName = "";
-        String[] names;
-        List<Person> ps;
-        if(leiter!=null) {
-            names = leiter.split(" ");
-            if (names.length >= 1) {
-                firstName = names[0];
-                if (names.length >= 2) {
-                    givenName = names[1];
-                    if (names.length >= 3) {
-                        for (int i = 2; i < names.length - 3; i++) {
-                            givenName = givenName.concat(names[i]);
-                        }
-                    }
-                }
-            }
-            ps = PersonDAO.findByName(firstName, givenName);
-            if (ps != null && ps.size() == 1) {
-                f.leiter = ps.get(0).id;
-            } else {
-                f.leiter = -1;
-            }
-        }else{
-            f.leiter = Long.getLong(admin);
-        }
-
-        if(stellv!=null) {
-            // Id des Stellvertreters zuweisen
-            names = stellv.split(" ");
-            if (names.length >= 1) {
-                firstName = names[0];
-                if (names.length >= 2) {
-                    givenName = names[1];
-                    if (names.length >= 3) {
-                        for (int i = 2; i < names.length - 3; i++) {
-                            givenName = givenName.concat(names[i]);
-                        }
-                    }
-                }
-            }
-
-
-            ps = PersonDAO.findByName(firstName, givenName);
-            if (ps != null && ps.size() == 1) {
-                f.stellv = ps.get(0).id;
-            } else {
-                f.stellv = -1;
-            }
-        }
+        f.leiter = leiter;
+        f.stellv = stellv;
 
         f.budget = budget;
 
