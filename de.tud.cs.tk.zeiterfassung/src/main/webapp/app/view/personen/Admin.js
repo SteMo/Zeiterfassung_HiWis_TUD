@@ -25,7 +25,7 @@ Ext.define('AM.view.personen.Admin', {
         var storePersonen = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
-            model: 'AM.model.PersonData',  
+            model: 'AM.model.Personen',  
         });         	
     	
         var ds = Ext.create('Ext.data.Store', {
@@ -221,7 +221,7 @@ Ext.define('AM.view.personen.Admin', {
                                        
                                     {
                                         xtype: 'gridcolumn',
-                                        dataIndex: 'name',
+                                        dataIndex: 'givenname',
                                         text: 'Vorname',
                                     },
                                     {
@@ -232,12 +232,12 @@ Ext.define('AM.view.personen.Admin', {
                                     },        
                                     {
                                         xtype: 'gridcolumn',
-                                        dataIndex: 'department',
+                                        dataIndex: 'fachgebiet',
                                         text: 'Fachgebiet',
                                     },      
                                     {
                                         xtype: 'gridcolumn',
-                                        dataIndex: 'role',
+                                        dataIndex: 'position',
                                         text: 'Position',
                                     },           
                                     {

@@ -235,7 +235,7 @@ Ext.define('AM.model.ZeitDiagramm', {
 
 Ext.define('AM.model.Personen', {
     extend: 'Ext.data.Model',
-    fields:['id', 'name', 'fachgebiet', 'position', 'supervisor'],
+    fields:['id', 'name', 'fachgebiet', 'position', 'supervisor', 'surname', 'givenname'],
     proxy: {
         type: 'jsonp',
         url: 'ws/personen',
@@ -510,9 +510,10 @@ Ext.define('AM.model.PersonData', {
         {name: 'id', type: 'int'},
         {name: 'title', type: 'string'},
         {name: 'name', type: 'string'},
+        {name: 'givenname', type: 'string'},
         {name: 'surname', type: 'string'},
-        {name: 'department', type: 'string'},        
-        {name: 'role', type: 'string'},
+        {name: 'fachgebiet', type: 'string'},        
+        {name: 'position', type: 'string'},
         {name: 'supervisor', type: 'string'},
         {name: 'openid', type: 'string'},
         {name: 'status', type: 'string'}

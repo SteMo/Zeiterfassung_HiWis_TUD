@@ -32,24 +32,20 @@ import org.codehaus.jackson.map.JsonMappingException;
 @Path("/personen")
 public class Personen {
 
-    public class PersonResult {
-
-        public boolean success;
-        public int total;
-        public List<PersonEntry> results = new ArrayList<PersonEntry>();
-    }
-
     public class PersonEntry {
 
         public String name, fachgebiet, position;
         public long id, supervisor;
+        public String surname, givenname;
 
-        public PersonEntry(long id, String name, String fg, String pos, long sv) {
-            this.id = id;
+        public PersonEntry(String name, String fachgebiet, String position, long id, long supervisor, String surname, String givenname) {
             this.name = name;
-            this.fachgebiet = fg;
-            this.position = pos;
-            this.supervisor = sv;
+            this.fachgebiet = fachgebiet;
+            this.position = position;
+            this.id = id;
+            this.supervisor = supervisor;
+            this.surname = surname;
+            this.givenname = givenname;
         }
     }
 
@@ -57,7 +53,7 @@ public class Personen {
     @Produces({"text/javascript", "application/json"})
     public String processGetList(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
 
-        PersonResult personen = getList(req);
+        ResultSet<PersonEntry> personen = getList(req);
         String cb = req.getParameter("callback");
         String result = "";
         try {
@@ -78,9 +74,10 @@ public class Personen {
 
     }
 
-    public PersonResult getList(@Context HttpServletRequest req) {
+    public ResultSet getList(@Context HttpServletRequest req) {
 
-        PersonResult pl = new PersonResult();
+        ResultSet<PersonEntry> pl = new ResultSet<PersonEntry>();
+        pl.results = new ArrayList<PersonEntry>();
 
         // IDM
         OpenIdPrincipal principal = null;
@@ -103,12 +100,15 @@ public class Personen {
                         || (me.getRolle().significance <= 20 && me.getFachgebiet().id == p.getFachgebiet().id) // Alle Personen im Fachgebiet
                         || (me.getRolle().significance <= 30 && p.getSupervisor() != null && p.getSupervisor().id == me.id)) // Alle mir zugeordneten Personen
                 {
-                    pl.results.add(new PersonEntry(p.id, p.firstName + " " + p.givenName,
+                    pl.results.add(new PersonEntry(p.firstName + " " + p.givenName,
                             p.getFachgebiet().name,
                             p.getRolle().name,
+                            p.id,
                             (p.getSupervisor() != null)
                             ? p.getSupervisor().id
-                            : Long.valueOf("-1")));
+                            : Long.valueOf("-1"),
+                            p.givenName,
+                            p.firstName));
                     pl.total++;
                 }
             }
@@ -116,77 +116,8 @@ public class Personen {
         }
         return pl;
     }
-
-    @GET
-    @Path("/{id}")
-    public Person getById(@PathParam("ident") int id) {
-        // Todo: Welche Daten sollen ausgegeben werden?
-        return null;
-    }
-
-    @PUT
-    @Path("/{id}")
-    public long updatePerson(@Context HttpServletRequest req, @PathParam("id") int id, PersonEntry pe) {
-        String name = pe.name,
-                fg = pe.fachgebiet,
-                pos = pe.position;
-        long sup = pe.supervisor;
-        OpenIdPrincipal principal = null;
-        if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
-            principal = (OpenIdPrincipal) req.getUserPrincipal();
-        }
-        if (principal != null) { // Benutzer ist per OpenID identifiziert
-            List<Person> people = PersonDAO.findByPrincipal(principal.getIdentity());
-            if (people != null && people.size() != 1 && people.get(0).getRolle().significance > 10) {
-                return -1;
-            }
-            Person me = people.get(0);
-            // Personen updaten
-            Person p = PersonDAO.retrieve(id);
-            String[] names = name.split(" ");
-            if (names.length >= 1) {
-                p.firstName = names[0];
-            }
-            if (names.length >= 2) {
-                p.givenName = names[1];
-            }
-            if (names.length >= 3) {
-                for (int i = 2; i < names.length - 3; i++) {
-                    p.givenName = p.givenName.concat(names[i]);
-                }
-            }
-            if (p.getRolle().name != pos) {
-                Rolle rolle = RolleDAO.findByName(pos);
-                if (rolle != null) {
-                    p.setRolle(rolle);
-                }
-            }
-            if (p.getSupervisor().id != sup) {
-                Person su = PersonDAO.retrieve(sup);
-                if (su != null) {
-                    p.setSupervisor(su);
-                }
-            }
-            if (!p.getFachgebiet().name.equals(fg)) {
-                Fachgebiet f = FachgebietDAO.findByName(fg);
-                if (f != null) {
-                    p.setFachgebiet(f);
-                }
-            }
-            PersonDAO.update(p);
-            return p.id;
-        }
-        return -1;
-    }
-
-    /**
-     * Beispiel:
-     * ws/aufgabendetails/insert?authorID=5&edVorname=Vorname&edNachname=Nachname&cbFachgebiet=Fachgebiet&cbVorgesetzter=Vorgesetzter&edOpenID=openid&id=0&title=&name=&surname=&department=&role=&supervisor=&openid=&status=&callback=Ext.data.JsonP.callback7 HTTP/1.1 
-     * 
-     */
-    @GET
-    @Path("/insert")
-    public String insertNewPerson(@Context HttpServletRequest req, @QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
+    
+    public Person createPerson(int adminId, String vorname, String nachname, String fg, String role, String sv, String ident) {
         Person p = new Person();
         // Name
         p.firstName = vorname;
@@ -226,7 +157,27 @@ public class Personen {
 
         // Ident
         p.principal = ident;
+        
+        return p;
+        
+    }
 
+    /**
+     * Beispiel:
+     * ws/aufgabendetails/insert?authorID=5&edVorname=Vorname&edNachname=Nachname&cbFachgebiet=Fachgebiet&cbVorgesetzter=Vorgesetzter&edOpenID=openid&id=0&title=&name=&surname=&department=&role=&supervisor=&openid=&status=&callback=Ext.data.JsonP.callback7 HTTP/1.1 
+     * 
+     */
+    @GET
+    @Path("/insert")
+    public String insertPerson(@QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
+        Person p = createPerson(adminId, vorname, nachname, fg, role, sv, ident);
         return Long.toString(PersonDAO.create(p));
+    }
+    
+    @GET
+    @Path("/update")
+    public String updatePerson(@QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
+        Person p = createPerson(adminId, vorname, nachname, fg, role, sv, ident);
+        return null;
     }
 }
