@@ -117,30 +117,16 @@ public class Personen {
         return pl;
     }
     
-    public Person createPerson(int adminId, String vorname, String nachname, String fg, String role, String sv, String ident) {
+    public Person createPerson(int adminId, String vorname, String nachname, String fg, String role, int sv, String ident) {
         Person p = new Person();
         // Name
         p.firstName = vorname;
         p.givenName = nachname;
         // Supervisor
-        String svVorname = "", svNachname="";
-        if(sv!=null) {
-            String[] names = sv.split(" ");
-            if (names.length >= 1) {
-                svVorname = names[0];
-                if (names.length >= 2) {
-                    svNachname = names[1];
-                    if (names.length >= 3) {
-                        for (int i = 2; i < names.length - 3; i++) {
-                            svNachname = svNachname.concat(names[i]);
-                        }
-                    }
-                }
-            }
-            List<Person> svs = PersonDAO.findByName(svVorname, svNachname);
-            if(svs.size()==1)
-                p.setSupervisor(svs.get(0));               
-        }
+        Person svs = PersonDAO.retrieve(sv);
+        if(svs!=null)
+             p.setSupervisor(svs);               
+        
         if(p.getSupervisor()==null) // Wenn kein Supervisor vorhanden ist, dann nimm Admin als Supervisor :>
             p.setSupervisor(PersonDAO.retrieve(adminId));
         
@@ -164,19 +150,19 @@ public class Personen {
 
     /**
      * Beispiel:
-     * ws/aufgabendetails/insert?authorID=5&edVorname=Vorname&edNachname=Nachname&cbFachgebiet=Fachgebiet&cbVorgesetzter=Vorgesetzter&edOpenID=openid&id=0&title=&name=&surname=&department=&role=&supervisor=&openid=&status=&callback=Ext.data.JsonP.callback7 HTTP/1.1 
-     * 
+     * /ws/personen/insert?_dc=1317224572727&authorID=5&givenname=vname&surname=nname&fachgebiet=TK&position=Hiwi&supervisor=6&ident=ident&id=&name=&callback=Ext.data.JsonP.callback
      */
     @GET
     @Path("/insert")
-    public String insertPerson(@QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
+    public String insertPerson(@QueryParam("authorID") int adminId, @QueryParam("givenname") String vorname, @QueryParam("surname") String nachname, @QueryParam("fachgebiet") String fg, @QueryParam("position") String role, @QueryParam("supervisor") int sv, @QueryParam("ident") String ident) {
         Person p = createPerson(adminId, vorname, nachname, fg, role, sv, ident);
+        Logger.getLogger(Personen.class.getName()).log(Level.ALL,"Neuen Benutzer anlegen: Name: "+vorname+" "+nachname+" Supervisor-ID: "+sv);
         return Long.toString(PersonDAO.create(p));
     }
     
     @GET
     @Path("/update")
-    public String updatePerson(@QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") String sv, @QueryParam("edOpenID") String ident) {
+    public String updatePerson(@QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") int sv, @QueryParam("edOpenID") String ident) {
         Person p = createPerson(adminId, vorname, nachname, fg, role, sv, ident);
         return null;
     }

@@ -30,7 +30,7 @@ Ext.define('AM.view.personen.Admin', {
     	
         var ds = Ext.create('Ext.data.Store', {
             pageSize: 10,
-            model: 'AM.model.PersonenZuweisung',  
+            model: 'AM.model.Personen',  
         });
         
         var fgds = Ext.create('Ext.data.Store', {
@@ -74,7 +74,7 @@ Ext.define('AM.view.personen.Admin', {
                         		console.log(data);
                         		
                         		storePersonen.insert(0, data);
-                        		Ext.Msg.alert('Status', data.edVorname + " " + data.edNachname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
+                        		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
                             }
                         },    
                         
@@ -86,7 +86,7 @@ Ext.define('AM.view.personen.Admin', {
                                 },                                
     		                    {
     		                        xtype: 'textfield',
-    		                        name: 'edVorname',
+    		                        name: 'givenname',
     		                        fieldLabel: 'Vorname',
     		                        allowBlank: false,
     		                        anchor: '100%',
@@ -94,7 +94,7 @@ Ext.define('AM.view.personen.Admin', {
     		                    },       
     		                    {
     		                        xtype: 'textfield',
-    		                        name: 'edNachname',
+    		                        name: 'surname',
     		                        fieldLabel: 'Nachname',
     		                        allowBlank: false,
     		                        anchor: '100%',
@@ -102,7 +102,7 @@ Ext.define('AM.view.personen.Admin', {
     		                    },   
                                 {
 		                            xtype: 'combobox',
-		                            name: 'cbFachgebiet',
+		                            name: 'fachgebiet',
 		                            fieldLabel: 'Fachgebiet',
 		                            store: fgds,
 		                            displayField: 'name',
@@ -126,7 +126,7 @@ Ext.define('AM.view.personen.Admin', {
                                 },
                                 {
     		                        xtype: 'combobox',
-    		                        name: 'cbHiwi',
+    		                        name: 'position',
     		                        fieldLabel: 'Position',
     		                        store: storePersonenPosition,
 //    		                        queryMode: 'local',
@@ -137,31 +137,31 @@ Ext.define('AM.view.personen.Admin', {
                                 },
                                 {
 		                            xtype: 'combobox',
-		                            name: 'cbVorgesetzter',
+		                            name: 'supervisor',
 		                            fieldLabel: 'Vorgesetzter',
 		                            store: ds,
 		                            displayField: 'name',
-		                            valueField: 'supervisor',
+		                            valueField: 'id',
 		                            typeAhead: false,
 //		                            hideLabel: true,
 		                            hideTrigger:true,        		                            
 		                            anchor: '100%',
 		                            // override default onSelect to do redirect
-		                            listeners: {
-		                                select: function(combo, selection) {
-		                                    var post = selection[0];
-		                                    console.log(post);
-		                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
-//    		                                    if (post) {
-//    		                                        window.location =
-//    		                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
-//    		                                    }
-		                                }
-		                            }        		                            
+//		                            listeners: {
+//		                                select: function(combo, selection) {
+//		                                    var post = selection[0];
+//		                                    console.log(post);
+//		                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
+////    		                                    if (post) {
+////    		                                        window.location =
+////    		                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
+////    		                                    }
+//		                                }
+//		                            }        		                            
                                 },
     		                    {
     		                        xtype: 'textfield',
-    		                        name: 'edOpenID',
+    		                        name: 'ident',
     		                        fieldLabel: 'OpenID',
     		                        allowBlank: false,
     		                        anchor: '100%',
@@ -295,7 +295,7 @@ Ext.define('AM.view.personen.Admin', {
                                                             	  console.log('hi');
                                                               	  var win = Ext.create('widget.adminEditPersonWindow');
         	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-        	                                                      	(Ext.ComponentQuery.query('#name')[0]).setValue(item.data.name);
+        	                                                      	(Ext.ComponentQuery.query('#givenname')[0]).setValue(item.data.name);
         	                                                      	(Ext.ComponentQuery.query('#surname')[0]).setValue(item.data.surname);
         	                                                  		(Ext.ComponentQuery.query('#supervisor')[0]).setValue(item.data.supervisor);
         	                                                  		(Ext.ComponentQuery.query('#openID')[0]).setValue(item.data.openID);

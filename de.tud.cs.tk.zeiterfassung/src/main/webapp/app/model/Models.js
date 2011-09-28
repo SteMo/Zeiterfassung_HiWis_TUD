@@ -245,11 +245,19 @@ Ext.define('AM.model.Personen', {
        //     root: 'results',
        //     totalProperty: 'total'
        // }
+       api: {
+           create: 'ws/personen/insert', // Called when saving new records
+           read: 'ws/personen',
+        },
        reader: new Ext.data.JsonReader({
            root: 'results',
            id: 'id',
-           fields: ['name', 'fachgebiet', 'position', 'supervisor', 'id']
-       })
+           fields: ['name', 'fachgebiet', 'position', 'supervisor', 'id',]
+       }),
+       writer: {
+		    type: 'json',
+                    fields: ['fachgebiet', 'position', 'supervisor', 'id', 'surname', 'givenname']
+		} 
     }
 });
 
