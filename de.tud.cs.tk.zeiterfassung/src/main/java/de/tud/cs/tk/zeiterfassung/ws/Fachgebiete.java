@@ -11,6 +11,7 @@ import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,6 +77,7 @@ public class Fachgebiete {
         }
         List<Fachgebiet> fgDAO = FachgebietDAO.retrieveAll();
         ResultSet<FachgebietEntry> result = new ResultSet<FachgebietEntry>();
+        result.results = new ArrayList<FachgebietEntry>();
         result.success = false;
         result.total = 0;
         if (principal != null) { // Benutzer ist per OpenID identifiziert
@@ -125,16 +127,16 @@ public class Fachgebiete {
         if(f==null) {
             return;
         }
-        if(!name.equals("")) {
+        if(name!=null && !name.equals("")) {
             f.name = name;
         }
-        if(leiter!=0L) { // Was ist, wenn neuer Leiter = Administrator??
+        if(leiter!=f.leiter) { // Was ist, wenn neuer Leiter = Administrator??
             f.leiter = leiter;
         }
-        if(stellv!=0L) {
+        if(stellv!=f.stellv) {
             f.stellv = stellv;
         }
-        if(budget!=0) {
+        if(budget!=f.budget) {
             f.budget = budget;
         }
         FachgebietDAO.update(f);

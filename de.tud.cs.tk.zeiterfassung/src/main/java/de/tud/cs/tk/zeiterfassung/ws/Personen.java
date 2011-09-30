@@ -127,8 +127,11 @@ public class Personen {
         if(svs!=null)
              p.setSupervisor(svs);               
         
-        if(p.getSupervisor()==null) // Wenn kein Supervisor vorhanden ist, dann nimm Admin als Supervisor :>
-            p.setSupervisor(PersonDAO.retrieve(adminId));
+        if(p.getSupervisor()!=null) { // Wenn kein Supervisor vorhanden ist, dann nimm Admin als Supervisor :>
+            Person admin = PersonDAO.retrieve(adminId);
+            if(admin!=null)
+                p.setSupervisor(PersonDAO.retrieve(adminId));
+        }
         
         // Rolle
         Rolle r = RolleDAO.findByName(role);
@@ -162,8 +165,31 @@ public class Personen {
     
     @GET
     @Path("/update")
-    public String updatePerson(@QueryParam("authorID") int adminId, @QueryParam("edVorname") String vorname, @QueryParam("edNachname") String nachname, @QueryParam("cbFachgebiet") String fg, @QueryParam("cbHiwi") String role, @QueryParam("cbVorgesetzter") int sv, @QueryParam("edOpenID") String ident) {
-        Person p = createPerson(adminId, vorname, nachname, fg, role, sv, ident);
-        return null;
+    public void updatePerson(@QueryParam("id") long id, @QueryParam("authorID") int adminId, @QueryParam("givenname") String vorname, @QueryParam("surname") String nachname, @QueryParam("fachgebiet") String fg, @QueryParam("position") String role, @QueryParam("supervisor") int sv, @QueryParam("ident") String ident) {
+        Person pnew = createPerson(adminId, vorname, nachname, fg, role, sv, ident);
+        Person pold = PersonDAO.retrieve(id);
+        if(pold==null)
+            return;
+        if(pnew.firstName!=null && !pnew.firstName.equals(""))
+            pold.firstName = pnew.firstName;
+        if(pnew.givenName!=null && !pnew.givenName.equals(""))
+            pold.givenName = pnew.givenName;
+        if(pnew.principal!=null && !pnew.principal.equals(""))
+            pold.principal = pnew.principal;
+        if(pnew.getSupervisor() != null)
+            pold.setSupervisor(pnew.getSupervisor());
+        if(pnew.getFachgebiet() != null)
+            pold.setFachgebiet(pnew.getFachgebiet());
+        if(pnew.getRolle() != null)
+            pold.setRolle(pnew.getRolle());
+        PersonDAO.update(pold);
+    }
+    
+    @GET
+    @Path("/remove")
+    public void updatePerson(@QueryParam("id") long id) {
+        Person p = PersonDAO.retrieve(id);
+        if(p != null)
+            PersonDAO.delete(p);
     }
 }
