@@ -142,11 +142,4 @@ public class AufgabenDetails {
         long id = AufgabeDAO.update(af);
         
     }
-    
-    @GET
-    @Path("/update")
-    @Produces("text/plain")
-    public void updateAufgabenDetails(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
-        // TODO implement me
-    }
 }

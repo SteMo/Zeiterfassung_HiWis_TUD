@@ -116,18 +116,15 @@ public class Vertraege {
         return vl;
     }
     
-    /*
-     * Example
-     * cbHiwi=Stephan%20M&cbRate=Werkstudent&edHoursPerMonth=4&edBegin=28.09.11&edEnd=30.09.11&id=0&hiwi=&hiwiMail=&supervisor=&begin=&end=&hoursPerMonth=0&remainingHours=0&remainingTasks=&rate=&callback=Ext.data.JsonP.callback12 HTTP/1.1 
-     */
-    @GET
-    @Path("/insert")
-    public long insertVertrag(@Context HttpServletRequest req, @QueryParam("cbHiwi") String hiwi, @QueryParam("cbRate") String rate, @QueryParam("edHoursPerMonth") String hours, @QueryParam("edBegin") String begin, @QueryParam("edEnd") String end, @QueryParam("authorID") int sv) {
+    public Vertrag createVertrag(@QueryParam("cbHiwi") String hiwi, @QueryParam("cbRate") String rate, @QueryParam("edHoursPerMonth") String hours, @QueryParam("edBegin") String begin, @QueryParam("edEnd") String end, @QueryParam("authorID") int sv) {
         Vertrag v = new Vertrag();
         try {
+            
             DateFormat formatter = new SimpleDateFormat("dd.mm.yy");
-            v.ende = formatter.parse(end);
-            v.start = formatter.parse(begin);
+            if(!end.equals(""))
+                v.ende = formatter.parse(end);
+            if(!begin.equals(""))
+                v.start = formatter.parse(begin);
         } catch (ParseException ex) {
             Logger.getLogger(Vertraege.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,16 +146,54 @@ public class Vertraege {
                 }
             }
         }
-        List<Person> ps = PersonDAO.findByName(firstName, givenName);
-        if(ps == null || ps.isEmpty() || ps.size()>1)
-            return -1;
-        Person vp = ps.get(0);
+        List<Person> ps = PersonDAO.findByName(firstName, givenName);  
         Person vs = PersonDAO.retrieve(sv);
-        vp.addVertragspartner(v);
-        if(vs!=null) {
-            vs.addVertragssteller(v);
-        }
+        Person vp = ps.get(0);
         
+        if(ps == null || ps.isEmpty() || ps.size()>1 || vs==null)
+            return v; 
+        vp.addVertragspartner(v);
+        vs.addVertragssteller(v);
+        return v;
+    }
+    
+    /*
+     * Example
+     * cbHiwi=Stephan%20M&cbRate=Werkstudent&edHoursPerMonth=4&edBegin=28.09.11&edEnd=30.09.11&id=0&hiwi=&hiwiMail=&supervisor=&begin=&end=&hoursPerMonth=0&remainingHours=0&remainingTasks=&rate=&callback=Ext.data.JsonP.callback12 HTTP/1.1 
+     */
+    @GET
+    @Path("/insert")
+    public long insertVertrag(@Context HttpServletRequest req, @QueryParam("cbHiwi") String hiwi, @QueryParam("cbRate") String rate, @QueryParam("edHoursPerMonth") String hours, @QueryParam("edBegin") String begin, @QueryParam("edEnd") String end, @QueryParam("authorID") int sv) {
+        Vertrag v = createVertrag(hiwi, rate, hours, begin, end, sv);        
         return VertragDAO.create(v);
     }
+    
+    @GET
+    @Path("/insert")
+    public long updateVertrag(@Context HttpServletRequest req, @QueryParam("id") long id, @QueryParam("cbHiwi") String hiwi, @QueryParam("cbRate") String rate, @QueryParam("edHoursPerMonth") String hours, @QueryParam("edBegin") String begin, @QueryParam("edEnd") String end, @QueryParam("authorID") int sv) {
+        Vertrag vnew = createVertrag(hiwi, rate, hours, begin, end, sv); 
+        Vertrag vold = VertragDAO.retrieve(id);
+        if(vnew.start!=null) {
+            vold.start = vnew.start;
+        }
+        if(vnew.ende!=null) {
+            vold.ende = vnew.ende;
+        }
+        if(vnew.stundenProMonat!=0) {
+            vold.stundenProMonat = vnew.stundenProMonat;
+        }
+        if(vnew.getTarif()!=null) {
+            vold.setTarif(vnew.getTarif());
+        }
+        return VertragDAO.update(vold);
+    }
+    
+    @GET
+    @Path("/remove") 
+    public void removeVertrag(@QueryParam("id") long id) {
+        Vertrag v = VertragDAO.retrieve(id);
+        if(v!=null) 
+            VertragDAO.delete(v);
+    }
+    
 }

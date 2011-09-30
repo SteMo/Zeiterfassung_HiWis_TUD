@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -28,15 +26,6 @@ import org.codehaus.jackson.map.JsonMappingException;
  */
 @Path("/tarife")
 public class Tarife {
-
-    /*
-     * Todo: Use this for all classes! Refactoring!
-     */
-    public class ResultSet<T> {
-        public List<T> results;
-        public int total;
-        public boolean success;
-    }
     
     public class ResultEntry {
         public String id,group;

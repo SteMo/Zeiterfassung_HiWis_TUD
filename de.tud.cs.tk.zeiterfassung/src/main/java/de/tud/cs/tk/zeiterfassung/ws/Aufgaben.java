@@ -6,9 +6,10 @@ package de.tud.cs.tk.zeiterfassung.ws;
 
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
+import de.tud.cs.tk.zeiterfassung.dao.AufgabeDetailsDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
-import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
 import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
+import de.tud.cs.tk.zeiterfassung.entities.AufgabeDetails;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.entities.Vertrag;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
@@ -24,9 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -151,45 +150,98 @@ public class Aufgaben {
         return al;
     }
     
+    public Aufgabe createAufgabe(String title, String desc, String date, int prio, String hiwi, int supervisor, float worked, boolean erledigt) {       
+        Aufgabe a = new Aufgabe();    
+        String firstName = "", givenName = "";
+        String[] names;
+        a.titel = title;
+        firstName = "";
+        givenName = "";
+        names = hiwi.split(" ");
+        if (names.length >= 1) {
+            firstName = names[0];
+            if (names.length >= 2) {
+                givenName = names[1];
+                if (names.length >= 3) {
+                    for (int i = 2; i < names.length - 3; i++) {
+                        givenName = givenName.concat(names[i]);
+                    }
+                }
+            }
+        }
+        List<Person> ps = PersonDAO.findByName(firstName, givenName);
+        a.verantwortlicher = (ps!=null && !ps.isEmpty())? ps.get(0) : null;
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd.MM.yy");
+            a.deadline = formatter.parse(date);
+        } catch (ParseException ex) {
+            a.deadline = null;
+        }
+        a.assignedAt = new Date();
+        a.assignedFrom = PersonDAO.retrieve(supervisor);
+        a.beschreibung = desc;
+        a.erledigt = erledigt;
+        a.priority = prio;
+        a.worked = worked;
+        return a;
+    }
+    
     /* Example:
      * GET /ws/aufgaben/insert?_dc=1316546787375&edTitle=titel&txtDescription=beschreibung&edDate=30.09.11&edPriority=1&cbHiwi=Stephan%20M&id=0&title=&description=&supervisor=&hiwi=&deadline=&assignedAt=&priority=0&status=&callback=Ext.data.JsonP.callback14 HTTP/1.1 
      */
     @GET
     @Path("/insert")
-    public long insertAufgabe(@Context HttpServletRequest req, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor) {       
-            Aufgabe a = new Aufgabe();
-            String firstName = "", givenName = "";
-            String[] names;
-            a.titel = title;
-            firstName = "";
-            givenName = "";
-            names = hiwi.split(" ");
-            if (names.length >= 1) {
-                firstName = names[0];
-                if (names.length >= 2) {
-                    givenName = names[1];
-                    if (names.length >= 3) {
-                        for (int i = 2; i < names.length - 3; i++) {
-                            givenName = givenName.concat(names[i]);
-                        }
-                    }
-                }
-            }
-            List<Person> ps = PersonDAO.findByName(firstName, givenName);
-            a.verantwortlicher = (ps!=null && !ps.isEmpty())? ps.get(0) : null;
-            try {
-                DateFormat formatter = new SimpleDateFormat("dd.MM.yy");
-                a.deadline = formatter.parse(date);
-            } catch (ParseException ex) {
-                a.deadline = new Date();
-            }
-            a.assignedAt = new Date();
-            a.assignedFrom = PersonDAO.retrieve(supervisor);
-            a.beschreibung = desc;
-            a.erledigt = false;
-            a.priority = prio;
-            a.worked = 0;
+    public long insertAufgabe(@QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor) {       
+            Aufgabe a = createAufgabe(title, desc, date, prio, hiwi, supervisor, 0, false);      
             return AufgabeDAO.create(a);
+    }
+    
+    @GET
+    @Path("/update")
+    public void updateAufgabe(@QueryParam("id") long id, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor, @QueryParam("worked") float worked, @QueryParam("erledigt") boolean erledigt) {       
+            Aufgabe anew = createAufgabe(title, desc, date, prio, hiwi, supervisor, worked, erledigt);  
+            Aufgabe aold = AufgabeDAO.retrieve(id);
+            if(anew.worked != 0L) {
+                aold.worked = anew.worked;
+            }
+            if(anew.erledigt != aold.erledigt) {
+                aold.erledigt = anew.erledigt;
+            }
+            if(!anew.beschreibung.equals("")) {
+                aold.beschreibung = anew.beschreibung;
+            }
+            if(!anew.titel.equals("")) {
+                aold.titel = anew.titel;
+            }
+            if(anew.deadline != null) {
+                aold.deadline = anew.deadline;
+            }
+            if(anew.priority != aold.priority) {
+                aold.priority = anew.priority;
+            }
+            if(anew.verantwortlicher != null) {
+                aold.verantwortlicher = anew.verantwortlicher;
+            }
+            // Sollten assigedAt und assignedFrom geändert werden?
+            AufgabeDAO.update(aold);
+    }
+    
+    @GET
+    @Path("/delete")
+    public void deleteAufgabe(@QueryParam("id") long id) {
+        Aufgabe a = AufgabeDAO.retrieve(id);
+        List<AufgabeDetails> ads = a.getDetails();
+        a.details = null;   
+        id = AufgabeDAO.update(a);
+        a = AufgabeDAO.retrieve(id);
+        AufgabeDAO.delete(a);
+        
+        /* Auflösung von Verbindungen durch Hibernate und Manuell?!
+         * for(AufgabeDetails ad : ads) {
+         *   AufgabeDetailsDAO.delete(ad);
+         * }
+         */
+        
     }
     
     @GET

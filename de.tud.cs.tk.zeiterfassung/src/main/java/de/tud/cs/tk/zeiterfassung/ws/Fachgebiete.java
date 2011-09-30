@@ -11,15 +11,12 @@ import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -49,17 +46,10 @@ public class Fachgebiete {
         }
     }
 
-    public class FachgebietList {
-
-        public boolean success;
-        public int total;
-        public ArrayList<FachgebietEntry> results = new ArrayList<FachgebietEntry>();
-    }
-
     @GET
     @Produces({"text/javascript", "application/json"})
     public String processGetList(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
-        FachgebietList fgs = getList(req);
+        ResultSet<FachgebietEntry> fgs = getList(req);
         String cb = req.getParameter("callback");
         String result = "";
         try {
@@ -79,13 +69,13 @@ public class Fachgebiete {
         return result;
     }
 
-    public FachgebietList getList(@Context HttpServletRequest req) {
+    public ResultSet<FachgebietEntry> getList(@Context HttpServletRequest req) {
         OpenIdPrincipal principal = null;
         if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
             principal = (OpenIdPrincipal) req.getUserPrincipal();
         }
         List<Fachgebiet> fgDAO = FachgebietDAO.retrieveAll();
-        FachgebietList result = new FachgebietList();
+        ResultSet<FachgebietEntry> result = new ResultSet<FachgebietEntry>();
         result.success = false;
         result.total = 0;
         if (principal != null) { // Benutzer ist per OpenID identifiziert
@@ -115,7 +105,7 @@ public class Fachgebiete {
      */
     @GET
     @Path("/insert")
-    public long addFachgebiet(@Context HttpServletRequest req, @QueryParam("authorID") String admin, @QueryParam("name") String name, @QueryParam("budget") int budget, @QueryParam("leiter") long leiter, @QueryParam("stellv") long stellv) {
+    public void addFachgebiet(@Context HttpServletRequest req, @QueryParam("authorID") String admin, @QueryParam("name") String name, @QueryParam("budget") int budget, @QueryParam("leiter") long leiter, @QueryParam("stellv") long stellv) {
         Fachgebiet f = new Fachgebiet();
         // Name zuweisen
         f.name = name;
@@ -125,6 +115,35 @@ public class Fachgebiete {
 
         f.budget = budget;
 
-        return FachgebietDAO.create(f);
+        FachgebietDAO.create(f);
+    }
+
+    @GET
+    @Path("/update")
+    public void updateFachgebiet(@QueryParam("authorID") String admin, @QueryParam("name") String name, @QueryParam("budget") int budget, @QueryParam("leiter") long leiter, @QueryParam("stellv") long stellv, @QueryParam("id") long id) {
+        Fachgebiet f = FachgebietDAO.retrieve(id);
+        if(f==null) {
+            return;
+        }
+        if(!name.equals("")) {
+            f.name = name;
+        }
+        if(leiter!=0L) { // Was ist, wenn neuer Leiter = Administrator??
+            f.leiter = leiter;
+        }
+        if(stellv!=0L) {
+            f.stellv = stellv;
+        }
+        if(budget!=0) {
+            f.budget = budget;
+        }
+        FachgebietDAO.update(f);
+    }
+    
+    @GET
+    @Path("/delete")
+    public void deleteFachgebiet(@QueryParam("id") long id) {
+        Fachgebiet f = FachgebietDAO.retrieve(id);
+        FachgebietDAO.delete(f);
     }
 }
