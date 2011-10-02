@@ -16,7 +16,8 @@ Ext.define('AM.controller.AdminController', {
 	        'personen.Admin',
 	        'fachgebiete.Admin',
 	        'layout.LiveSearchGridPanel',
-	        'personen.AdminEditPersonWindow'
+	        'personen.AdminEditPersonWindow',
+	        'fachgebiete.AdminEditDepartmentWindow'
             ],
 	
 	models: [

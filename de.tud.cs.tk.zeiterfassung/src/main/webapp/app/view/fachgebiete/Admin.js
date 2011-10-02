@@ -89,18 +89,18 @@ Ext.define('AM.view.fachgebiete.Admin', {
                                         hideTrigger:true,                                        
     		                        anchor: '100%'
                                     }, 
-                                    {
-    		                        xtype: 'combobox',
-    		                        name: 'stellv',
-    		                        fieldLabel: 'Stellvertreter',
-    		                        store: ds,
-//    		                        queryMode: 'local',
-    		                        displayField: 'name',
-    		                        valueField: 'id',
-    		                        allowBlank: true,
-                                        hideTrigger:true,  
-    		                        anchor: '100%'
-                                    },    		                    
+//                                    {
+//    		                        xtype: 'combobox',
+//    		                        name: 'stellv',
+//    		                        fieldLabel: 'Stellvertreter',
+//    		                        store: ds,
+////    		                        queryMode: 'local',
+//    		                        displayField: 'name',
+//    		                        valueField: 'id',
+//    		                        allowBlank: true,
+//                                        hideTrigger:true,  
+//    		                        anchor: '100%'
+//                                    },    		                    
     		                    {
     		                        xtype: 'numberfield',
     		                        name: 'budget',
@@ -173,11 +173,11 @@ Ext.define('AM.view.fachgebiete.Admin', {
                                         dataIndex: 'leiter',
                                         text: 'Leiter',
                                     },      
-                                    {
-                                        xtype: 'gridcolumn',
-                                        dataIndex: 'stellvertreter',
-                                        text: 'Stellvertreter',
-                                    },
+//                                    {
+//                                        xtype: 'gridcolumn',
+//                                        dataIndex: 'stellvertreter',
+//                                        text: 'Stellvertreter',
+//                                    },
                                     {
                                         xtype: 'gridcolumn',
                                         dataIndex: 'budget',
@@ -231,20 +231,14 @@ Ext.define('AM.view.fachgebiete.Admin', {
                                                               if (item) {
                                                               	  var win = Ext.create('widget.adminEditDepartmentWindow');
         	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+        	                                                      	(Ext.ComponentQuery.query('#fachgebietID')[0]).setValue(item.data.id);
         	                                                      	(Ext.ComponentQuery.query('#name')[0]).setValue(item.data.name);
-        	                                                      	(Ext.ComponentQuery.query('#surname')[0]).setValue(item.data.surname);
-        	                                                  		(Ext.ComponentQuery.query('#supervisor')[0]).setValue(item.data.supervisor);
-        	                                                  		(Ext.ComponentQuery.query('#openID')[0]).setValue(item.data.openID);
-        	                                                  		var comboDepartm = Ext.ComponentQuery.query('#department')[0];
+        	                                                  		(Ext.ComponentQuery.query('#budget')[0]).setValue(item.data.budget);
+        	                                                  		var comboLeiter = Ext.ComponentQuery.query('#leiter')[0];
         	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
-        	                                                  		combo.store.load(function(records, operation, success) {
-        	                                                  		    combo.setValue(item.data.department);
-        	                                                  		});                   
-        	                                                  		var comboPosition = Ext.ComponentQuery.query('#position')[0];
-        	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
-        	                                                  		combo.store.load(function(records, operation, success) {
-        	                                                  		    combo.setValue(item.data.position);
-        	                                                  		});               	                                                  		
+        	                                                  		comboLeiter.store.load(function(records, operation, success) {
+        	                                                  			comboLeiter.setValue(item.data.leiter);
+        	                                                  		});                              	                                                  		
         	                                                  		win.show();
                                                               }
                                                           }

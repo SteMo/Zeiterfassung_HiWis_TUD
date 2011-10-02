@@ -83,7 +83,7 @@ Ext.define('AM.view.personen.Admin', {
                                     xtype: 'hiddenfield',
                                     itemId: 'authorID',
                                     name: 'authorID',
-                                },                                
+                                },                            
     		                    {
     		                        xtype: 'textfield',
     		                        name: 'givenname',
@@ -292,22 +292,22 @@ Ext.define('AM.view.personen.Admin', {
                                                         	  var grid = me.getComponent('adminGrid');
                                                               var item = grid.getView().getSelectionModel().getSelection()[0];
                                                               if (item) {
-                                                            	  console.log('hi');
                                                               	  var win = Ext.create('widget.adminEditPersonWindow');
         	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-        	                                                      	(Ext.ComponentQuery.query('#givenname')[0]).setValue(item.data.name);
+                                                              	  	(Ext.ComponentQuery.query('#personID')[0]).setValue(item.data.id);	
+                                                              	  	(Ext.ComponentQuery.query('#name')[0]).setValue(item.data.givenname);
         	                                                      	(Ext.ComponentQuery.query('#surname')[0]).setValue(item.data.surname);
         	                                                  		(Ext.ComponentQuery.query('#supervisor')[0]).setValue(item.data.supervisor);
         	                                                  		(Ext.ComponentQuery.query('#openID')[0]).setValue(item.data.openID);
         	                                                  		var comboDepartm = Ext.ComponentQuery.query('#department')[0];
         	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
-        	                                                  		combo.store.load(function(records, operation, success) {
-        	                                                  		    combo.setValue(item.data.department);
+        	                                                  		comboDepartm.store.load(function(records, operation, success) {
+        	                                                  			comboDepartm.setValue(item.data.fachgebiet);
         	                                                  		});                   
         	                                                  		var comboPosition = Ext.ComponentQuery.query('#position')[0];
         	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
-        	                                                  		combo.store.load(function(records, operation, success) {
-        	                                                  		    combo.setValue(item.data.position);
+        	                                                  		comboPosition.store.load(function(records, operation, success) {
+        	                                                  			comboPosition.setValue(item.data.position);
         	                                                  		});               	                                                  		
         	                                                  		win.show();
                                                               }

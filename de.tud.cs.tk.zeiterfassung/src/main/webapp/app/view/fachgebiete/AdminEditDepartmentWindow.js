@@ -19,7 +19,11 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
         storeGetIdOfLoggedInPerson.load(function(records, operation, success) {
             console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));  
             (Ext.ComponentQuery.query('#authorID')[0]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
-    	});        
+    	});       
+        var ds = Ext.create('Ext.data.Store', {
+            pageSize: 10,
+            model: 'AM.model.Personen',  
+        });      
         
         me.items = [
             {
@@ -29,30 +33,79 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
                 fieldDefaults: {
                 	anchor: '100%',
                 },
+                listeners: {
+                    // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
+                	update: function(form, data){
+                		console.log(data);  
+                		console.log("Person ID: " + data.personID);
+                		var Person = Ext.ModelManager.getModel('AM.model.Personen');
+                		Person.load(7, {
+                		    success: function(user) {
+                		        console.log(user.getId()); //logs 123
+                		        console.log(user);
+                		    }
+                		});
+                		Ext.Ajax.request({
+                			url : 'ajax.php' , 
+                			params : { id : data.personID },
+                			method: 'PUT',
+                			success: function ( result, request ) { 
+                				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+                			},
+                			failure: function ( result, request) { 
+                				Ext.MessageBox.alert('Failed', result.responseText); 
+                			} 
+                		});                		
+                		
+//                		ds.insert(0, data);
+                		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
+                    }
+                },     
+                
                 items: [
                         {
                             xtype: 'hiddenfield',
                             itemId: 'authorID',
                             name: 'authorID',
-                        },                                
+                        },                  
+                        {
+                            xtype: 'hiddenfield',
+                            itemId: 'fachgebietID',
+                            name: 'fachgebietID',
+                        },                            
 	                    {
 	                        xtype: 'textfield',
 	                        name: 'edFachgebiet',
+	                        itemId: 'name',
 	                        fieldLabel: 'Fachgebiet',
 	                        allowBlank: false,
 	                        anchor: '100%',
 	                    }, 
-	                    {
-	                        xtype: 'textfield',
-	                        name: 'edKuerzel',
-	                        fieldLabel: 'Kürzel',
-	                        allowBlank: false,
+//	                    {
+//	                        xtype: 'textfield',
+//	                        name: 'edKuerzel',
+//	                        fieldLabel: 'Kürzel',
+//	                        allowBlank: false,
+//	                        anchor: '100%',
+//	                        margin: '20 0 10 0',
+//	                    },      		  
+                        {
+		                    xtype: 'combobox',
+	                        name: 'cbLeiter',
+	                        itemId: 'leiter',
+	                        fieldLabel: 'Leiter',
+	                        store: ds,
+	                        displayField: 'name',
+	                        valueField: 'name',
+	                        typeAhead: false,
+	//                        hideLabel: true,
+	                        hideTrigger:true,        		                            
 	                        anchor: '100%',
-	                        margin: '20 0 10 0',
-	                    },      		                    
+            			},
 	                    {
 	                        xtype: 'numberfield',
 	                        name: 'edBudget',
+	                        itemId: 'budget',
 	                        fieldLabel: 'Budget',
 	                        allowBlank: false,
 	                        allowNegative: false,
@@ -80,7 +133,7 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
                             var form = me.getComponent("formFachgebietUpd").getForm();
                             // prüfen ob Pflichtfelder ausgefüllt sind (allowBlank-Attribut) und evtl Validitätsbedingung im Model
                             if (form.isValid()) {
-                            	me.getComponent("formFachgebietUpd").fireEvent('create', me.getComponent("formFachgebietUpd"), form.getValues());
+                            	me.getComponent("formFachgebietUpd").fireEvent('update', me.getComponent("formFachgebietUpd"), form.getValues());
                             }
                         }
                     }  

@@ -24,6 +24,15 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
             pageSize: 10,
             model: 'AM.model.fachgebiete.FachgebieteData',            
         });        
+        var storePersonenPosition = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.PersonenPosition',  
+        });                
+        var ds = Ext.create('Ext.data.Store', {
+            pageSize: 10,
+            model: 'AM.model.Personen',  
+        });        
         
         me.items = [
             {
@@ -33,23 +42,45 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                 fieldDefaults: {
                 	anchor: '100%',
                 },
+                listeners: {
+                    // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
+                	update: function(form, data){
+                		console.log(data);  
+                		console.log("Person ID: " + data.personID);
+                		var Person = Ext.ModelManager.getModel('AM.model.Personen');
+                		Person.load(7, {
+                		    success: function(user) {
+                		        console.log(user.getId()); //logs 123
+                		        console.log(user);
+                		    }
+                		});
+                		Ext.Ajax.request({
+                			url : 'ajax.php' , 
+                			params : { id : data.personID },
+                			method: 'PUT',
+                			success: function ( result, request ) { 
+                				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+                			},
+                			failure: function ( result, request) { 
+                				Ext.MessageBox.alert('Failed', result.responseText); 
+                			} 
+                		});                		
+                		
+//                		ds.insert(0, data);
+                		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
+                    }
+                },                  
                 items: [
                         {
                             xtype: 'hiddenfield',
                             itemId: 'authorID',
                             name: 'authorID',
                         },                                
-//                        {
-//	                        xtype: 'combobox',
-//	                        name: 'cbTitel',
-//	                        fieldLabel: 'Titel',
-//	                        store: storePersonenTitel,
-////	                        queryMode: 'local',
-//	                        displayField: 'title',
-//	                        valueField: 'title',
-//	                        allowBlank: false,
-//	                        anchor: '50%'
-//                        },
+                        {
+                            xtype: 'hiddenfield',
+                            itemId: 'personID',
+                            name: 'personID',
+                        },    
 	                    {
 	                        xtype: 'textfield',
 	                        name: 'edVorname',
@@ -80,18 +111,7 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
 //                            hideLabel: true,
                             hideTrigger:true,        		                            
                             anchor: '100%',
-                            // override default onSelect to do redirect
-                            listeners: {
-                                select: function(combo, selection) {
-                                    var post = selection[0];
-                                    console.log(post);
-                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
-//	                                    if (post) {
-//	                                        window.location =
-//	                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
-//	                                    }
-                                }
-                            }        		                            
+                            // override default onSelect to do redirect      		                            
                         },
                         {
 	                        xtype: 'combobox',
@@ -117,18 +137,6 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
 //                            hideLabel: true,
                             hideTrigger:true,        		                            
                             anchor: '100%',
-                            // override default onSelect to do redirect
-                            listeners: {
-                                select: function(combo, selection) {
-                                    var post = selection[0];
-                                    console.log(post);
-                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
-//	                                    if (post) {
-//	                                        window.location =
-//	                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
-//	                                    }
-                                }
-                            }        		                            
                         },
 	                    {
 	                        xtype: 'textfield',
@@ -160,7 +168,7 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                             var form = me.getComponent("formPersonUpd").getForm();
                             // prüfen ob Pflichtfelder ausgefüllt sind (allowBlank-Attribut) und evtl Validitätsbedingung im Model
                             if (form.isValid()) {
-                            	me.getComponent("formPersonUpd").fireEvent('create', me.getComponent("formPersonUpd"), form.getValues());
+                            	me.getComponent("formPersonUpd").fireEvent('update', me.getComponent("formPersonUpd"), form.getValues());
                             }
                         }
                     }  
