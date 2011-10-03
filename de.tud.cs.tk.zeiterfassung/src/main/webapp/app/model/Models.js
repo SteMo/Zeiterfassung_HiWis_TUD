@@ -561,3 +561,21 @@ Ext.define('AM.model.LoggedInPerson', {
 });
 
 
+
+Ext.define('AM.model.Status', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'erledigt'},
+    ],    
+
+	proxy: {
+	    type: 'ajax',
+	    url: 'resources/data/statusData.json',
+	    reader: {
+	        type: 'json',
+	        root: 'results'
+	    }
+	}
+});
+
+

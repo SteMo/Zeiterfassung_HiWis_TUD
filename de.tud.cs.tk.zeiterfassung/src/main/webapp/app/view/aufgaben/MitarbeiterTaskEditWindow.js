@@ -20,6 +20,10 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
             console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));  
             (Ext.ComponentQuery.query('#authorID')[0]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
     	});        
+        statusStore = Ext.create('Ext.data.Store', {
+            pageSize: 10,
+            model: 'AM.model.Status',  
+        });  
         
         me.items = [
             {
@@ -36,10 +40,10 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                 			params : { id : data.id, title : data.title, description : data.description, hiwi : data.hiwi, assignedOn : data.assignedOn, deadline : data.deadline },
                 			method: 'PUT',
                 			success: function ( result, request ) { 
-                        		Ext.Msg.alert('Status', "Die Aufgabe " + data.title + " wurde erfolgreich aktualisiert!");
+                        		Ext.Msg.alert('Status', "Die Aufgabe '" + data.title + "' wurde erfolgreich aktualisiert!");
                 			},
                 			failure: function ( result, request) { 
-                				Ext.MessageBox.alert('Failed', "Die Aktualisierung der Aufgabe " + data.title + " ist fehlgeschlagen!"); 
+                				Ext.MessageBox.alert('Failed', "Die Aktualisierung der Aufgabe '" + data.title + "' ist fehlgeschlagen!"); 
                 			} 
                 		});                		                		
                     }
@@ -92,7 +96,17 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                         itemId: 'mitarbeiterTaskEditWindowDeadline',
                         fieldLabel: 'Deadline',
                         format: 'd.m.y',
-                    }
+                    },
+                    {
+                        xtype: 'combobox',
+                        itemId: 'mitarbeiterTaskEditWindowErledigt',
+                        name: 'hiwi',
+                        fieldLabel: 'Erledigt',
+                        store: statusStore,
+                        displayField: 'erledigt',
+                        valueField: 'erledigt',                        
+                        allowBlank: false,
+                    },                    
                 ]
             }
         ];
@@ -104,12 +118,6 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                     {
 						   xtype: 'tbfill'
 					  },                                
-                    {
-                        xtype: 'button',
-                        itemId: 'btnDone',
-                        text: 'Erledigt',
-                        icon: 'resources/images/Crystal_Project_success.png',
-                    }, '-', 
                     {
                         xtype: 'button',
                         itemId: 'btnSaveTaskChanges',

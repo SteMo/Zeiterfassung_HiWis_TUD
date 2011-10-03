@@ -194,11 +194,17 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
 	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+	                                                  		
 	                                                  		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
 	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
 	                                                  		combo.store.load(function(records, operation, success) {
 	                                                  		    combo.setValue(item.data.hiwi);
-	                                                  		});                                                   
+	                                                  		});        
+	                                                  		combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowErledigt')[0];
+	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
+	                                                  		combo.store.load(function(records, operation, success) {
+	                                                  		    combo.setValue(item.data.status);
+	                                                  		});                                                   	                                                  		
 	                                                  		win.show();
                                                       }
                                                   }
