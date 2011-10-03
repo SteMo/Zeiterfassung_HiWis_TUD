@@ -247,7 +247,7 @@ Ext.define('AM.view.personen.Admin', {
             	                                              var selection = grid.getView().getSelectionModel().getSelection()[0];
             	                                              console.log("Ausgewählte Zeile/Objekt zum Löschen: ");
             	                                              console.log(selection);
-            	                                              Ext.Msg.confirm('Löschen bestätigen', 'Soll wirklich gelöscht werden?',
+            	                                              Ext.Msg.confirm('Löschen bestätigen', 'Soll ' + selection.data.name + ' wirklich gelöscht werden?',
 	            	                                            		  		function(btn, text){
             	                                            	    				if (btn == 'yes'){
             	                      	                                              if (selection) {    
@@ -265,10 +265,10 @@ Ext.define('AM.view.personen.Admin', {
 	            	                      	                                      			params : { id : selection.data.id },
 	            	                      	                                      			method: 'DELETE',
 	            	                      	                                      			success: function ( result, request ) { 
-	            	                      	                                      				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+	            	                      	                                      				Ext.MessageBox.alert('Success', selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.'); 
 	            	                      	                                      			},
 	            	                      	                                      			failure: function ( result, request) { 
-	            	                      	                                      				Ext.MessageBox.alert('Failed', result.responseText); 
+	            	                      	                                      				Ext.MessageBox.alert('Failed', selection.data.name + ' konnte nicht aus der Datenbank entfernt werden!'); 
 	            	                      	                                      			} 
             	                      	                                            	  }); 
             	                      	                                            	  
