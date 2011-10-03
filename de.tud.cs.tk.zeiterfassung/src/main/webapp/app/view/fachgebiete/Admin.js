@@ -213,9 +213,9 @@ Ext.define('AM.view.fachgebiete.Admin', {
             	                      	                                              if (selection) {
             	                      	                                            	  /* ajax request weil die proprietären extJS Varianten 'bescheiden' dokumentiert sind */
             	                      	                                            	  Ext.Ajax.request({
-  	            	                      	                                      			url : 'ajax.php' , 
+  	            	                      	                                      			url : 'ws/fachgebiete/remove' , 
   	            	                      	                                      			params : { id : selection.data.id },
-  	            	                      	                                      			method: 'DELETE',
+  	            	                      	                                      			method: 'GET',
   	            	                      	                                      			success: function ( result, request ) { 
   	            	                      	                                      				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
   	            	                      	                                      			},

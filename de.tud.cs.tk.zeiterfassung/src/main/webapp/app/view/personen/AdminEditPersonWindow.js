@@ -46,9 +46,9 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                 	update: function(form, data){
                 		console.log("Person ID: " + data.personID);
                 		Ext.Ajax.request({
-                			url : 'ajax.php' , 
+                			url : 'ws/personen/update' , 
                 			params : { id : data.personID },
-                			method: 'PUT',
+                			method: 'GET',
                 			success: function ( result, request ) { 
                 				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
                 			},
