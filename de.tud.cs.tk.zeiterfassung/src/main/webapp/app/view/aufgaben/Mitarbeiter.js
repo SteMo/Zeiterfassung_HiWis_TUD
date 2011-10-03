@@ -37,7 +37,6 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                 listeners: {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
-                		console.log("create!");
                 		/* hier muss ein model definiert werden und verschickt, also evtl das bestehende, oder ein angepasstes */
                 		storeAufgaben.insert(0, data);
                     }
@@ -119,7 +118,6 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                           text: 'Reset',
                                           icon: 'resources/images/Arrow_undo.png',
                                           handler: function(){
-//                                              this.setActiveRecord(null);
                                               me.getComponent("formAddTask").getForm().reset();
                                           }
                                       }                             
@@ -191,7 +189,8 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                                       if (item) {
                                                       	  var win = Ext.create('widget.mitarbeiterTaskEditWindow');
 	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
+	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowId')[0]).setValue(item.data.id);
+                                                      	  	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
 	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);

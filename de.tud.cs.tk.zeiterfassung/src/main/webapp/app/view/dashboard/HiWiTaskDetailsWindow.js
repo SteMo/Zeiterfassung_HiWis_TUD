@@ -204,8 +204,17 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
                                       var selection = grid.getView().getSelectionModel().getSelection()[0];
                                       console.log(selection);
                                       if (selection) {
-                                    	  /* mit store.get('Name') müsste man an die ID kommen... */
-                                          store.remove(selection);
+                                      	  Ext.Ajax.request({
+                                      			url : 'ajax.php' , 
+                                      			params : { id : selection.data.id },
+                                      			method: 'DELETE',
+                                      			success: function ( result, request ) { 
+                                      				Ext.MessageBox.alert('Success', 'Die Aufgabe "' + selection.data.title + '" wurde erfolgreich aus der Datenbank entfernt.'); 
+                                      			},
+                                      			failure: function ( result, request) { 
+                                      				Ext.MessageBox.alert('Failed', 'Die Aufgabe "' + selection.data.title + '" konnte nicht aus der Datenbank entfernt werden!'); 
+                                      			} 
+                                        	  }); 
                                       }
                                   }
                               }]

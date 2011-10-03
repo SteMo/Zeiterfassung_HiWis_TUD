@@ -24,30 +24,54 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
         me.items = [
             {
                 xtype: 'form',
+                itemId: 'formTaskUpd',
                 bodyPadding: 10,
                 fieldDefaults: {
                 	anchor: '100%',
                 },
+                listeners: {
+                	update: function(form, data){
+                		Ext.Ajax.request({
+                			url : 'ajax.php' , 
+                			params : { id : data.id, title : data.title, description : data.description, hiwi : data.hiwi, assignedOn : data.assignedOn, deadline : data.deadline },
+                			method: 'PUT',
+                			success: function ( result, request ) { 
+                        		Ext.Msg.alert('Status', "Die Aufgabe " + data.title + " wurde erfolgreich aktualisiert!");
+                			},
+                			failure: function ( result, request) { 
+                				Ext.MessageBox.alert('Failed', "Die Aktualisierung der Aufgabe " + data.title + " ist fehlgeschlagen!"); 
+                			} 
+                		});                		                		
+                    }
+                },                  
                 items: [
                     {
                         xtype: 'hiddenfield',
                         itemId: 'authorID',
                         name: 'authorID',
-                    },                        
+                    },  
+                    {
+                        xtype: 'hiddenfield',
+                        itemId: 'mitarbeiterTaskEditWindowId',
+                        name: 'id',
+                    },                            
                     {
                         xtype: 'textfield',
                         itemId: 'mitarbeiterTaskEditWindowTitle',
+                        name: 'title',
                         fieldLabel: 'Titel',
                         allowBlank: false,
                     },
                     {
                         xtype: 'textareafield',
                         itemId: 'mitarbeiterTaskEditWindowDescription',
+                        name: 'description',
                         fieldLabel: 'Beschreibung'
                     },
                     {
                         xtype: 'combobox',
                         itemId: 'mitarbeiterTaskEditWindowHiwi',
+                        name: 'hiwi',
                         fieldLabel: 'Zugewiesen zu',
                         store: 'PersonenZuweisung',
                         displayField: 'name',
@@ -58,11 +82,13 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                     {
                         xtype: 'datefield',
                         itemId: 'mitarbeiterTaskEditWindowAssignedOn',
+                        name: 'assignedOn',
                         fieldLabel: 'Zugewiesen am',
                         format: 'd.m.y',
                     },
                     {
                         xtype: 'datefield',
+                        name: 'deadline',
                         itemId: 'mitarbeiterTaskEditWindowDeadline',
                         fieldLabel: 'Deadline',
                         format: 'd.m.y',
@@ -90,11 +116,10 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                         text: 'Änderungen speichern',
                         icon: 'resources/images/Icons-mini-action_save.gif',
                         handler: function(){
-                        	console.log("TaskDetailsWindow > onCreate");
-                            var form = me.getComponent("formAdd").getForm();
+                            var form = me.getComponent("formTaskUpd").getForm();
                             // prüfen ob Pflichtfelder ausgefüllt sind (allowBlank-Attribut) und evtl Validitätsbedingung im Model
                             if (form.isValid()) {
-                            	me.getComponent("formAdd").fireEvent('create', me.getComponent("formAdd"), form.getValues());
+                            	me.getComponent("formTaskUpd").fireEvent('update', me.getComponent("formTaskUpd"), form.getValues());
                             }
                         }
                     }  
