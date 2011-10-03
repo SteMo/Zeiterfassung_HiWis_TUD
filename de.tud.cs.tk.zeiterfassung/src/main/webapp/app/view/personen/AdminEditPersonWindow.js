@@ -48,7 +48,7 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                 		Ext.Ajax.request({
                 			url : 'ajax.php' , 
                 			params : { id : data.personID, name : data.edVorname, surname : data.edNachname, department : data.cbFachgebiet, position : cbHiwi, supervisor : cbVorgesetzter, openId : edOpenID },
-                			method: 'PUT',
+                			method: 'PUTT',
                 			success: function ( result, request ) { 
                 				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
                 			},
