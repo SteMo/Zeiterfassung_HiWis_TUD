@@ -248,6 +248,7 @@ Ext.define('AM.model.Personen', {
        api: {
            create: 'ws/personen/insert', // Called when saving new records
            read: 'ws/personen',
+           destroy: 'ws/personen/ID' //id muss sobald bekannt hier gesetzt werden, z.B. in view/personen/Admin.js
         },
        reader: new Ext.data.JsonReader({
            root: 'results',

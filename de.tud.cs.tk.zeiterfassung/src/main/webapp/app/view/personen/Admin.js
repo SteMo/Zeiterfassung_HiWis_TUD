@@ -110,19 +110,7 @@ Ext.define('AM.view.personen.Admin', {
 		                            typeAhead: false,
 //		                            hideLabel: true,
 		                            hideTrigger:true,        		                            
-		                            anchor: '100%',
-//		                            // override default onSelect to do redirect
-//		                            listeners: {
-//		                                select: function(combo, selection) {
-//		                                    var post = selection[0];
-//		                                    console.log(post);
-//		                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
-////    		                                    if (post) {
-////    		                                        window.location =
-////    		                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
-////    		                                    }
-//		                                }
-//		                            }        		                            
+		                            anchor: '100%',  		                            
                                 },
                                 {
     		                        xtype: 'combobox',
@@ -145,19 +133,7 @@ Ext.define('AM.view.personen.Admin', {
 		                            typeAhead: false,
 //		                            hideLabel: true,
 		                            hideTrigger:true,        		                            
-		                            anchor: '100%',
-		                            // override default onSelect to do redirect
-//		                            listeners: {
-//		                                select: function(combo, selection) {
-//		                                    var post = selection[0];
-//		                                    console.log(post);
-//		                                    /* war im Beispiel, aber ka wozu man die URL wechseln sollte */
-////    		                                    if (post) {
-////    		                                        window.location =
-////    		                                            Ext.String.format('http://www.sencha.com/forum/showthread.php?t={0}&p={1}', post.get('topicId'), post.get('id'));
-////    		                                    }
-//		                                }
-//		                            }        		                            
+		                            anchor: '100%',          
                                 },
     		                    {
     		                        xtype: 'textfield',
@@ -274,8 +250,28 @@ Ext.define('AM.view.personen.Admin', {
             	                                              Ext.Msg.confirm('Löschen bestätigen', 'Soll wirklich gelöscht werden?',
 	            	                                            		  		function(btn, text){
             	                                            	    				if (btn == 'yes'){
-            	                      	                                              if (selection) {
-            	                      	                                            	  storePersonen.remove(selection);
+            	                      	                                              if (selection) {    
+//            	                      	                                            	  storePersonen.getProxy().api.destroy= 'ws/personen/'+selection.data.id; // Called when deleting existing records                   	                      	                                            	  
+//            	                      	                                            	  var person = storePersonen.findRecord("id", selection.data.id);
+//            	                      	                                            	  storePersonen.remove(person);            	                      	                                            	  
+//            	                      	                                            	  person = storePersonen.findRecord("id", selection.data.id);
+//            	                      	                                            	  console.log(person);
+            	                      	                                        		
+            	                      	                                            	  /* ja es gibt store.remove, nein es funktioniert nicht und nein ich werde nicht noch mehr Zeit verschwenden zu suchen
+            	                      	                                            	   * wie das irgendwie doch funktionieren kann @ operation is undefined
+            	                      	                                            	   * -> Ajax Request stattdessen  */                   	                                            	   
+            	                      	                                            	  Ext.Ajax.request({
+	            	                      	                                      			url : 'ajax.php' , 
+	            	                      	                                      			params : { id : selection.data.id },
+	            	                      	                                      			method: 'DELETE',
+	            	                      	                                      			success: function ( result, request ) { 
+	            	                      	                                      				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+	            	                      	                                      			},
+	            	                      	                                      			failure: function ( result, request) { 
+	            	                      	                                      				Ext.MessageBox.alert('Failed', result.responseText); 
+	            	                      	                                      			} 
+            	                      	                                            	  }); 
+            	                      	                                            	  
             	                    	                                              }            	                                            	    					
             	                      	                                          	}            	                                            	    				
             	                                              });            	                                              

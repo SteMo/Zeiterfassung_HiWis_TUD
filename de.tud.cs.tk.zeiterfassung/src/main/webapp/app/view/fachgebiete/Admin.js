@@ -199,10 +199,9 @@ Ext.define('AM.view.fachgebiete.Admin', {
             	                   					  }, 
             	                                      {
             	                                          itemId: 'btnDelete',
-            	                                          text: 'Markierte Person löschen',
+            	                                          text: 'Markiertes Fachgebiet löschen',
             	                                          icon: 'resources/images/Delete-silk.png',
             	                                          disabled: true,
-            	                                          /* das hier muss vermutlich über den Controller gemacht werden, this.getView() geht hier nicht... */
             	                                          handler: function(){
             	                                        	  var grid = me.getComponent('adminGrid');
             	                                              var selection = grid.getView().getSelectionModel().getSelection()[0];
@@ -212,8 +211,18 @@ Ext.define('AM.view.fachgebiete.Admin', {
 	            	                                            		  		function(btn, text){
             	                                            	    				if (btn == 'yes'){
             	                      	                                              if (selection) {
-            	                      	                                            	storeFachgebiet.remove(selection);
-            	                    	                                              }            	                                            	    					
+            	                      	                                            	  /* ajax request weil die proprietären extJS Varianten 'bescheiden' dokumentiert sind */
+            	                      	                                            	  Ext.Ajax.request({
+  	            	                      	                                      			url : 'ajax.php' , 
+  	            	                      	                                      			params : { id : selection.data.id },
+  	            	                      	                                      			method: 'DELETE',
+  	            	                      	                                      			success: function ( result, request ) { 
+  	            	                      	                                      				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+  	            	                      	                                      			},
+  	            	                      	                                      			failure: function ( result, request) { 
+  	            	                      	                                      				Ext.MessageBox.alert('Failed', result.responseText); 
+  	            	                      	                                      			} 
+              	                      	                                            	  });             	                    	                                              }            	                                            	    					
             	                      	                                          	}            	                                            	    				
             	                                              });            	                                              
             	                                          }
@@ -222,7 +231,7 @@ Ext.define('AM.view.fachgebiete.Admin', {
             	                                      {
                                                           xtype: 'button',
                                                           itemId: 'btnTaskUpdate',
-                                                          text: 'Markierte Person editieren',
+                                                          text: 'Markiertes Fachgebiet editieren',
                                                           icon: 'resources/images/edit.png',
                                                           disabled: true,
                                                           handler: function(){

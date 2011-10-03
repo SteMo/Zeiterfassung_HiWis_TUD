@@ -34,20 +34,11 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
                 	anchor: '100%',
                 },
                 listeners: {
-                    // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	update: function(form, data){
-                		console.log(data);  
                 		console.log("Person ID: " + data.personID);
-                		var Person = Ext.ModelManager.getModel('AM.model.Personen');
-                		Person.load(7, {
-                		    success: function(user) {
-                		        console.log(user.getId()); //logs 123
-                		        console.log(user);
-                		    }
-                		});
                 		Ext.Ajax.request({
                 			url : 'ajax.php' , 
-                			params : { id : data.personID },
+                			params : { id : data.fachgebietID },
                 			method: 'PUT',
                 			success: function ( result, request ) { 
                 				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
@@ -55,9 +46,7 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
                 			failure: function ( result, request) { 
                 				Ext.MessageBox.alert('Failed', result.responseText); 
                 			} 
-                		});                		
-                		
-//                		ds.insert(0, data);
+                		});                		                		
                 		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
                     }
                 },     

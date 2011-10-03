@@ -43,17 +43,8 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                 	anchor: '100%',
                 },
                 listeners: {
-                    // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	update: function(form, data){
-                		console.log(data);  
                 		console.log("Person ID: " + data.personID);
-                		var Person = Ext.ModelManager.getModel('AM.model.Personen');
-                		Person.load(7, {
-                		    success: function(user) {
-                		        console.log(user.getId()); //logs 123
-                		        console.log(user);
-                		    }
-                		});
                 		Ext.Ajax.request({
                 			url : 'ajax.php' , 
                 			params : { id : data.personID },
