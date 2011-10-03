@@ -41,13 +41,12 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
                 			params : { id : data.fachgebietID, name : data.edFachgebiet, leiter : data.cbLeiter, budget : data.edBudget },
                 			method: 'PUT',
                 			success: function ( result, request ) { 
-                				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+                        		Ext.Msg.alert('Status', "Das Fachgebiet " + data.edFachgebiet + " wurde erfolgreich aktualisiert!");
                 			},
                 			failure: function ( result, request) { 
-                				Ext.MessageBox.alert('Failed', result.responseText); 
+                				Ext.MessageBox.alert('Failed', "Die Aktualisierung des Fachgebiets " + data.edFachgebiet + " ist fehlgeschlagen!"); 
                 			} 
                 		});                		                		
-                		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
                     }
                 },     
                 
