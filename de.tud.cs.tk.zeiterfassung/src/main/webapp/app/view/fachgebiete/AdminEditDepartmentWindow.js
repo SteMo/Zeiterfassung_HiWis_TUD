@@ -35,19 +35,18 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
                 },
                 listeners: {
                 	update: function(form, data){
-                		console.log("Person ID: " + data.personID);
+                		console.log("Fachgebiet ID: " + data.edFachgebiet);
                 		Ext.Ajax.request({
                 			url : 'ws/fachgebiete/update' , 
-                			params : { id : data.fachgebietID },
+                			params : { id : data.fachgebietID, name : data.edFachgebiet, leiter : data.cbLeiter, budget : data.edBudget },
                 			method: 'GET',
                 			success: function ( result, request ) { 
-                				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+                        		Ext.Msg.alert('Status', "Das Fachgebiet " + data.edFachgebiet + " wurde erfolgreich aktualisiert!");
                 			},
                 			failure: function ( result, request) { 
-                				Ext.MessageBox.alert('Failed', result.responseText); 
+                				Ext.MessageBox.alert('Failed', "Die Aktualisierung des Fachgebiets " + data.edFachgebiet + " ist fehlgeschlagen!"); 
                 			} 
                 		});                		                		
-                		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
                     }
                 },     
                 

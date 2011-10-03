@@ -47,18 +47,17 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                 		console.log("Person ID: " + data.personID);
                 		Ext.Ajax.request({
                 			url : 'ws/personen/update' , 
-                			params : { id : data.personID },
+                			params : { id : data.personID, name : data.edVorname, surname : data.edNachname, department : data.cbFachgebiet, position : data.cbHiwi, supervisor : cbVorgesetzter, openId : data.edOpenID },
                 			method: 'GET',
                 			success: function ( result, request ) { 
-                				Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText); 
+                        		Ext.Msg.alert('Status', data.edVorname + " " + data.edNachname + " wurde erfolgreich aktualisiert!");
                 			},
                 			failure: function ( result, request) { 
-                				Ext.MessageBox.alert('Failed', result.responseText); 
+                				Ext.MessageBox.alert('Failed', "Die Aktualisierung von " + data.edVorname + " " + data.edNachname + " ist fehlgeschlagen!"); 
                 			} 
                 		});                		
                 		
 //                		ds.insert(0, data);
-                		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
                     }
                 },                  
                 items: [

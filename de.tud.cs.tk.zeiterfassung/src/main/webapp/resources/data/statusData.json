@@ -1,0 +1,7 @@
+{
+    'success': true,
+    'results': [
+	  {"id":"1", "erledigt":"Nein"},
+	  {"id":"2", "erledigt":"Ja"},
+    ]
+}
