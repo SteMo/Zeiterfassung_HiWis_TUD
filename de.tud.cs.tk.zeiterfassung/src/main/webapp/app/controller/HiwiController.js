@@ -11,6 +11,7 @@ Ext.define('AM.controller.HiwiController', {
     ],	
     views: [        
         'layout.Menu',
+        'layout.LiveSearchGridPanel',        
 		'dashboard.HiWi',
 		'dashboard.HiWiTaskDetailsWindow'],
 	
@@ -24,7 +25,9 @@ Ext.define('AM.controller.HiwiController', {
     refs: [
        { ref: 'menu',      selector: 'menue'		},
        { ref: 'dashboard', selector: 'dashboard'},
-       { ref: 'taskDetailsGrid', selector: '#taskDetailsGrid'}
+       { ref: 'taskDetailsGrid', selector: '#hiwiTaskDetails'},
+       
+       
     ],
 
     
@@ -38,8 +41,11 @@ Ext.define('AM.controller.HiwiController', {
         											  'itemsLoaded': this.menuLoadItems},
             'menue button[id="btnDashboard"]': 		{ click: this.showDashboard  },
       
-            '#listOfTasks':							{ itemdblclick: this.showContentDetails },
-        	'#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged}
+            '#hiwiTaskDetails':						{ itemdblclick: this.showContentDetails },        	
+            '#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged},
+        	
+            
+            '#hiwiDbLblAbgeschlosseneAufgaben':		{ click: this.loadCompletedTasks }
         });       	
     },
     
@@ -83,6 +89,77 @@ Ext.define('AM.controller.HiwiController', {
     	detailsWindow.show();
     },
 
+    
+    loadCompletedTasks: function(){
+    	console.log("Lade alte Aufgaben clicked");
+    	var columns = [
+                       {
+                           xtype: 'numbercolumn',
+                           dataIndex: 'priority',
+                           format: '0',
+                           width: 50,
+                           text: 'Priorität',
+                       },                        
+                       {
+                           xtype: 'datecolumn',
+                           dataIndex: 'deadline',
+                           text: 'Deadline',
+                           width: 75,
+                           format: 'd.m.y'
+                       },
+                       {
+                           xtype: 'gridcolumn',                            
+                           dataIndex: 'title',
+                           text: 'Titel',
+                           flex: 1
+                       },
+                       {
+                           xtype: 'gridcolumn',
+                           dataIndex: 'assignedFrom',
+                           width: 120,
+                           text: 'Zugewiesen von'
+                       },
+                       {
+                           xtype: 'datecolumn',
+                           dataIndex: 'assignedAt',
+                           text: 'Zugewiesen am',
+                           width: 85,
+                           format: 'd.m.y'
+                       },
+                       {
+                           xtype: 'numbercolumn',
+                           dataIndex: 'worked',
+                           text: 'Geleistete Arbeit',
+                           width: 90,
+                           format: '0.00 h',
+                       }                        
+                   ];
+    	
+    	var store;
+    	var button = (Ext.ComponentQuery.query('#hiwiDbLblAbgeschlosseneAufgaben')[0]);
+
+    	console.log(button.getText());
+    	if(button.getText()=="Abgeschlossene Aufgaben anzeigen"){
+    		button.setText("Zeige offene Aufgaben");
+    		store = Ext.create('Ext.data.Store', {
+                autoLoad: true,
+                autoSync: true,
+                model: 'AM.model.HiWiAufgabeOld',  
+            });     
+    	}else{
+    		button.setText("Abgeschlossene Aufgaben anzeigen");
+    		store = Ext.create('Ext.data.Store', {
+                autoLoad: true,
+                autoSync: true,
+                model: 'AM.model.HiWiAufgabe',  
+            });         	}
+    	
+    	var me = this;
+    	store.load(function(records, operation, success) {	
+    		me.getTaskDetailsGrid().reconfigure(store, columns);
+    		me.getTaskDetailsGrid().doLayout();
+    	});
+    },
     
     
     taskDetailsGridSelectionChanged: function(selModel, selections){

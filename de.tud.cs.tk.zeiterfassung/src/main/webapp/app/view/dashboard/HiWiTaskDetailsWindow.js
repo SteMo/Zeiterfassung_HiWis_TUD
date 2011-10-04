@@ -203,19 +203,25 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
                                 	  var grid = me.getComponent('taskDetailsGrid');
                                       var selection = grid.getView().getSelectionModel().getSelection()[0];
                                       console.log(selection);
-                                      if (selection) {
-                                      	  Ext.Ajax.request({
-                                      			url : 'ajax.php' , 
-                                      			params : { id : selection.data.id },
-                                      			method: 'DELETE',
-                                      			success: function ( result, request ) { 
-                                      				Ext.MessageBox.alert('Success', 'Die Aufgabe "' + selection.data.title + '" wurde erfolgreich aus der Datenbank entfernt.'); 
-                                      			},
-                                      			failure: function ( result, request) { 
-                                      				Ext.MessageBox.alert('Failed', 'Die Aufgabe "' + selection.data.title + '" konnte nicht aus der Datenbank entfernt werden!'); 
-                                      			} 
-                                        	  }); 
-                                      }
+                                      Ext.Msg.confirm('Löschen bestätigen', 'Sollen die eingetragenen ' + selection.data.worked + ' Stunden wirklich gelöscht werden?',
+                              		  		function(btn, text){
+                          	    				if (btn == 'yes'){
+    	                                              if (selection) {                     	                                            	   
+    	                                            	  Ext.Ajax.request({
+        	                                      			url : 'ajax.php' , 
+        	                                      			params : { id : selection.data.id },
+        	                                      			method: 'DELETE',
+        	                                      			success: function ( result, request ) { 
+        	                                      				Ext.MessageBox.alert('Success', 'Die Stunden wurden erfolgreich aus der Datenbank entfernt.'); 
+        	                                      			},
+        	                                      			failure: function ( result, request) { 
+        	                                      				Ext.MessageBox.alert('Failed', 'Die Stunden konnten nicht aus der Datenbank entfernt werden!'); 
+        	                                      			} 
+    	                                            	  }); 
+    	                                            	  
+  	                                              }            	                                            	    					
+    	                                          	}            	                                            	    				
+                                      }); 
                                   }
                               }]
             }]

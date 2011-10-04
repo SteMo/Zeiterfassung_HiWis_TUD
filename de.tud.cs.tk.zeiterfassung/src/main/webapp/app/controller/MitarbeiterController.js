@@ -93,16 +93,6 @@ Ext.define('AM.controller.MitarbeiterController', {
     	layout.doLayout();
     },
     
-    showFachgebiete: function(){
-    	console.log("Fachbereiche clicked");
-    	/* reconfigure bindet einen neuen Store + columns an Grid */
-    	this.getContent().id = "listOfDepartments";
-    	this.getContent().reconfigure(this.getFachgebieteDataStore(), columnsFachgebiete);
-    	/* PagingToolbar aktualisieren: 1. an geänderten Store binden, 2. Ansicht refreshen */
-    	this.getContent().getDockedComponent("pagingtoolbar").bindStore(this.getFachgebieteDataStore());
-    	this.getContent().getDockedComponent("pagingtoolbar").doRefresh();
-    },
-
     showPersonen: function(){
     	console.log("Personen clicked");
     	var layout = Ext.getCmp('viewport');
