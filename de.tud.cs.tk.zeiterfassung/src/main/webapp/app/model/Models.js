@@ -381,6 +381,29 @@ Ext.define('AM.model.TaskDetails', {
 
 /* ################## Mitarbeiter ################### */
 
+Ext.define('AM.model.MitarbeiterDashboardInfo', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'budget', type: 'int'},
+        {name: 'vorgesetzter', type: 'string'},
+        {name: 'fachgruppe', type: 'string'},
+        {name: 'aktiveHiwis', type: 'int'},        
+        {name: 'aktiveAufgaben', type: 'int'},
+    ],    
+    proxy: {
+        type: 'jsonp',
+		api: {
+			read: 'ws/aufgaben', // Called when reading existing records
+		},        
+		reader: {
+		    type: 'json',
+		    root: 'results',
+		},              
+    } 
+});
+
+
 Ext.define('AM.model.HiWiAufgabe', {
     extend: 'Ext.data.Model',
     fields: [
@@ -565,7 +588,7 @@ Ext.define('AM.model.LoggedInPerson', {
 Ext.define('AM.model.Status', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'id', type: 'erledigt'},
+        {name: 'id', name: 'erledigt'},
     ],    
 
 	proxy: {

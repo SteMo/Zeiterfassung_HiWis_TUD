@@ -12,11 +12,10 @@ Ext.define('AM.controller.AdminController', {
 	
     views: [
 	        'layout.Menu',
-	        'layout.ContentGrid',
-	        'personen.Admin',
-	        'fachgebiete.Admin',
 	        'layout.LiveSearchGridPanel',
+	        'personen.Admin',
 	        'personen.AdminEditPersonWindow',
+	        'fachgebiete.Admin',
 	        'fachgebiete.AdminEditDepartmentWindow'
             ],
 	

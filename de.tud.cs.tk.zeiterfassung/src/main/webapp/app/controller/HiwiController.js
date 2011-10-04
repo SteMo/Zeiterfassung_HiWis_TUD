@@ -22,7 +22,6 @@ Ext.define('AM.controller.HiwiController', {
 	/* mit refs kann man auf Views zugreifen, "ref" ist nur ein beliebiger Name, selector der xtype der Komponente (oder sonstiges, siehe "Ext.ComponentQuery")
 	 * -> Zugriff über: this.get<ref>(), erster Buchstabe von <ref> groß...	 */
     refs: [
-       { ref: "content",   selector: "contentGrid", },
        { ref: 'menu',      selector: 'menue'		},
        { ref: 'dashboard', selector: 'dashboard'},
        { ref: 'taskDetailsGrid', selector: '#taskDetailsGrid'}
@@ -85,14 +84,6 @@ Ext.define('AM.controller.HiwiController', {
     },
 
     
-    
-    /* ----------- HiWi ------------ */
-// -> über Doppelklick
-//    showHiWiStundenEintragen: function(){
-//    	console.log("HiWiStundenEintragen clicked");
-//    	Ext.getCmp('viewport').remove("listOfFilters");
-//        this.getContent().bindStore(this.getFachgebieteDataStore());   
-//    },
     
     taskDetailsGridSelectionChanged: function(selModel, selections){
         this.getTaskDetailsGrid().down('#delete').setDisabled(selections.length === 0);     

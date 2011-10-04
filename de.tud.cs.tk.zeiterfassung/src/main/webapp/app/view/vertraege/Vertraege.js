@@ -202,7 +202,82 @@ Ext.define('AM.view.vertraege.Vertraege', {
                         ],
                         viewConfig: {
 
-                        }
+                        },
+                        
+    	                dockedItems: [
+    	                              {
+    	                                  xtype: 'toolbar',
+    	                                  anchor: '100%',
+    	                                  dock: 'bottom',
+                                          items: [
+                                                  {
+                           						   xtype: 'tbfill'
+                           					  }, 
+    	                                      {
+    	                                          itemId: 'btnDelete',
+    	                                          text: 'Markierten Vertrag löschen',
+    	                                          icon: 'resources/images/Delete-silk.png',
+    	                                          disabled: true,
+    	                                          handler: function(){
+    	                                        	  var grid = me.getComponent('vertragsGrid');
+    	                                              var selection = grid.getView().getSelectionModel().getSelection()[0];
+    	                                              console.log("Ausgewählte Zeile/Objekt zum Löschen: ");
+    	                                              console.log(selection);
+    	                                              Ext.Msg.confirm('Löschen bestätigen', 'Soll der Vertrag mit ' + selection.data.hiwi + ' wirklich unwiderruflich gelöscht werden?',
+        	                                            		  		function(btn, text){
+    	                                            	    				if (btn == 'yes'){
+    	                      	                                              if (selection) {                     	                                            	   
+    	                      	                                            	  Ext.Ajax.request({
+        	                      	                                      			url : 'ajax.php' , 
+        	                      	                                      			params : { id : selection.data.id },
+        	                      	                                      			method: 'DELETE',
+        	                      	                                      			success: function ( result, request ) { 
+        	                      	                                      				Ext.MessageBox.alert('Success', 'Der Vertrag mit ' + selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.'); 
+        	                      	                                      			},
+        	                      	                                      			failure: function ( result, request) { 
+        	                      	                                      				Ext.MessageBox.alert('Failed', 'Der Vertrag mit ' + selection.data.name + ' konnte nicht aus der Datenbank entfernt werden!'); 
+        	                      	                                      			} 
+    	                      	                                            	  }); 
+    	                      	                                            	  
+    	                    	                                              }            	                                            	    					
+    	                      	                                          	}            	                                            	    				
+    	                                              });            	                                              
+    	                                          }
+    	                                      }, 
+    	                                      '-',                                                                                           
+                                                 {
+                                                      xtype: 'button',
+                                                      itemId: 'btnTaskUpdate',
+                                                      text: 'Markierten Vertrag editieren',
+                                                      icon: 'resources/images/edit.png',
+                                                      disabled: true,
+                                                      handler: function(){
+                                                    	  var grid = me.getComponent('vertragsGrid');
+                                                          var item = grid.getView().getSelectionModel().getSelection()[0];
+                                                          if (item) {
+                                                          	  var win = Ext.create('widget.mitarbeiterContractEditWindow');
+    	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+    	                                                      	(Ext.ComponentQuery.query('#contractId')[0]).setValue(item.data.id);
+                                                          	  	(Ext.ComponentQuery.query('#hiwi')[0]).setValue(item.data.hiwi);
+    	                                                      	(Ext.ComponentQuery.query('#rate')[0]).setValue(item.data.rate);
+    	                                                      	(Ext.ComponentQuery.query('#hoursPerMonth')[0]).setValue(item.data.hoursPerMonth);    	        	
+    	                                                  		(Ext.ComponentQuery.query('#begin')[0]).setValue(item.data.begin);
+    	                                                  		(Ext.ComponentQuery.query('#end')[0]).setValue(item.data.end);   	                                                  		    	                                                  		
+    	                                                  		var combo = Ext.ComponentQuery.query('#supervisor')[0];
+    	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
+    	                                                  		combo.store.load(function(records, operation, success) {
+    	                                                  		    combo.setValue(item.data.supervisor);
+    	                                                  		});        
+                                           	                                                  		
+    	                                                  		win.show();
+                                                          }
+                                                      }
+                                                  }                               
+
+
+                                          ]
+                                      }
+                                  ],                    
                     },
 
                 ];
