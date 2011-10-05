@@ -7,18 +7,18 @@ Ext.define('AM.controller.MitarbeiterController', {
     stores: [
          'Personen',
          'Menu',
-         'PersonenZuweisung'
+         'PersonenZuweisung',
+         'StatusData'
     ],
 	
     views: [
 	        'layout.Menu',
-	        'layout.ContentGrid',
-	        'dashboard.Mitarbeiter',
+	        'layout.LiveSearchGridPanel',
+	        'dashboard.Mitarbeiter',	        
 	        'aufgaben.Mitarbeiter',
 	        'aufgaben.MitarbeiterTaskEditWindow',
 	        'vertraege.Vertraege',
-	        'vertraege.MitarbeiterContractEditWindow',
-	        'layout.LiveSearchGridPanel'
+	        'vertraege.MitarbeiterContractEditWindow',	        
             ],
 	
 	models: [
@@ -32,12 +32,10 @@ Ext.define('AM.controller.MitarbeiterController', {
 	/* mit refs kann man auf Views zugreifen, "ref" ist nur ein beliebiger Name, selector der xtype der Komponente (oder sonstiges, siehe "Ext.ComponentQuery")
 	 * -> Zugriff über: this.get<ref>(), erster Buchstabe von <ref> groß...	 */
     refs: [
-       { ref: "content",   selector: "contentGrid", },
-       { ref: "filterbereich", selector: "filterbereich"},
        { ref: 'menu',      selector: 'menue'		},
        { ref: 'dashboard', selector: 'dashboard'},
-       { ref: 'aufgabenGrid', selector: '#aufgabenGrid'}
-//       { ref: 'detailsWindow', selector: 'detailsWindow'}
+       { ref: 'aufgabenGrid', selector: '#aufgabenGrid'},
+       { ref: 'vertragsGrid', selector: '#vertragsGrid'}
     ],
 
     init: function() {
@@ -53,11 +51,11 @@ Ext.define('AM.controller.MitarbeiterController', {
         	'menue button[id="btnPersonen"]': 		{ click: this.showPersonen  },
         	'menue button[id="btnVertraege"]': 		{ click: this.showVertraege  },
         	'menue button[id="btnAufgaben"]': 		{ click: this.showAufgaben  }, 	
-//        	'contentGrid':							{ itemdblclick: this.showContentDetails },
             '#aufgabenDeadlineGrid':				{ itemdblclick: this.showTaskEditWindow },             	
         	'#personenGrid':						{ itemdblclick: this.showPersonenDetails },
         	'#aufgabenGrid':						{ itemdblclick: this.showTaskEditWindow,
-        											  selectionchange: this.taskDetailsGridSelectionChanged},
+        											  selectionchange: this.gridSelectionChanged},
+        	'#vertragsGrid':						{ selectionchange: this.gridSelectionChanged2}
         });       	
     },
     
@@ -95,16 +93,6 @@ Ext.define('AM.controller.MitarbeiterController', {
     	layout.doLayout();
     },
     
-    showFachgebiete: function(){
-    	console.log("Fachbereiche clicked");
-    	/* reconfigure bindet einen neuen Store + columns an Grid */
-    	this.getContent().id = "listOfDepartments";
-    	this.getContent().reconfigure(this.getFachgebieteDataStore(), columnsFachgebiete);
-    	/* PagingToolbar aktualisieren: 1. an geänderten Store binden, 2. Ansicht refreshen */
-    	this.getContent().getDockedComponent("pagingtoolbar").bindStore(this.getFachgebieteDataStore());
-    	this.getContent().getDockedComponent("pagingtoolbar").doRefresh();
-    },
-
     showPersonen: function(){
     	console.log("Personen clicked");
     	var layout = Ext.getCmp('viewport');
@@ -130,45 +118,7 @@ Ext.define('AM.controller.MitarbeiterController', {
     	clearContentArea(layout); 	
     	layout.add(Ext.create('AM.view.aufgaben.Mitarbeiter'));
     	layout.doLayout();
-    },    
-    
-    
-//    showContentDetails: function(a, item){
-//    	var detailsWindow = Ext.create('widget.detailsWindow', { title: 'Details &uuml;ber ' + item.data.name });
-//
-//    	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-//    	
-//    	
-//    	/* Abfrage welches Grid gerade geladen ist um entsprechendes Detailfenster anzuzeigen */
-//    	if(Ext.ComponentQuery.query('#listOfPeople').length!=0){
-//    		//Name:
-//    		/* Packagenotation geht in query nicht, CSS-like... */
-//        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonName')[0]).setValue(item.data.name);
-//        	//Vorname:
-//        	(Ext.ComponentQuery.query('#personenDetailsWindowPersonVorname')[0]).setValue(item.data.name);
-//        	//Fachgebiet:
-//        	(Ext.ComponentQuery.query('#personenDetailsWindowUniFachgebiet')[0]).setValue(item.data.fachgebiet);
-//        	//Position:
-//        	(Ext.ComponentQuery.query('#personenDetailsWindowUniPosition')[0]).setValue(item.data.position);    	
-//        	
-//        	//zugeordneter Professor? Ist das entweder oder mit Mitarbeiter?
-//        	if(item.data.prof_zuordnung!=-1)
-//        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuProfessor')[0]).setValue(getPerson(item.data.prof_zuordnung));
-//        	//zugeordneter Mitarbeiter?
-//        	if(item.data.mitarbeiter_zuordnung!=-1)
-//        		(Ext.ComponentQuery.query('#personenDetailsWindowUniZuMitarbeiter')[0]).setValue(getPerson(item.data.mitarbeiter_zuordnung));    	
-//
-//    	}else if(Ext.ComponentQuery.query('#listOfDepartments').length!=0){
-//    		// TO DO ! Siehe oben...
-//    	
-//    	}else if(Ext.ComponentQuery.query('#listOfTasks').length!=0){
-//    		var detailsWindow = Ext.create('AM.view.dashboard.HiWiTaskDetailsWindow');
-//		}
-//
-//    	/* zeige Fenster */
-//    	detailsWindow.show();
-//    },
-    
+    },        
     
     
     showTaskEditWindow: function(a, item){
@@ -211,16 +161,14 @@ Ext.define('AM.controller.MitarbeiterController', {
     },
     
     
-    /* ----------- HiWi ------------ */
-// -> über Doppelklick
-//    showHiWiStundenEintragen: function(){
-//    	console.log("HiWiStundenEintragen clicked");
-//    	Ext.getCmp('viewport').remove("listOfFilters");
-//        this.getContent().bindStore(this.getFachgebieteDataStore());   
-//    },
-    
-    taskDetailsGridSelectionChanged: function(selModel, selections){
-        this.getAufgabenGrid().down('#btnTaskUpdate').setDisabled(selections.length === 0);     
-    },             
+
+    gridSelectionChanged: function(selModel, selections){
+        this.getAufgabenGrid().down('#btnTaskUpdate').setDisabled(selections.length === 0);
+        this.getAufgabenGrid().down('#btnDelete').setDisabled(selections.length === 0);  
+    },    
+    gridSelectionChanged2: function(selModel, selections){
+        this.getVertragsGrid().down('#btnTaskUpdate').setDisabled(selections.length === 0);
+        this.getVertragsGrid().down('#btnDelete').setDisabled(selections.length === 0);  
+    },        
     
 });

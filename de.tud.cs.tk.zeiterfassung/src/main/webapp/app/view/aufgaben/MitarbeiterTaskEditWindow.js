@@ -20,10 +20,6 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
             console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));  
             (Ext.ComponentQuery.query('#authorID')[0]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
     	});        
-        statusStore = Ext.create('Ext.data.Store', {
-            pageSize: 10,
-            model: 'AM.model.Status',  
-        });  
         
         me.items = [
             {
@@ -37,7 +33,7 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                 	update: function(form, data){
                 		Ext.Ajax.request({
                 			url : 'ajax.php' , 
-                			params : { id : data.id, title : data.title, description : data.description, hiwi : data.hiwi, assignedOn : data.assignedOn, deadline : data.deadline },
+                			params : { id : data.id, title : data.title, description : data.description, hiwi : data.hiwi, assignedOn : data.assignedOn, deadline : data.deadline, priority : data.priority },
                 			method: 'PUT',
                 			success: function ( result, request ) { 
                         		Ext.Msg.alert('Status', "Die Aufgabe '" + data.title + "' wurde erfolgreich aktualisiert!");
@@ -82,6 +78,7 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                         valueField: 'name',                        
 //                        queryMode: 'local',
                         allowBlank: false,
+                        margin: '22 0 8 0',
                     },
                     {
                         xtype: 'datefield',
@@ -96,16 +93,25 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                         itemId: 'mitarbeiterTaskEditWindowDeadline',
                         fieldLabel: 'Deadline',
                         format: 'd.m.y',
+                        margin: '22 0 8 0',
                     },
+                    {
+                        xtype: 'numberfield',
+                        name: 'priority',
+                        itemId: 'mitarbeiterTaskEditWindowPriority',
+                        fieldLabel: 'Priorit&auml;t',
+                    },                    
                     {
                         xtype: 'combobox',
                         itemId: 'mitarbeiterTaskEditWindowErledigt',
                         name: 'hiwi',
                         fieldLabel: 'Erledigt',
-                        store: statusStore,
+                        queryMode: 'local',
+                        store: 'StatusData',
                         displayField: 'erledigt',
                         valueField: 'erledigt',                        
                         allowBlank: false,
+                        margin: '22 0 10 0',
                     },                    
                 ]
             }

@@ -79,7 +79,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                     {
                         xtype: 'combobox',
                         name: 'cbHiwi',
-                        fieldLabel: 'HiWi',
+                        fieldLabel: 'Zuweisen zu',
                         store: 'PersonenZuweisung',
 //                        queryMode: 'local',
                         displayField: 'name',
@@ -176,7 +176,39 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                                       items: [
                                               {
                        						   xtype: 'tbfill'
-                       					  },                                             
+                       					  }, 
+	                                      {
+	                                          itemId: 'btnDelete',
+	                                          text: 'Markierte Aufgabe löschen',
+	                                          icon: 'resources/images/Delete-silk.png',
+	                                          disabled: true,
+	                                          handler: function(){
+	                                        	  var grid = me.getComponent('aufgabenGrid');
+	                                              var selection = grid.getView().getSelectionModel().getSelection()[0];
+	                                              console.log("Ausgewählte Zeile/Objekt zum Löschen: ");
+	                                              console.log(selection);
+	                                              Ext.Msg.confirm('Löschen bestätigen', 'Soll die Aufgabe \n\n"' + selection.data.title + '"\n\n(aktuell zugewiesen zu ' + selection.data.hiwi + ') wirklich gelöscht werden?',
+    	                                            		  		function(btn, text){
+	                                            	    				if (btn == 'yes'){
+	                      	                                              if (selection) {                     	                                            	   
+	                      	                                            	  Ext.Ajax.request({
+    	                      	                                      			url : 'ajax.php' , 
+    	                      	                                      			params : { id : selection.data.id },
+    	                      	                                      			method: 'DELETE',
+    	                      	                                      			success: function ( result, request ) { 
+    	                      	                                      				Ext.MessageBox.alert('Success', selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.'); 
+    	                      	                                      			},
+    	                      	                                      			failure: function ( result, request) { 
+    	                      	                                      				Ext.MessageBox.alert('Failed', selection.data.name + ' konnte nicht aus der Datenbank entfernt werden!'); 
+    	                      	                                      			} 
+	                      	                                            	  }); 
+	                      	                                            	  
+	                    	                                              }            	                                            	    					
+	                      	                                          	}            	                                            	    				
+	                                              });            	                                              
+	                                          }
+	                                      }, 
+	                                      '-',                                                                                           
                                              {
                                                   xtype: 'button',
                                                   itemId: 'btnTaskUpdate',
@@ -194,6 +226,8 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
 	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowPriority')[0]).setValue(item.data.priority);
+	                                                  		
 	                                                  		
 	                                                  		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
 	                                                  		/* vorauswahl des momentan eingetragenen HiWis */

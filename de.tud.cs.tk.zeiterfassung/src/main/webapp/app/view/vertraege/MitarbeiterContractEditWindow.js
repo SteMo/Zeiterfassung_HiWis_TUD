@@ -1,5 +1,3 @@
-/* Vertrag editieren keine häufige Funktionalität -> vorerst außen vor */
-
 Ext.define('AM.view.vertraege.MitarbeiterContractEditWindow', {
     extend: 'Ext.window.Window',
 
@@ -7,10 +5,17 @@ Ext.define('AM.view.vertraege.MitarbeiterContractEditWindow', {
     
     width: 500,
     bodyPadding: '',
-    title: 'Aufgaben: Details & Editieren',
+    title: 'Hiwi-Vertrag: Details & Editieren',
 
     initComponent: function() {
         var me = this;
+        
+        var storeHiwiTarifgruppe = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.HiwiTarifgruppe',  
+        });              
+        
         me.items = [
             {
                 xtype: 'form',
@@ -23,61 +28,85 @@ Ext.define('AM.view.vertraege.MitarbeiterContractEditWindow', {
                 	update: function(form, data){
                 		Ext.Ajax.request({
                 			url : 'ajax.php' , 
-                			params : { id : data.fachgebietID, name : data.edFachgebiet, leiter : data.cbLeiter, budget : data.edBudget },
+                			params : { id : data.contractId, tarif : data.cbRate, stundenMonat : data.edHoursPerMonth, vertragsbeginn : data.edBegin, vertragsende : data.edEnd,  betreuer : data.cbSupervisor},
                 			method: 'PUT',
                 			success: function ( result, request ) { 
-                        		Ext.Msg.alert('Status', "Das Fachgebiet " + data.edFachgebiet + " wurde erfolgreich aktualisiert!");
+                        		Ext.Msg.alert('Status', "Der Vertrag von " + data.hiwi + " wurde erfolgreich aktualisiert!");
                 			},
                 			failure: function ( result, request) { 
-                				Ext.MessageBox.alert('Failed', "Die Aktualisierung des Fachgebiets " + data.edFachgebiet + " ist fehlgeschlagen!"); 
+                				Ext.MessageBox.alert('Failed', "Die Aktualisierung des Vertrags von  " + data.hiwi + " ist fehlgeschlagen!"); 
                 			} 
                 		});                		                		
                     }
                 },                  
                 items: [
                     {
-                        xtype: 'textfield',
-                        itemId: 'mitarbeiterTaskEditWindowTitle',
-                        fieldLabel: 'Titel',
-                        name: 'title',
-                        allowBlank: false,
-                    },
-                    {
                         xtype: 'hiddenfield',
                         itemId: 'contractId',
                         name: 'contractId',
                     },                        
                     {
-                        xtype: 'textareafield',
-                        itemId: 'mitarbeiterTaskEditWindowDescription',
-                        fieldLabel: 'Beschreibung',
-                        name: 'description',
+                        xtype: 'displayfield',
+                        itemId: 'hiwi',
+                        fieldLabel: 'HiWi',
+                        name: 'hiwi',
                     },
                     {
                         xtype: 'combobox',
-                        itemId: 'mitarbeiterTaskEditWindowHiwi',
-                        fieldLabel: 'Zugewiesen zu',
-                        name: 'assignedTo',
-                        store: 'PersonenZuweisung',
-                        displayField: 'name',
-                        valueField: 'name',                        
-//                        queryMode: 'local',
+                        margin: '20 0 10 0',
+                        name: 'cbRate',
+                        itemId: 'rate',
+                        fieldLabel: 'Tarifgruppe',
+                        store: storeHiwiTarifgruppe,
+                        queryMode: 'local',
+                        displayField: 'group',
+                        valueField: 'group',
                         allowBlank: false,
-                    },
+                        anchor: '100%'
+                    }, 
                     {
-                        xtype: 'datefield',
-                        name: 'assignedOn',
-                        itemId: 'mitarbeiterTaskEditWindowAssignedOn',
-                        fieldLabel: 'Zugewiesen am',
-                        format: 'd.m.y',
-                    },
+                        xtype: 'numberfield',
+                        name: 'edHoursPerMonth',
+                        itemId: 'hoursPerMonth',
+                        fieldLabel: 'Stunden/Monat',
+                        allowBlank: false,
+                        allowNegative: false,
+                        emptyText: 12,
+                        anchor: '100%'
+                    },                        
+	                {
+	                    xtype: 'datefield',
+	                    margin: '20 0 10 0',
+	                    name: 'edBegin',
+	                    itemId: 'begin',
+	                    format: 'd.m.y',
+	                    fieldLabel: 'Vertragsbeginn',
+	                    allowBlank: false,
+	                    align: 'right',
+	                    anchor: '100%'
+	                },
+	                {
+	                    xtype: 'datefield',
+	                    name: 'edEnd',
+	                    itemId: 'end',
+	                    format: 'd.m.y',
+	                    fieldLabel: 'Vertragsende',
+	                    allowBlank: false,
+	                    anchor: '100%'
+	                },
                     {
-                        xtype: 'datefield',
-                        name: 'title',
-                        itemId: 'mitarbeiterTaskEditWindowDeadline',
-                        fieldLabel: 'Deadline',
-                        format: 'd.m.y',
-                    }
+                        xtype: 'combobox',
+                        name: 'cbSupervisor',
+                        itemId: 'supervisor',
+                        fieldLabel: 'Betreuer',
+                        store: 'PersonenZuweisung',
+                        queryMode: 'local',
+                        displayField: 'name',
+                        valueField: 'name',
+                        allowBlank: false,
+                        anchor: '100%',
+                        margin: '22 0 10 0'
+                    },   	                
                 ]
             }
         ];

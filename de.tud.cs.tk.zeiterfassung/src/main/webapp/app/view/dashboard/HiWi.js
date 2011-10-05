@@ -32,16 +32,57 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 
 				{
 					// Inhaltsbereich (Tabelle/Grid)
-					xtype: 'grid',
+					xtype: 'liveSearchGridPanel',
 					width: 700,
 					height: 300,
 					padding: '10 0 5 0',
 				
-					id: 'listOfTasks',	//war: listOfPeople
+					id: 'hiwiTaskDetails',	//war: listOfPeople
 					width: '700',
 
 					store: 'DashboardData',
-					columns: columnsDashboard,	
+					columns: [
+		                        {
+		                            xtype: 'numbercolumn',
+		                            dataIndex: 'priority',
+		                            format: '0',
+		                            width: 50,
+		                            text: 'Priorität',
+		                        },                        
+		                        {
+		                            xtype: 'datecolumn',
+		                            dataIndex: 'deadline',
+		                            text: 'Deadline',
+		                            width: 75,
+		                            format: 'd.m.y'
+		                        },
+		                        {
+		                            xtype: 'gridcolumn',                            
+		                            dataIndex: 'title',
+		                            text: 'Titel',
+		                            flex: 1
+		                        },
+		                        {
+		                            xtype: 'gridcolumn',
+		                            dataIndex: 'assignedFrom',
+		                            width: 120,
+		                            text: 'Zugewiesen von'
+		                        },
+		                        {
+		                            xtype: 'datecolumn',
+		                            dataIndex: 'assignedAt',
+		                            text: 'Zugewiesen am',
+		                            width: 85,
+		                            format: 'd.m.y'
+		                        },
+		                        {
+		                            xtype: 'numbercolumn',
+		                            dataIndex: 'worked',
+		                            text: 'Geleistete Arbeit',
+		                            width: 90,
+		                            format: '0.00 h',
+		                        }                        
+		                    ],	
 					
 					title: 'Aufgaben',	
 					

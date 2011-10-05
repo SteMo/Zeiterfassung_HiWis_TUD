@@ -381,6 +381,29 @@ Ext.define('AM.model.TaskDetails', {
 
 /* ################## Mitarbeiter ################### */
 
+Ext.define('AM.model.MitarbeiterDashboardInfo', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'budget', type: 'int'},
+        {name: 'vorgesetzter', type: 'string'},
+        {name: 'fachgruppe', type: 'string'},
+        {name: 'aktiveHiwis', type: 'int'},        
+        {name: 'aktiveAufgaben', type: 'int'},
+    ],    
+    proxy: {
+        type: 'jsonp',
+		api: {
+			read: 'ws/aufgaben', // Called when reading existing records
+		},        
+		reader: {
+		    type: 'json',
+		    root: 'results',
+		},              
+    } 
+});
+
+
 Ext.define('AM.model.HiWiAufgabe', {
     extend: 'Ext.data.Model',
     fields: [
@@ -399,6 +422,37 @@ Ext.define('AM.model.HiWiAufgabe', {
 		api: {
 		    create: 'ws/aufgaben/insert', // Called when saving new records
 		    read: 'ws/aufgaben', // Called when reading existing records
+		    update: 'ws/aufgaben/update', // Called when updating existing records
+		    destroy: 'ws/aufgaben/delete' // Called when deleting existing records
+		},        
+		reader: {
+		    type: 'json',
+		    root: 'results',
+		},
+		writer: {
+		    type: 'json',
+		},
+                
+    }    
+});
+Ext.define('AM.model.HiWiAufgabeOld', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'title', type: 'string'},
+        {name: 'description', type: 'string'},
+        {name: 'supervisor', type: 'string'},
+        {name: 'hiwi', type: 'string'},        
+        {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'assignedAt', type: 'date', dateFormat: 'd.m.y'},
+        {name: 'priority', type: 'int'},
+        {name: 'status', type: 'string'}
+    ],    
+    proxy: {
+        type: 'jsonp',
+		api: {
+		    create: 'ws/aufgaben/insert', // Called when saving new records
+		    read: 'ws/', // Called when reading existing records
 		    update: 'ws/aufgaben/update', // Called when updating existing records
 		    destroy: 'ws/aufgaben/delete' // Called when deleting existing records
 		},        
@@ -565,7 +619,7 @@ Ext.define('AM.model.LoggedInPerson', {
 Ext.define('AM.model.Status', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'id', type: 'erledigt'},
+        {name: 'id', name: 'erledigt'},
     ],    
 
 	proxy: {

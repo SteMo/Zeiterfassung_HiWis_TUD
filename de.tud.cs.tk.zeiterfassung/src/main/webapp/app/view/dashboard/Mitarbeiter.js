@@ -19,21 +19,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
     
     initComponent: function() {    	
     	var me = this;
-        
-    	/* TODO: hier brauche ich die Daten für das Formular */
-    	Ext.Ajax.request({
-    	    url: 'ajax_demo/sample.json',
-    	    success: function(response, opts) {
-    	        var obj = Ext.decode(response.responseText);
-    	        console.dir(obj);
-    	    },
-    	    failure: function(response, opts) {
-    	        console.log('server-side failure with status code ' + response.status);
-    	    }
-    	});    	
-    	
-    	
-    	
+            	 	
         var storeVertragsdaten = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: true,
@@ -43,7 +29,36 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
             autoLoad: true,
             autoSync: true,
             model: 'AM.model.HiWiAufgabe',  
-        });              
+        }); 
+        
+        
+        /* muss wegen OpenID so gemacht werden, bei insert können wir über OpenID nicht gehen */
+        var storeGetIdOfLoggedInPerson  = Ext.create('Ext.data.Store', {
+            autoLoad: true,
+            autoSync: true,
+            model: 'AM.model.LoggedInPerson',  
+        });         
+        storeGetIdOfLoggedInPerson.load(function(records, operation, success) {
+        	var authorID = storeGetIdOfLoggedInPerson.getAt(0).get("id");
+            console.log("Person id: " + authorID);  
+    	});            
+        
+        /* lade allgemeine Infos zu Dashboard des Mitarbeiters */
+        var storeDashboardInfo = Ext.create('Ext.data.Store', {
+            model: 'AM.model.MitarbeiterDashboardInfo',  
+            autoLoad: false,
+        });
+        /* proxy entsprechend der ID setzen um nur nach Daten des Mitarbeiters Anfrage an Webservice zu starten */
+        storeDashboardInfo.getProxy().api.read = 'ws/madb/'+this.authorID; // Called when reading existing records 
+        storeDashboardInfo.load(function(records, operation, success) {
+            (Ext.ComponentQuery.query('#budget')[0]).setValue(storeDashboardInfo.getAt(0).get("budget"));
+            (Ext.ComponentQuery.query('#aktiveHiWis')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveHiWis"));
+            (Ext.ComponentQuery.query('#vorgesetzter')[0]).setValue(storeDashboardInfo.getAt(0).get("vorgesetzter"));
+            (Ext.ComponentQuery.query('#aktiveAufgaben')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveAufgaben"));
+            (Ext.ComponentQuery.query('#fachgruppe')[0]).setValue(storeDashboardInfo.getAt(0).get("fachgruppe"));
+    	});              
+        
+        
         
         me.items = [
             {
@@ -111,6 +126,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                         xtype: 'displayfield',
                         width: 250,
                         name: 'budget',
+                        itemId: 'budget',
                         value: 'Display Field',
                         fieldLabel: 'Budget',
                         anchor: '100%'
@@ -118,6 +134,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     {
                         xtype: 'displayfield',
                         name: 'aktiveHiWis',
+                        itemId: 'aktiveHiWis',
                         value: 'Display Field',
                         fieldLabel: 'Aktive HiWis',
                         anchor: '100%'
@@ -125,18 +142,21 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     {
                         xtype: 'displayfield',
                         name: 'vorgesetzter',
+                        itemId: 'vorgesetzter',
                         value: 'Display Field',
                         fieldLabel: 'Vorgesetzter'
                     },
                     {
                         xtype: 'displayfield',
                         name: 'aktiveAufgaben',
+                        itemId: 'aktiveAufgaben',
                         value: 'Display Field',
                         fieldLabel: 'Aktive Aufgaben'
                     },
                     {
                         xtype: 'displayfield',
                         name: 'fachgruppe',
+                        itemId: 'fachgruppe',
                         value: 'Display Field',
                         fieldLabel: 'Fachgruppe'
                     }
