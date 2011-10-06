@@ -8,6 +8,7 @@ import de.tud.cs.tk.zeiterfassung.PojoMapper;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.TarifDAO;
 import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
+import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.entities.Tarif;
 import de.tud.cs.tk.zeiterfassung.entities.Vertrag;
@@ -22,9 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -39,18 +38,12 @@ import org.codehaus.jackson.map.JsonMappingException;
 @Path("/vertraege")
 public class Vertraege {
 
-    public class VertraegeList {
-        public boolean success = false;
-        public int total = 0;
-        public List<VertraegeEntry> results = new ArrayList<VertraegeEntry>();
-    }
-
     public class VertraegeEntry {
         public long id;
-        public String hiwi, hiwiMail, supervisor, begin, end, rate;
+        public String hiwi, hiwiMail, supervisor, begin, end, rate, remainingTasks;
         public int hoursPerMonth;
 
-        public VertraegeEntry(long id, String hiwi, String hiwiMail, String supervisor, String begin, String end, String rate, int hoursPerMonth) {
+        public VertraegeEntry(long id, String hiwi, String hiwiMail, String supervisor, String begin, String end, String rate, int hoursPerMonth, String remainingTasks) {
             this.id = id;
             this.hiwi = hiwi;
             this.hiwiMail = hiwiMail;
@@ -59,6 +52,7 @@ public class Vertraege {
             this.end = end;
             this.rate = rate;
             this.hoursPerMonth = hoursPerMonth;
+            this.remainingTasks = remainingTasks;
         }
         
     }
@@ -67,7 +61,7 @@ public class Vertraege {
     @Path("/")
     @Produces({"text/javascript", "application/json"})
     public String processGetList(@Context HttpServletRequest req, @Context HttpServletResponse resp) {
-        VertraegeList vl = getList(req);
+        ResultSet<VertraegeEntry> vl = getList(req);
         String cb = req.getParameter("callback");
         String result = "";
         try {
@@ -87,10 +81,11 @@ public class Vertraege {
         return result;
     }
 
-    public VertraegeList getList(@Context HttpServletRequest req) {
-        VertraegeList vl = new VertraegeList();
+    public ResultSet<VertraegeEntry> getList(@Context HttpServletRequest req) {
+        ResultSet<VertraegeEntry> vl = new ResultSet<VertraegeEntry>();
         vl.success = false;
         vl.total = 0;
+        vl.results = new ArrayList<VertraegeEntry>();
         OpenIdPrincipal principal = null;
         if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
             principal = (OpenIdPrincipal) req.getUserPrincipal();
@@ -103,12 +98,23 @@ public class Vertraege {
             Person me = people.get(0);
             List<Vertrag> vs = me.getVertragspartner(); // Alle Verträge, bei denen ich vertragspartner bin
             List<Person> ps = PersonDAO.retrieveAll();
+            int aufgaben=0,erlAufgaben=0;
             for(Vertrag v : vs) {
-                vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat));
+                aufgaben = me.getAufgaben().size();
+                for(Aufgabe a : me.getAufgaben())
+                    if(a.erledigt)
+                        erlAufgaben++;
+                vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat, erlAufgaben+"/"+aufgaben));
             }
             vs = me.getVertragssteller();
+            Person vertragspartner;
             for(Vertrag v : vs) {
-                vl.results.add(new VertraegeEntry(v.id, v.vertragspartner.firstName+" "+v.vertragspartner.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat));
+                vertragspartner = v.vertragspartner;
+                aufgaben = vertragspartner.getAufgaben().size();
+                for(Aufgabe a : vertragspartner.getAufgaben())
+                    if(a.erledigt)
+                        erlAufgaben++;
+                vl.results.add(new VertraegeEntry(v.id, v.vertragspartner.firstName+" "+v.vertragspartner.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat, erlAufgaben+"/"+aufgaben));
             }
             vl.success = true;
             vl.total = vl.results.size();

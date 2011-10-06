@@ -84,7 +84,7 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
 	                        fieldLabel: 'Leiter',
 	                        store: ds,
 	                        displayField: 'name',
-	                        valueField: 'name',
+	                        valueField: 'id',
 	                        typeAhead: false,
 	//                        hideLabel: true,
 	                        hideTrigger:true,        		                            

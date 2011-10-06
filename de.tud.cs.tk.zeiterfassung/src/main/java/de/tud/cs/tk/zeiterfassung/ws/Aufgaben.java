@@ -198,8 +198,13 @@ public class Aufgaben {
     
     @GET
     @Path("/update")
-    public void updateAufgabe(@QueryParam("id") long id, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor, @QueryParam("worked") float worked, @QueryParam("erledigt") boolean erledigt) {       
-            Aufgabe anew = createAufgabe(title, desc, date, prio, hiwi, supervisor, worked, erledigt);  
+    public void updateAufgabe(@QueryParam("id") long id, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor, @QueryParam("worked") float worked, @QueryParam("erledigt") String erledigt) {       
+            boolean done;
+            if(erledigt.equals("Ja"))
+                done=true;
+            else
+                done=false;
+            Aufgabe anew = createAufgabe(title, desc, date, prio, hiwi, supervisor, worked, done);  
             Aufgabe aold = AufgabeDAO.retrieve(id);
             if(anew.worked != 0L) {
                 aold.worked = anew.worked;
@@ -236,12 +241,10 @@ public class Aufgaben {
         a = AufgabeDAO.retrieve(id);
         AufgabeDAO.delete(a);
         
-        /* Auflösung von Verbindungen durch Hibernate und Manuell?!
-         * for(AufgabeDetails ad : ads) {
-         *   AufgabeDetailsDAO.delete(ad);
-         * }
-         */
-        
+        for(AufgabeDetails ad : ads) {
+            AufgabeDetailsDAO.delete(ad);
+        }
+         
     }
     
     @GET

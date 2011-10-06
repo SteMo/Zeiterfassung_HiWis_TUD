@@ -47,7 +47,7 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                 		console.log("Person ID: " + data.personID);
                 		Ext.Ajax.request({
                 			url : 'ws/personen/update' , 
-                			params : { id : data.personID, name : data.edVorname, surname : data.edNachname, department : data.cbFachgebiet, position : data.cbHiwi, supervisor : cbVorgesetzter, openId : data.edOpenID },
+                			params : { id : data.personID, givenname : data.edVorname, surname : data.edNachname, fachgebiet : data.cbFachgebiet, position : data.cbHiwi, supervisor : data.cbVorgesetzter, ident : data.edOpenID },
                 			method: 'GET',
                 			success: function ( result, request ) { 
                         		Ext.Msg.alert('Status', data.edVorname + " " + data.edNachname + " wurde erfolgreich aktualisiert!");
@@ -121,12 +121,13 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                             itemId: 'supervisor',
                             fieldLabel: 'Vorgesetzter',
                             store: ds,
-                            displayField: 'name',
-                            valueField: 'supervisor',
+                            displayField: 'supervisor',
+                            valueField: 'id',
                             typeAhead: false,
 //                            hideLabel: true,
                             hideTrigger:true,        		                            
                             anchor: '100%',
+                            renderer: getPerson
                         },
 	                    {
 	                        xtype: 'textfield',

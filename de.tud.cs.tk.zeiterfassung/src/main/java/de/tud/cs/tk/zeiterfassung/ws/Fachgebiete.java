@@ -5,8 +5,10 @@
 package de.tud.cs.tk.zeiterfassung.ws;
 
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
+import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
+import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
@@ -146,6 +148,16 @@ public class Fachgebiete {
     @Path("/delete")
     public void deleteFachgebiet(@QueryParam("id") long id) {
         Fachgebiet f = FachgebietDAO.retrieve(id);
-        FachgebietDAO.delete(f);
+        if(f!=null) {
+            FachgebietDAO.delete(f);
+            for(Person p : f.people) {
+                PersonDAO.delete(p);
+                for(Aufgabe a : p.getAufgaben()) {
+                    AufgabeDAO.delete(a);
+                }
+            }
+        }
+        
+        
     }
 }

@@ -5,9 +5,11 @@
 package de.tud.cs.tk.zeiterfassung.ws;
 
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
+import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.RolleDAO;
+import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 
@@ -37,8 +39,9 @@ public class Personen {
         public String name, fachgebiet, position;
         public long id, supervisor;
         public String surname, givenname;
+        public String openID;
 
-        public PersonEntry(String name, String fachgebiet, String position, long id, long supervisor, String surname, String givenname) {
+        public PersonEntry(String name, String fachgebiet, String position, long id, long supervisor, String surname, String givenname, String openID) {
             this.name = name;
             this.fachgebiet = fachgebiet;
             this.position = position;
@@ -46,7 +49,17 @@ public class Personen {
             this.supervisor = supervisor;
             this.surname = surname;
             this.givenname = givenname;
+            this.openID = openID;
         }
+    }
+    
+    public class MitarbeiterDashboard {
+        public long id;
+        public int budget;
+        public String vorgesetzter;
+        public String fachgruppe;
+        public int aktiveHiwis;
+        public int aktiveAufgaben;
     }
 
     @GET
@@ -108,7 +121,8 @@ public class Personen {
                             ? p.getSupervisor().id
                             : Long.valueOf("-1"),
                             p.givenName,
-                            p.firstName));
+                            p.firstName,
+                            p.principal));
                     pl.total++;
                 }
             }
@@ -127,7 +141,7 @@ public class Personen {
         if(svs!=null)
              p.setSupervisor(svs);               
         
-        if(p.getSupervisor()!=null) { // Wenn kein Supervisor vorhanden ist, dann nimm Admin als Supervisor :>
+        if(p.getSupervisor()==null) { // Wenn kein Supervisor vorhanden ist, dann nimm Admin als Supervisor :>
             Person admin = PersonDAO.retrieve(adminId);
             if(admin!=null)
                 p.setSupervisor(PersonDAO.retrieve(adminId));
@@ -187,9 +201,59 @@ public class Personen {
     
     @GET
     @Path("/remove")
-    public void updatePerson(@QueryParam("id") long id) {
+    public void removePerson(@QueryParam("id") long id) {
         Person p = PersonDAO.retrieve(id);
-        if(p != null)
+        if(p != null) {
             PersonDAO.delete(p);
+            for(Aufgabe a : p.getAufgaben()) {
+                AufgabeDAO.delete(a);
+            }
+        }
+    }
+    
+    public MitarbeiterDashboard getMitarbeiterDashboard(long id) {
+        Person p = PersonDAO.retrieve(id);
+        if(p==null)
+            return null;
+        MitarbeiterDashboard md = new MitarbeiterDashboard();
+        md.id = p.id;
+        md.fachgruppe = p.getFachgebiet().name;
+        md.budget = p.getFachgebiet().budget;
+        md.aktiveHiwis = 0; md.aktiveAufgaben=0;
+        for(Person hiwi : p.getMitarbeiter()) {
+            md.aktiveHiwis++;
+            for(Aufgabe a : hiwi.getAufgaben()) {
+                if(!a.erledigt)
+                    md.aktiveAufgaben++;
+            }
+        }
+        return md;
+    }
+    
+    @GET
+    @Path("/madb/{id}")
+    public String processMitarbeiterDashboard(@Context HttpServletRequest req, @Context HttpServletResponse resp, @PathParam("id") long id) {
+        ResultSet<MitarbeiterDashboard> md = new ResultSet();
+        md.results.add(getMitarbeiterDashboard(id));
+        md.success = true;
+        md.total = md.results.size();
+        String cb = req.getParameter("callback");
+        String result = "";
+        try {
+            result = PojoMapper.toJson(md, true);
+        } catch (JsonMappingException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JsonGenerationException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Personen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (cb != null) {
+            resp.setContentType("text/javascript");
+            return cb + "(" + result + ");";
+        }
+    resp.setContentType("application/json");
+    return result;
+
     }
 }

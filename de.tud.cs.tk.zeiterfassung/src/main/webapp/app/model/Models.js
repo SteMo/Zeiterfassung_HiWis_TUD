@@ -235,7 +235,7 @@ Ext.define('AM.model.ZeitDiagramm', {
 
 Ext.define('AM.model.Personen', {
     extend: 'Ext.data.Model',
-    fields:['id', 'name', 'fachgebiet', 'position', 'supervisor', 'surname', 'givenname'],
+    fields:['id', 'name', 'fachgebiet', 'position', 'supervisor', 'surname', 'givenname', 'openID'],
     proxy: {
         type: 'jsonp',
         url: 'ws/personen',
