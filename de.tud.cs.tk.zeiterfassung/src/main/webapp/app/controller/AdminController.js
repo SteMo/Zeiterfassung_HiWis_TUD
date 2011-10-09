@@ -101,19 +101,27 @@ Ext.define('AM.controller.AdminController', {
     },    
     
     showEditPersonWindow: function(a, item){
-    	var detailsWindow = Ext.create('widget.adminEditTaskWindow');
+  	  var win = Ext.create('widget.adminEditPersonWindow');
     	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
-		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
-		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
+	  	(Ext.ComponentQuery.query('#personID')[0]).setValue(item.data.id);	
+	  	(Ext.ComponentQuery.query('#name')[0]).setValue(item.data.givenname);
+    	(Ext.ComponentQuery.query('#surname')[0]).setValue(item.data.surname);
+		(Ext.ComponentQuery.query('#openID')[0]).setValue(item.data.openID);
+		var comboSuperv = Ext.ComponentQuery.query('#supervisor')[0];
+		comboSuperv.store.load(function(records, operation, success) {
+  			comboSuperv.setValue(getPerson(item.data.supervisor));
+		});                	                                                  		
 		/* vorauswahl des momentan eingetragenen HiWis */
-		combo.store.load(function(records, operation, success) {
-		    combo.setValue(item.data.hiwi);
-		});
-    	/* zeige Fenster */
-    	detailsWindow.show();    	
+		var comboDepartm = Ext.ComponentQuery.query('#department')[0]
+		comboDepartm.store.load(function(records, operation, success) {
+			comboDepartm.setValue(item.data.fachgebiet);
+		});                   
+		var comboPosition = Ext.ComponentQuery.query('#position')[0];
+		/* vorauswahl des momentan eingetragenen HiWis */
+		comboPosition.store.load(function(records, operation, success) {
+			comboPosition.setValue(item.data.position);
+		});               	                                                  		
+		win.show();	
     },    
     
     showEditDepartmentWindow: function(a, item){

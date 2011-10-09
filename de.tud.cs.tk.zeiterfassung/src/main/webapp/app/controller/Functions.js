@@ -15,7 +15,7 @@ var getPerson = function (value) {
                 return false;
             });
         } else {
-            dataStore = dataStore = Ext.data.StoreManager.lookup('Personen');
+            dataStore = Ext.data.StoreManager.lookup('Personen');
             idx = dataStore.findExact("id", value);
         }
         if (idx === -1) {

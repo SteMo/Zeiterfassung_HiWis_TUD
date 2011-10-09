@@ -121,13 +121,12 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                             itemId: 'supervisor',
                             fieldLabel: 'Vorgesetzter',
                             store: ds,
-                            displayField: 'supervisor',
-                            valueField: 'id',
+                            displayField: 'name',
+                            valueField: 'name',
                             typeAhead: false,
 //                            hideLabel: true,
                             hideTrigger:true,        		                            
                             anchor: '100%',
-                            renderer: getPerson
                         },
 	                    {
 	                        xtype: 'textfield',

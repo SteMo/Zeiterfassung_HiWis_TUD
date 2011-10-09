@@ -293,10 +293,13 @@ Ext.define('AM.view.personen.Admin', {
                                                               	  	(Ext.ComponentQuery.query('#personID')[0]).setValue(item.data.id);	
                                                               	  	(Ext.ComponentQuery.query('#name')[0]).setValue(item.data.givenname);
         	                                                      	(Ext.ComponentQuery.query('#surname')[0]).setValue(item.data.surname);
-        	                                                  		(Ext.ComponentQuery.query('#supervisor')[0]).setValue(item.data.supervisor);
         	                                                  		(Ext.ComponentQuery.query('#openID')[0]).setValue(item.data.openID);
-        	                                                  		var comboDepartm = Ext.ComponentQuery.query('#department')[0];
+        	                                                  		var comboSuperv = Ext.ComponentQuery.query('#supervisor')[0];
+        	                                                  		comboSuperv.store.load(function(records, operation, success) {
+        	                                                  			comboSuperv.setValue(getPerson(item.data.supervisor));
+        	                                                  		});                	                                                  		
         	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
+        	                                                  		var comboDepartm = Ext.ComponentQuery.query('#department')[0]
         	                                                  		comboDepartm.store.load(function(records, operation, success) {
         	                                                  			comboDepartm.setValue(item.data.fachgebiet);
         	                                                  		});                   
