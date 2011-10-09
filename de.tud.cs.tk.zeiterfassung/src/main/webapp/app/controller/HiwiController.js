@@ -25,7 +25,7 @@ Ext.define('AM.controller.HiwiController', {
     refs: [
        { ref: 'menu',      selector: 'menue'		},
        { ref: 'dashboard', selector: 'dashboard'},
-       { ref: 'taskDetailsGrid', selector: '#hiwiTaskDetails'},
+       { ref: 'taskDetailsGrid', selector: '#taskDetailsGrid'},
        
        
     ],
