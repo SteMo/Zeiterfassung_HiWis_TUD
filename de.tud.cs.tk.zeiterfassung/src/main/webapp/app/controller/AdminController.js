@@ -127,15 +127,15 @@ Ext.define('AM.controller.AdminController', {
     showEditDepartmentWindow: function(a, item){
     	var detailsWindow = Ext.create('widget.adminEditDepartmentWindow');
     	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
-		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
-		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
-		/* vorauswahl des momentan eingetragenen HiWis */
-		combo.store.load(function(records, operation, success) {
-		    combo.setValue(item.data.hiwi);
-		});
+      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
+      	(Ext.ComponentQuery.query('#fachgebietID')[0]).setValue(item.data.id);
+      	(Ext.ComponentQuery.query('#name')[0]).setValue(item.data.name);
+  		(Ext.ComponentQuery.query('#budget')[0]).setValue(item.data.budget);
+  		var comboLeiter = Ext.ComponentQuery.query('#leiter')[0];
+  		/* vorauswahl des momentan eingetragenen HiWis */
+  		comboLeiter.store.load(function(records, operation, success) {
+  			comboLeiter.setValue(item.data.leiter);
+  		});    
     	/* zeige Fenster */
     	detailsWindow.show();    	
     },    
