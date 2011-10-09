@@ -37,6 +37,8 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                 			method: 'PUT',
                 			success: function ( result, request ) { 
                         		Ext.Msg.alert('Status', "Die Aufgabe '" + data.title + "' wurde erfolgreich aktualisiert!");
+                    			/* refresh grid */
+                        		(Ext.ComponentQuery.query('#adminGrid')[0]).getStore().load(function(records, operation, success) {});
                 			},
                 			failure: function ( result, request) { 
                 				Ext.MessageBox.alert('Failed', "Die Aktualisierung der Aufgabe '" + data.title + "' ist fehlgeschlagen!"); 

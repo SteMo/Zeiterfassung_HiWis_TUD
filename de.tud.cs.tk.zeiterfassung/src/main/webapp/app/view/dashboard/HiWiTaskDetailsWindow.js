@@ -74,7 +74,13 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
 			                    			worked: data.edHours,
 			                    			description: data.edDescription
 			                    		}));
-                        
+            			/* refresh grid */
+                		(Ext.ComponentQuery.query('#hiwiTaskDetails')[0]).getStore().load(function(records, operation, success) {
+	                		var store2 = Ext.data.StoreManager.lookup('zeitDiagrammStore');
+	                		store2.load(function(records, operation, success) {
+	                              (Ext.ComponentQuery.query('#geleisteteStunden')[0]).setValue(store2.getAt(0).get("ist")); 
+	                		});
+                		});
                     },
                 },                
                 items: [
@@ -212,7 +218,15 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
         	                                      			params : { id : selection.data.id },
         	                                      			method: 'DELETE',
         	                                      			success: function ( result, request ) { 
-        	                                      				Ext.MessageBox.alert('Success', 'Die Stunden wurden erfolgreich aus der Datenbank entfernt.'); 
+        	                                      				Ext.MessageBox.alert('Success', 'Die Stunden wurden erfolgreich aus der Datenbank entfernt.');
+          	                                      				/* refresh grid */
+          	                                      				grid.getStore().load(function(records, operation, success) {
+          	                                      					var store3 = Ext.data.StoreManager.lookup('zeitDiagrammStore');
+          	                                      					store3.load();
+          	                                      					store3.load(function(records, operation, success) {
+          	                                      						(Ext.ComponentQuery.query('#geleisteteStunden')[0]).setValue(store3.getAt(0).get("ist"));
+          	                                      					});	
+          	                                      				});
         	                                      			},
         	                                      			failure: function ( result, request) { 
         	                                      				Ext.MessageBox.alert('Failed', 'Die Stunden konnten nicht aus der Datenbank entfernt werden!'); 

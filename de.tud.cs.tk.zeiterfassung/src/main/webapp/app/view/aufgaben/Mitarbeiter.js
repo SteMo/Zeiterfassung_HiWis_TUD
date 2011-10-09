@@ -37,8 +37,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                 listeners: {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
-                		/* hier muss ein model definiert werden und verschickt, also evtl das bestehende, oder ein angepasstes */
-                		storeAufgaben.insert(0, data);
+                		storeAufgaben.insert(0, data);                		
                     }
                 },    
                 
@@ -196,7 +195,9 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
     	                      	                                      			params : { id : selection.data.id },
     	                      	                                      			method: 'DELETE',
     	                      	                                      			success: function ( result, request ) { 
-    	                      	                                      				Ext.MessageBox.alert('Success', selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.'); 
+    	                      	                                      				Ext.MessageBox.alert('Success', selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.');
+    	                      	                                      				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */
+    	                      	                                      				grid.getStore().load(function(records, operation, success) {});   	                      	                                      				
     	                      	                                      			},
     	                      	                                      			failure: function ( result, request) { 
     	                      	                                      				Ext.MessageBox.alert('Failed', selection.data.name + ' konnte nicht aus der Datenbank entfernt werden!'); 

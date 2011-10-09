@@ -32,6 +32,8 @@ Ext.define('AM.view.vertraege.MitarbeiterContractEditWindow', {
                 			method: 'PUT',
                 			success: function ( result, request ) { 
                         		Ext.Msg.alert('Status', "Der Vertrag von " + data.hiwi + " wurde erfolgreich aktualisiert!");
+                    				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */
+                        		(Ext.ComponentQuery.query('#vertragsGrid')[0]).getStore().load(function(records, operation, success) {});
                 			},
                 			failure: function ( result, request) { 
                 				Ext.MessageBox.alert('Failed', "Die Aktualisierung des Vertrags von  " + data.hiwi + " ist fehlgeschlagen!"); 

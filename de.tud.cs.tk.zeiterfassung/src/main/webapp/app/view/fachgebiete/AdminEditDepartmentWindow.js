@@ -42,6 +42,8 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
                 			method: 'GET',
                 			success: function ( result, request ) { 
                         		Ext.Msg.alert('Status', "Das Fachgebiet " + data.edFachgebiet + " wurde erfolgreich aktualisiert!");
+                        		/* refresh grid */
+                        		(Ext.ComponentQuery.query('#adminGrid')[0]).getStore().load(function(records, operation, success) {});
                 			},
                 			failure: function ( result, request) { 
                 				Ext.MessageBox.alert('Failed', "Die Aktualisierung des Fachgebiets " + data.edFachgebiet + " ist fehlgeschlagen!"); 

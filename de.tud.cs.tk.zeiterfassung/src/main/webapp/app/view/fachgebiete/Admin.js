@@ -217,7 +217,9 @@ Ext.define('AM.view.fachgebiete.Admin', {
   	            	                      	                                      			params : { id : selection.data.id },
   	            	                      	                                      			method: 'GET',
   	            	                      	                                      			success: function ( result, request ) { 
-  	            	                      	                                      				Ext.MessageBox.alert('Success', 'Das Fachgebiet "' + selection.data.name + '" wurde erfolgreich aus der Datenbank entfernt'); 
+  	            	                      	                                      				Ext.MessageBox.alert('Success', 'Das Fachgebiet "' + selection.data.name + '" wurde erfolgreich aus der Datenbank entfernt');
+	            	                      	                                      				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */
+	            	                      	                                      				grid.getStore().load(function(records, operation, success) {});	            	                      	                                      				
   	            	                      	                                      			},
   	            	                      	                                      			failure: function ( result, request) { 
   	            	                      	                                      				Ext.MessageBox.alert('Failed', 'Das Fachgebiet "' + selection.data.name + '" konnte nicht aus der Datenbank entfernt werden!'); 

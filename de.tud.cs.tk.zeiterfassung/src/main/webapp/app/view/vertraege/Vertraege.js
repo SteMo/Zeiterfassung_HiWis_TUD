@@ -232,7 +232,9 @@ Ext.define('AM.view.vertraege.Vertraege', {
         	                      	                                      			params : { id : selection.data.id },
         	                      	                                      			method: 'DELETE',
         	                      	                                      			success: function ( result, request ) { 
-        	                      	                                      				Ext.MessageBox.alert('Success', 'Der Vertrag mit ' + selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.'); 
+        	                      	                                      				Ext.MessageBox.alert('Success', 'Der Vertrag mit ' + selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.');
+        	                      	                                      				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */
+        	                      	                                      				grid.getStore().load(function(records, operation, success) {});     	                      	                                      				
         	                      	                                      			},
         	                      	                                      			failure: function ( result, request) { 
         	                      	                                      				Ext.MessageBox.alert('Failed', 'Der Vertrag mit ' + selection.data.name + ' konnte nicht aus der Datenbank entfernt werden!'); 

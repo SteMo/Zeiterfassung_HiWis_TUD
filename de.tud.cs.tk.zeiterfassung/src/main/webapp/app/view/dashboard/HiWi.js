@@ -4,10 +4,6 @@ Ext.define('AM.view.dashboard.HiWi' ,{
     	
     	
     	initComponent: function(){
-            var ds = Ext.create('Ext.data.Store', {
-                         model: 'AM.model.ZeitDiagramm',
-                         autoLoad: true,
-                        });
             var vertragsdatenStore = Ext.create('Ext.data.Store', {
                 model: 'AM.model.HiWiVertrag',
                 autoLoad: false,
@@ -19,12 +15,13 @@ Ext.define('AM.view.dashboard.HiWi' ,{
                 (Ext.ComponentQuery.query('#tarif')[0]).setValue(vertragsdatenStore.getAt(0).get("rate"));
         	});                
             
-            var geleisteteStundenMonatStore = Ext.create('Ext.data.Store', {
+            var zeitDiagrammStore = Ext.create('Ext.data.Store', {
                 model: 'AM.model.ZeitDiagramm',
-                autoLoad: false,
+                autoLoad: true,
+                storeId: 'zeitDiagrammStore'
             });      
-            geleisteteStundenMonatStore.load(function(records, operation, success) {
-                (Ext.ComponentQuery.query('#geleisteteStunden')[0]).setValue(geleisteteStundenMonatStore.getAt(0).get("ist"));
+            zeitDiagrammStore.load(function(records, operation, success) {
+                (Ext.ComponentQuery.query('#geleisteteStunden')[0]).setValue(zeitDiagrammStore.getAt(0).get("ist"));
         	});    
 
         	var me = this;
@@ -182,7 +179,7 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 				                        width: 300,
 				                        animate: true,
 				                        insetPadding: 35,
-				                        store: ds,
+				                        store: zeitDiagrammStore,
 				                        flex: 1,
 				                        axes: [
 				                            {

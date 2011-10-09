@@ -266,6 +266,8 @@ Ext.define('AM.view.personen.Admin', {
 	            	                      	                                      			method: 'GET',
 	            	                      	                                      			success: function ( result, request ) { 
 	            	                      	                                      				Ext.MessageBox.alert('Success', selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.'); 
+	            	                      	                                      				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */
+	            	                      	                                      				grid.getStore().load(function(records, operation, success) {});
 	            	                      	                                      			},
 	            	                      	                                      			failure: function ( result, request) { 
 	            	                      	                                      				Ext.MessageBox.alert('Failed', selection.data.name + ' konnte nicht aus der Datenbank entfernt werden!'); 
