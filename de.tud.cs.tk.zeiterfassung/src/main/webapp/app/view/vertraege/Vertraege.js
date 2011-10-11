@@ -228,9 +228,9 @@ Ext.define('AM.view.vertraege.Vertraege', {
     	                                            	    				if (btn == 'yes'){
     	                      	                                              if (selection) {                     	                                            	   
     	                      	                                            	  Ext.Ajax.request({
-        	                      	                                      			url : 'ajax.php' , 
+        	                      	                                      			url : 'ws/vertraege/remove' , 
         	                      	                                      			params : { id : selection.data.id },
-        	                      	                                      			method: 'DELETE',
+        	                      	                                      			method: 'GET',
         	                      	                                      			success: function ( result, request ) { 
         	                      	                                      				Ext.MessageBox.alert('Success', 'Der Vertrag mit ' + selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.');
         	                      	                                      				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */

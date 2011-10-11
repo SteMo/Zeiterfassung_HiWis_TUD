@@ -22,11 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -41,12 +37,6 @@ import org.codehaus.jackson.map.JsonMappingException;
  */
 @Path("/aufgabendetails")
 public class AufgabenDetails {
-    
-    public class AufgabenDetailsList {
-        public boolean success = false;
-        public List<AufgabenDetailsEntry> results = new ArrayList<AufgabenDetailsEntry>();
-        public int total = 0;
-    }
     
     public class AufgabenDetailsEntry {
         public String date, description;
@@ -68,7 +58,7 @@ public class AufgabenDetails {
     @Path("/{id}")
     @Produces({"application/json", "text/javascript"})
     public String processGetDetails(@Context HttpServletRequest req, @Context HttpServletResponse resp, @PathParam("id") long aid) {
-        AufgabenDetailsList al = getDetails(req, aid);
+        ResultSet<AufgabenDetailsEntry> al = getDetails(req, aid);
         String cb = req.getParameter("callback");
         String result = "";
         try {
@@ -88,8 +78,8 @@ public class AufgabenDetails {
         return result;
     }
     
-    public AufgabenDetailsList getDetails(@Context HttpServletRequest req, long aid) {
-        AufgabenDetailsList al = new AufgabenDetailsList();
+    public ResultSet<AufgabenDetailsEntry> getDetails(@Context HttpServletRequest req, long aid) {
+        ResultSet<AufgabenDetailsEntry> al = new ResultSet<AufgabenDetailsEntry>();
         OpenIdPrincipal principal = null;
         if (req.getUserPrincipal() instanceof OpenIdPrincipal) {
             principal = (OpenIdPrincipal) req.getUserPrincipal();
@@ -140,6 +130,17 @@ public class AufgabenDetails {
         af.worked += a.worked;
         
         long id = AufgabeDAO.update(af);
+        
+    }
+    
+    @GET
+    @Path("/remove/{aid}")
+    public void deleteDetails(@PathParam("aid") long aid, @QueryParam("id") long adid) {
+        Aufgabe a = AufgabeDAO.retrieve(aid);
+        AufgabeDetails ad = AufgabeDetailsDAO.retrieve(adid);
+        
+        if(ad!=null)
+            a.getDetails().remove(ad);
         
     }
 }

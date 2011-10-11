@@ -36,7 +36,7 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
          * jedenfalls auch. */
         store.getProxy().api.read = 'ws/aufgabendetails/'+this.chosenTask; // Called when reading existing records
         store.getProxy().api.update= 'ws/aufgabendetails/update/'+this.chosenTask; // Called when updating existing records
-        store.getProxy().api.destroy= 'ws/aufgabendetails/'+this.chosenTask; // Called when deleting existing records       
+        store.getProxy().api.destroy= 'ws/aufgabendetails/remove/'+this.chosenTask; // Called when deleting existing records       
         store.getProxy().api.create = 'ws/aufgabendetails/insert/'+this.chosenTask; // Called when adding
         store.load(); 	  
         
@@ -214,9 +214,9 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
                           	    				if (btn == 'yes'){
     	                                              if (selection) {                     	                                            	   
     	                                            	  Ext.Ajax.request({
-        	                                      			url : 'ajax.php' , 
+        	                                      			url : 'ws/aufgabendetails/remove/'+this.chosenTask, 
         	                                      			params : { id : selection.data.id },
-        	                                      			method: 'DELETE',
+        	                                      			method: 'GET',
         	                                      			success: function ( result, request ) { 
         	                                      				Ext.MessageBox.alert('Success', 'Die Stunden wurden erfolgreich aus der Datenbank entfernt.');
           	                                      				/* refresh grid */
