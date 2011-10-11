@@ -150,12 +150,12 @@ public class Fachgebiete {
         Fachgebiet f = FachgebietDAO.retrieve(id);
         if(f!=null) {
             FachgebietDAO.delete(f);
-            for(Person p : f.people) {
-                PersonDAO.delete(p);
-                for(Aufgabe a : p.getAufgaben()) {
-                    AufgabeDAO.delete(a);
-                }
-            }
+//            for(Person p : f.people) {
+//                PersonDAO.delete(p);
+//                for(Aufgabe a : p.getAufgaben()) {
+//                    AufgabeDAO.delete(a);
+//                }
+//            }
         }
         
         
