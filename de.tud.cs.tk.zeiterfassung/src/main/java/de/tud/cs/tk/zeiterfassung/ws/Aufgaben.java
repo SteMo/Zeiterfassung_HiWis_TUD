@@ -232,7 +232,7 @@ public class Aufgaben {
     }
     
     @GET
-    @Path("/delete")
+    @Path("/remove")
     public void deleteAufgabe(@QueryParam("id") long id) {
         Aufgabe a = AufgabeDAO.retrieve(id);
         List<AufgabeDetails> ads = a.getDetails();

@@ -191,9 +191,9 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
 	                                            	    				if (btn == 'yes'){
 	                      	                                              if (selection) {                     	                                            	   
 	                      	                                            	  Ext.Ajax.request({
-    	                      	                                      			url : 'ajax.php' , 
+    	                      	                                      			url : 'ws/aufgaben/remove' , 
     	                      	                                      			params : { id : selection.data.id },
-    	                      	                                      			method: 'DELETE',
+    	                      	                                      			method: 'GET',
     	                      	                                      			success: function ( result, request ) { 
     	                      	                                      				Ext.MessageBox.alert('Success', selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.');
     	                      	                                      				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */
