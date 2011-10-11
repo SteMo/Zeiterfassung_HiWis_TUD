@@ -91,11 +91,12 @@ public class AufgabenDetails {
             }
             Person me = people.get(0);
             List<AufgabeDetails> lds = AufgabeDetailsDAO.retrieveAll();
+            al.results = new ArrayList<AufgabenDetailsEntry>();
             for(AufgabeDetails a : lds) {
                 if(me.id == AufgabeDAO.retrieve(a.aufgabe.id).verantwortlicher.id
                         || me.id == AufgabeDAO.retrieve(a.aufgabe.id).assignedFrom.id) {
                     if(a.aufgabe.id == aid)
-                        al.results.add(new AufgabenDetailsEntry(a.id, new SimpleDateFormat("dd.MM.yy").format(a.datum.getTime()), a.beschreibung, a.worked, a.aufgabe.id));
+                        al.results.add(new AufgabenDetailsEntry(a.id, new SimpleDateFormat("dd.MM.yy").format(a.datum), a.beschreibung, a.worked, a.aufgabe.id));
                 }
             }
             al.success = true;
@@ -134,13 +135,20 @@ public class AufgabenDetails {
     }
     
     @GET
-    @Path("/remove/{aid}")
-    public void deleteDetails(@PathParam("aid") long aid, @QueryParam("id") long adid) {
-        Aufgabe a = AufgabeDAO.retrieve(aid);
-        AufgabeDetails ad = AufgabeDetailsDAO.retrieve(adid);
+    @Path("/remove/")
+    public void deleteDetails(@QueryParam("id") long adid) {
+        for(Aufgabe a : AufgabeDAO.retrieveAll()) {
+            for(AufgabeDetails ad : a.getDetails()) {
+                if(ad.id == adid) {
+                    a.getDetails().remove(ad);
+                    a.worked -= ad.worked;
+                    AufgabeDAO.update(a);
+                    AufgabeDetailsDAO.delete(ad);
+                    return;
+                }
+            }
+        }
         
-        if(ad!=null)
-            a.getDetails().remove(ad);
         
     }
 }

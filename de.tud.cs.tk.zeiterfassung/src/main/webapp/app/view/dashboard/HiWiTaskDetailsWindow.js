@@ -88,7 +88,7 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
                         xtype: 'hiddenfield',
                         itemId: 'authorID',
                         name: 'authorID',
-                    },                        
+                    },
                     {
                         xtype: 'datefield',
                         name: 'edDate',
@@ -214,8 +214,8 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
                           	    				if (btn == 'yes'){
     	                                              if (selection) {                     	                                            	   
     	                                            	  Ext.Ajax.request({
-        	                                      			url : 'ws/aufgabendetails/remove/'+this.chosenTask, 
-        	                                      			params : { id : selection.data.id },
+        	                                      			url : 'ws/aufgabendetails/remove/', 
+        	                                      			params : { id : selection.data.id},
         	                                      			method: 'GET',
         	                                      			success: function ( result, request ) { 
         	                                      				Ext.MessageBox.alert('Success', 'Die Stunden wurden erfolgreich aus der Datenbank entfernt.');
