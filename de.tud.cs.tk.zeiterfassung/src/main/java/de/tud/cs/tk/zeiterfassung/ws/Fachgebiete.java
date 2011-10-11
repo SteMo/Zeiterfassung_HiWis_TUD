@@ -145,7 +145,7 @@ public class Fachgebiete {
     }
     
     @GET
-    @Path("/delete")
+    @Path("/remove")
     public void deleteFachgebiet(@QueryParam("id") long id) {
         Fachgebiet f = FachgebietDAO.retrieve(id);
         if(f!=null) {
