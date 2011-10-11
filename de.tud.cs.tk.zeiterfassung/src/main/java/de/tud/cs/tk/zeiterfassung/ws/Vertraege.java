@@ -5,6 +5,7 @@
 package de.tud.cs.tk.zeiterfassung.ws;
 
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
+import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
 import de.tud.cs.tk.zeiterfassung.dao.TarifDAO;
 import de.tud.cs.tk.zeiterfassung.dao.VertragDAO;
@@ -200,6 +201,9 @@ public class Vertraege {
         Vertrag v = VertragDAO.retrieve(id);
         if(v!=null) 
             VertragDAO.delete(v);
+        // Annahme: Jeder Vertragspartner besitzt max. 1 Vertrag
+        for(Aufgabe a : v.vertragspartner.getAufgaben())
+            AufgabeDAO.delete(a);           
     }
     
 }
