@@ -150,7 +150,7 @@ public class Aufgaben {
         return al;
     }
     
-    public Aufgabe createAufgabe(String title, String desc, String date, int prio, String hiwi, int supervisor, float worked, boolean erledigt) {       
+    public Aufgabe createAufgabe(String title, String desc, String date, int prio, String hiwi, int supervisor, boolean erledigt) {       
         Aufgabe a = new Aufgabe();    
         String firstName = "", givenName = "";
         String[] names;
@@ -182,7 +182,7 @@ public class Aufgaben {
         a.beschreibung = desc;
         a.erledigt = erledigt;
         a.priority = prio;
-        a.worked = worked;
+        a.worked = 0;
         return a;
     }
     
@@ -192,23 +192,21 @@ public class Aufgaben {
     @GET
     @Path("/insert")
     public long insertAufgabe(@QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor) {       
-            Aufgabe a = createAufgabe(title, desc, date, prio, hiwi, supervisor, 0, false);      
+            Aufgabe a = createAufgabe(title, desc, date, prio, hiwi, supervisor, false);      
             return AufgabeDAO.create(a);
     }
     
     @GET
     @Path("/update")
-    public void updateAufgabe(@QueryParam("id") long id, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor, @QueryParam("worked") float worked, @QueryParam("erledigt") String erledigt) {       
+//http://localhost:8080/zeiterfassung-0.0.1-SNAPSHOT/ws/aufgaben/update?_dc=1318432257644&id=10&edTitle=extJS%20HiWi-Ansicht&txtDescription=&cbHiwi=Stephan%20Moczygemba&cbHiwi=Ja&edDate=12.10.11&edPriority=0&erledigt=&authorID=
+    public void updateAufgabe(@QueryParam("id") long id, @QueryParam("edTitle") String title, @QueryParam("txtDescription") String desc, @QueryParam("edDate") String date, @QueryParam("edPriority") int prio, @QueryParam("cbHiwi") String hiwi, @QueryParam("authorID") int supervisor, @QueryParam("erledigt") String erledigt) {       
             boolean done;
-            if(erledigt.equals("Ja"))
+            if(erledigt != null && erledigt.equals("Ja"))
                 done=true;
             else
                 done=false;
-            Aufgabe anew = createAufgabe(title, desc, date, prio, hiwi, supervisor, worked, done);  
+            Aufgabe anew = createAufgabe(title, desc, date, prio, hiwi, supervisor,  done);  
             Aufgabe aold = AufgabeDAO.retrieve(id);
-            if(anew.worked != 0L) {
-                aold.worked = anew.worked;
-            }
             if(anew.erledigt != aold.erledigt) {
                 aold.erledigt = anew.erledigt;
             }

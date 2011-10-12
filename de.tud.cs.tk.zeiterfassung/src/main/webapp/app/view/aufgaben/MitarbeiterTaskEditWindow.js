@@ -18,7 +18,7 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
         });         
         storeGetIdOfLoggedInPerson.load(function(records, operation, success) {
             console.log("Person id: " + storeGetIdOfLoggedInPerson.getAt(0).get("id"));  
-            (Ext.ComponentQuery.query('#authorID')[0]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
+            (Ext.ComponentQuery.query('#authorID')[1]).setValue(storeGetIdOfLoggedInPerson.getAt(0).get("id"));
     	});        
         
         me.items = [
@@ -31,10 +31,11 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                 },
                 listeners: {
                 	update: function(form, data){
+                                console.log(data)
                 		Ext.Ajax.request({
-                			url : 'ajax.php' , 
-                			params : { id : data.id, title : data.title, description : data.description, hiwi : data.hiwi, assignedOn : data.assignedOn, deadline : data.deadline, priority : data.priority },
-                			method: 'PUT',
+                			url : 'ws/aufgaben/update' , 
+                			params : { id : data.id, edTitle : data.title, txtDescription : data.description, cbHiwi : data.hiwi, edDate : data.deadline, edPriority : data.priority, erledigt: data.erledigt, authorID: data.authorID },
+                			method: 'GET',
                 			success: function ( result, request ) { 
                         		Ext.Msg.alert('Status', "Die Aufgabe '" + data.title + "' wurde erfolgreich aktualisiert!");
                     			/* refresh grid */
@@ -106,7 +107,7 @@ Ext.define('AM.view.aufgaben.MitarbeiterTaskEditWindow', {
                     {
                         xtype: 'combobox',
                         itemId: 'mitarbeiterTaskEditWindowErledigt',
-                        name: 'hiwi',
+                        name: 'erledigt',
                         fieldLabel: 'Erledigt',
                         queryMode: 'local',
                         store: 'StatusData',

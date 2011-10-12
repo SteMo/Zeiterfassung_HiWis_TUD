@@ -42,9 +42,10 @@ public class Vertraege {
     public class VertraegeEntry {
         public long id;
         public String hiwi, hiwiMail, supervisor, begin, end, rate, remainingTasks;
+        public int doneHours;
         public int hoursPerMonth;
 
-        public VertraegeEntry(long id, String hiwi, String hiwiMail, String supervisor, String begin, String end, String rate, int hoursPerMonth, String remainingTasks) {
+        public VertraegeEntry(long id, String hiwi, String hiwiMail, String supervisor, String begin, String end, String rate, int hoursPerMonth, String remainingTasks, int doneHours) {
             this.id = id;
             this.hiwi = hiwi;
             this.hiwiMail = hiwiMail;
@@ -54,6 +55,7 @@ public class Vertraege {
             this.rate = rate;
             this.hoursPerMonth = hoursPerMonth;
             this.remainingTasks = remainingTasks;
+            this.doneHours = doneHours;
         }
         
     }
@@ -100,22 +102,29 @@ public class Vertraege {
             List<Vertrag> vs = me.getVertragspartner(); // Alle Verträge, bei denen ich vertragspartner bin
             List<Person> ps = PersonDAO.retrieveAll();
             int aufgaben=0,erlAufgaben=0;
+            int arbeitsstunden=0;
             for(Vertrag v : vs) {
                 aufgaben = me.getAufgaben().size();
-                for(Aufgabe a : me.getAufgaben())
-                    if(a.erledigt)
+                for(Aufgabe a : me.getAufgaben()) {
+                    if(a.erledigt) {
                         erlAufgaben++;
-                vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat, erlAufgaben+"/"+aufgaben));
+                    }
+                    arbeitsstunden+=a.worked;
+                }
+                vl.results.add(new VertraegeEntry(v.id, me.firstName+" "+me.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat, erlAufgaben+"/"+aufgaben, arbeitsstunden));
             }
+            arbeitsstunden = 0;
             vs = me.getVertragssteller();
             Person vertragspartner;
             for(Vertrag v : vs) {
                 vertragspartner = v.vertragspartner;
                 aufgaben = vertragspartner.getAufgaben().size();
-                for(Aufgabe a : vertragspartner.getAufgaben())
+                for(Aufgabe a : vertragspartner.getAufgaben()) {
                     if(a.erledigt)
                         erlAufgaben++;
-                vl.results.add(new VertraegeEntry(v.id, v.vertragspartner.firstName+" "+v.vertragspartner.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat, erlAufgaben+"/"+aufgaben));
+                    arbeitsstunden+=a.worked;
+                }
+                vl.results.add(new VertraegeEntry(v.id, v.vertragspartner.firstName+" "+v.vertragspartner.givenName, "email???", v.vertragssteller.firstName+" "+v.vertragssteller.givenName, new SimpleDateFormat("dd.mm.yy").format(v.start.getTime()), new SimpleDateFormat("dd.mm.yy").format(v.ende.getTime()), (v.getTarif()==null)? "Kein Tarif" : v.getTarif().name, v.stundenProMonat, erlAufgaben+"/"+aufgaben, arbeitsstunden));
             }
             vl.success = true;
             vl.total = vl.results.size();

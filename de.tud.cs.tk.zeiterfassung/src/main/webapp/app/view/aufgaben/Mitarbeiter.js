@@ -226,7 +226,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
 	                                                      	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowId')[0]).setValue(item.data.id);
                                                       	  	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
-	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
+	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.desc);
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedAt);    	        	
 	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
 	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowPriority')[0]).setValue(item.data.priority);
