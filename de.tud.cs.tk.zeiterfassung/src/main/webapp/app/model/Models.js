@@ -394,7 +394,7 @@ Ext.define('AM.model.MitarbeiterDashboardInfo', {
     proxy: {
         type: 'jsonp',
 		api: {
-			read: 'ws/aufgaben', // Called when reading existing records
+			read: 'ws/personen/madb/', // Called when reading existing records
 		},        
 		reader: {
 		    type: 'json',
