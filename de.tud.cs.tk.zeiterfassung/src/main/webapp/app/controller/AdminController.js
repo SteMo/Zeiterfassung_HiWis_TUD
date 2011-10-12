@@ -65,6 +65,7 @@ Ext.define('AM.controller.AdminController', {
     },   
     /* lade Daten aus Menü-store ins Menü (GUI) */
     menuLoadItems: function(e){
+    	console.log("menuLoadItems called");
     	var items = createItemListFromStore(this.getMenuStore());    	
     	this.getMenu().removeAll();
     	for(var i in items) {

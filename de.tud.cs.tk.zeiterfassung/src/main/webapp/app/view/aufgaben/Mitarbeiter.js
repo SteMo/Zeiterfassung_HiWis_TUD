@@ -37,7 +37,9 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                 listeners: {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
-                		storeAufgaben.insert(0, data);                		
+                		storeAufgaben.insert(0, data);             
+                		Ext.Msg.alert('Status', "Die Aufgabe wurde erfolgreich eingetragen! Aktualisieren Sie nun bitte manuell die Ansicht (klick auf den Men&uuml;punkt gen&uuml;gt).");
+
                     }
                 },    
                 
@@ -154,7 +156,7 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
                         },
                         {
                             xtype: 'datecolumn',
-                            dataIndex: 'assignedOn',
+                            dataIndex: 'assignedAt',
                             text: 'Zugewiesen am',
                             format: 'd.m.y',
                         },   
@@ -195,12 +197,12 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
     	                      	                                      			params : { id : selection.data.id },
     	                      	                                      			method: 'GET',
     	                      	                                      			success: function ( result, request ) { 
-    	                      	                                      				Ext.MessageBox.alert('Success', selection.data.name + ' wurde erfolgreich aus der Datenbank entfernt.');
+    	                      	                                      				Ext.MessageBox.alert('Success', selection.data.title + ' wurde erfolgreich aus der Datenbank entfernt.');
     	                      	                                      				/* refresh grid, function() scheint wichtig, dann wartet er hier bis zum refresh */
     	                      	                                      				grid.getStore().load(function(records, operation, success) {});   	                      	                                      				
     	                      	                                      			},
     	                      	                                      			failure: function ( result, request) { 
-    	                      	                                      				Ext.MessageBox.alert('Failed', selection.data.name + ' konnte nicht aus der Datenbank entfernt werden!'); 
+    	                      	                                      				Ext.MessageBox.alert('Failed', selection.data.title + ' konnte nicht aus der Datenbank entfernt werden!'); 
     	                      	                                      			} 
 	                      	                                            	  }); 
 	                      	                                            	  
@@ -225,20 +227,20 @@ Ext.define('AM.view.aufgaben.Mitarbeiter', {
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowId')[0]).setValue(item.data.id);
                                                       	  	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
 	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
-	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
+	                                                      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedAt);    	        	
 	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
 	                                                  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowPriority')[0]).setValue(item.data.priority);
 	                                                  		
-	                                                  		
-	                                                  		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
+	                                                		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
+	                                                		/* vorauswahl des momentan eingetragenen HiWis */
+	                                                		combo.store.load(function(records, operation, success) {
+	                                                		    combo.setValue(item.data.hiwi);
+	                                                		});	                                                  		
+    
+	                                                		var combo2 = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowErledigt')[0];
 	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
-	                                                  		combo.store.load(function(records, operation, success) {
-	                                                  		    combo.setValue(item.data.hiwi);
-	                                                  		});        
-	                                                  		combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowErledigt')[0];
-	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
-	                                                  		combo.store.load(function(records, operation, success) {
-	                                                  		    combo.setValue(item.data.status);
+	                                                  		combo2.store.load(function(records, operation, success) {
+	                                                  		    combo2.setValue(item.data.status);
 	                                                  		});                                                   	                                                  		
 	                                                  		win.show();
                                                       }

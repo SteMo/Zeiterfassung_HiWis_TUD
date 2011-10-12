@@ -248,7 +248,7 @@ Ext.define('AM.view.fachgebiete.Admin', {
         	                                                  		var comboLeiter = Ext.ComponentQuery.query('#leiter')[0];
         	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
         	                                                  		comboLeiter.store.load(function(records, operation, success) {
-        	                                                  			comboLeiter.setValue(item.data.leiter);
+        	                                                  			comboLeiter.setValue(6);
         	                                                  		});                              	                                                  		
         	                                                  		win.show();
                                                               }

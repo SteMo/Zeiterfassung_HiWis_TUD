@@ -229,7 +229,7 @@ Ext.define('AM.view.dashboard.HiWiTaskDetailsWindow', {
           	                                      				});
         	                                      			},
         	                                      			failure: function ( result, request) { 
-        	                                      				Ext.MessageBox.alert('Failed', 'Die Stunden konnten nicht aus der Datenbank entfernt werden!'); 
+        	                                      				Ext.MessageBox.alert('Failed', 'Die Stunden konnten nicht aus der Datenbank entfernt werden! Falls Sie die Stunden gerade erst eingetragen haben, schlie&szlig;en Sie das Fenster, aktualisieren die Ansicht und versuchen es danach erneut.'); 
         	                                      			} 
     	                                            	  }); 
     	                                            	  

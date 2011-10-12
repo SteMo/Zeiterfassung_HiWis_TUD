@@ -126,8 +126,9 @@ Ext.define('AM.controller.MitarbeiterController', {
     	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
     	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
     	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedOn);    	        	
+    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedAt);    	        	
 		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowPriority')[0]).setValue(item.data.priority);		
 		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
 		/* vorauswahl des momentan eingetragenen HiWis */
 		combo.store.load(function(records, operation, success) {

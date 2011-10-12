@@ -70,11 +70,9 @@ Ext.define('AM.view.personen.Admin', {
                         
                         listeners: {
                             // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
-                        	create: function(form, data){
-                        		console.log(data);
-                        		
+                        	create: function(form, data){                        		
                         		storePersonen.insert(0, data);
-                        		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.role + " angelegt!");
+                        		Ext.Msg.alert('Status', data.givenname + " " + data.surname + " wurde erfolgreich in der Datenbank als " + data.position + " angelegt!");
                             }
                         },    
                         

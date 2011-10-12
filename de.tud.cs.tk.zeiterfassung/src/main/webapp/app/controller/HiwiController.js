@@ -26,6 +26,8 @@ Ext.define('AM.controller.HiwiController', {
        { ref: 'menu',      selector: 'menue'		},
        { ref: 'dashboard', selector: 'dashboard'},
        { ref: 'taskDetailsGrid', selector: '#taskDetailsGrid'},
+       { ref: 'grid', 	   selector: '#hiwiTaskDetails'}
+
        
        
     ],
@@ -41,7 +43,8 @@ Ext.define('AM.controller.HiwiController', {
         											  'itemsLoaded': this.menuLoadItems},
             'menue button[id="btnDashboard"]': 		{ click: this.showDashboard  },
       
-            '#hiwiTaskDetails':						{ itemdblclick: this.showContentDetails },        	
+            '#hiwiTaskDetails':						{ itemdblclick: this.showContentDetails,
+					  								  selectionchange: this.gridSelectionChanged},        	
             '#taskDetailsGrid':						{ selectionchange: this.taskDetailsGridSelectionChanged},
         	
             
@@ -166,4 +169,7 @@ Ext.define('AM.controller.HiwiController', {
         this.getTaskDetailsGrid().down('#delete').setDisabled(selections.length === 0);     
     },        
     
+    gridSelectionChanged: function(selModel, selections){
+        this.getGrid().down('#btnStundenUpdate').setDisabled(selections.length === 0);
+    },    
 });

@@ -55,6 +55,11 @@ Ext.define('AM.view.vertraege.Vertraege', {
                     // hier wird auf das "create" event gehört und ein neuer Datensatz per Post an die im Model definierte Adresse geschickt
                 	create: function(form, data){
                 		storeAufgaben.insert(0, data);
+                		/* Problem: die Namen der Formularfelder muessten mit dem Grid uebereinstimmen, damit diese direkt korrekt dort
+                		 * eingetragen werden - wenn ich die Namen hier aendere muesste man auch in den WS anpassen -> kann man als
+                		 * Verschoenerung spaeter ja machen...
+                		 */
+                		Ext.Msg.alert('Status', "Der Vertrag wurde erfolgreich eingetragen! Aktualisieren Sie nun bitte manuell die Ansicht (klick auf den Men&uuml;punkt gen&uuml;gt).");
                     }
                 },    
                 

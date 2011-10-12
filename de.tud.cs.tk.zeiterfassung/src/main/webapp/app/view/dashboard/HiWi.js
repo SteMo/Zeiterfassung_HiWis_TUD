@@ -83,13 +83,38 @@ Ext.define('AM.view.dashboard.HiWi' ,{
 					
 					title: 'Aufgaben',	
 					
-				    dockedItems: [{
-				    	id:	   'pagingtoolbar',
-				        xtype: 'pagingtoolbar',
-				        store: 'DashboardData',   // same store GridPanel is using
-				        dock: 'bottom',
-				        displayInfo: true
-				    }]					
+				    dockedItems: [
+	                              {
+	                                  xtype: 'toolbar',
+	                                  anchor: '100%',
+	                                  dock: 'bottom',
+	                                  items: [
+	                                          {
+	                   						   xtype: 'tbfill'
+	                   					  }, 				                  
+		                                  {
+		                                      xtype: 'button',
+		                                      itemId: 'btnStundenUpdate',
+		                                      text: 'Stunden eintragen/ansehen',
+		                                      icon: 'resources/images/edit.png',
+		                                      disabled: true,
+		                                      handler: function(){
+		                                    	  var grid = me.getComponent('hiwiTaskDetails');
+		                                          var item = grid.getView().getSelectionModel().getSelection()[0];
+		                                          if (item) {
+		                                          	var detailsWindow = Ext.create('AM.view.dashboard.HiWiTaskDetailsWindow', {chosenTask: item.data.id});
+		                                        	detailsWindow.show();
+		                                          }
+		                                      }
+		                                  }]},   				                  
+//				                  {				    	
+//				    	id:	   'pagingtoolbar',
+//				        xtype: 'pagingtoolbar',
+//				        store: 'DashboardData',   // same store GridPanel is using
+//				        dock: 'bottom',
+//				        displayInfo: true
+//				    }
+		            ]					
 				},
 				{
 					xtype: 'container',

@@ -52,7 +52,7 @@ Ext.define('AM.view.personen.AdminEditPersonWindow', {
                 			success: function ( result, request ) { 
                         		Ext.Msg.alert('Status', data.edVorname + " " + data.edNachname + " wurde erfolgreich aktualisiert!");
                     			/* refresh grid, doppelt, dann tut es extJS sogar meistens... */
-                        		(Ext.ComponentQuery.query('#aufgabenGrid')[0]).getStore().load(function(records, operation, success) {});
+                        		(Ext.ComponentQuery.query('#adminGrid')[0]).getStore().load(function(records, operation, success) {});
                 			},
                 			failure: function ( result, request) { 
                 				Ext.MessageBox.alert('Failed', "Die Aktualisierung von " + data.edVorname + " " + data.edNachname + " ist fehlgeschlagen!"); 
