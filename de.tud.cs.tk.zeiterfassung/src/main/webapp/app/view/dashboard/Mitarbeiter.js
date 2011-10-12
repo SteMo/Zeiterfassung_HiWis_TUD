@@ -113,7 +113,7 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'remainingTasks',
-                        text: 'Offene Aufgaben',
+                        text: 'Bearbeitete Aufgaben',
                         width: 120
                     },                    
 //                    {
