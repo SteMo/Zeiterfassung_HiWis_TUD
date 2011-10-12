@@ -5,10 +5,8 @@
 package de.tud.cs.tk.zeiterfassung.ws;
 
 import de.tud.cs.tk.zeiterfassung.PojoMapper;
-import de.tud.cs.tk.zeiterfassung.dao.AufgabeDAO;
 import de.tud.cs.tk.zeiterfassung.dao.FachgebietDAO;
 import de.tud.cs.tk.zeiterfassung.dao.PersonDAO;
-import de.tud.cs.tk.zeiterfassung.entities.Aufgabe;
 import de.tud.cs.tk.zeiterfassung.entities.Fachgebiet;
 import de.tud.cs.tk.zeiterfassung.entities.Person;
 import de.tud.cs.tk.zeiterfassung.jopenid.OpenIdPrincipal;
@@ -36,11 +34,11 @@ public class Fachgebiete {
 
     public class FachgebietEntry {
 
-        public String name, leiter, stellvertreter;
+        public String name;
         public int budget;
-        public long id;
+        public long id, leiter, stellvertreter;
 
-        public FachgebietEntry(long id, String name, String leiter, String stellvertreter, int budget) {
+        public FachgebietEntry(long id, String name, long leiter, long stellvertreter, int budget) {
             this.id = id;
             this.name = name;
             this.leiter = leiter;
@@ -94,7 +92,7 @@ public class Fachgebiete {
                 if (me.getFachgebiet().id == fg.id || me.getRolle().significance <= 10) {
                     leiter = PersonDAO.retrieve(fg.leiter);
                     stellv = PersonDAO.retrieve(fg.stellv);
-                    result.results.add(new FachgebietEntry(fg.id, fg.name, (leiter != null) ? leiter.firstName + " " + leiter.givenName : null, (stellv != null) ? stellv.firstName + " " + stellv.givenName : null, fg.budget));
+                    result.results.add(new FachgebietEntry(fg.id, fg.name, fg.leiter, fg.stellv , fg.budget));
                 }
             }
             result.success = true;

@@ -29,8 +29,13 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
             autoLoad: true,
             autoSync: true,
             model: 'AM.model.HiWiAufgabe',  
-        }); 
-        
+        });         
+                
+        /* lade allgemeine Infos zu Dashboard des Mitarbeiters */
+        var storeDashboardInfo = Ext.create('Ext.data.Store', {
+            model: 'AM.model.MitarbeiterDashboardInfo',  
+            autoLoad: false,
+        });
         
         /* muss wegen OpenID so gemacht werden, bei insert können wir über OpenID nicht gehen */
         var storeGetIdOfLoggedInPerson  = Ext.create('Ext.data.Store', {
@@ -39,24 +44,35 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
             model: 'AM.model.LoggedInPerson',  
         });         
         storeGetIdOfLoggedInPerson.load(function(records, operation, success) {
-        	var authorID = storeGetIdOfLoggedInPerson.getAt(0).get("id");
+            var authorID = storeGetIdOfLoggedInPerson.getAt(0).get("id");
             console.log("Person id: " + authorID);  
+            storeDashboardInfo.getProxy().api.read = 'ws/personen/madb/'+storeGetIdOfLoggedInPerson.getAt(0).get("id"); // Called when reading existing records 
+            storeDashboardInfo.load(function(records, operation, success) {
+                console.log("Records: "+records);
+                console.log("Operation: "+operation);
+                console.log("success: "+success);
+                console.log("URL: "+storeDashboardInfo.getProxy().api.read);
+                (Ext.ComponentQuery.query('#budget')[0]).setValue(storeDashboardInfo.getAt(0).get("budget"));
+                (Ext.ComponentQuery.query('#aktiveHiwis')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveHiwis"));
+                (Ext.ComponentQuery.query('#vorgesetzter')[0]).setValue(storeDashboardInfo.getAt(0).get("vorgesetzter"));
+                (Ext.ComponentQuery.query('#aktiveAufgaben')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveAufgaben"));
+                (Ext.ComponentQuery.query('#fachgruppe')[0]).setValue(storeDashboardInfo.getAt(0).get("fachgruppe"));
+            }); 
     	});            
-        
-        /* lade allgemeine Infos zu Dashboard des Mitarbeiters */
-        var storeDashboardInfo = Ext.create('Ext.data.Store', {
-            model: 'AM.model.MitarbeiterDashboardInfo',  
-            autoLoad: false,
-        });
-        /* proxy entsprechend der ID setzen um nur nach Daten des Mitarbeiters Anfrage an Webservice zu starten */
-        storeDashboardInfo.getProxy().api.read = 'ws/madb/'+this.authorID; // Called when reading existing records 
-        storeDashboardInfo.load(function(records, operation, success) {
-            (Ext.ComponentQuery.query('#budget')[0]).setValue(storeDashboardInfo.getAt(0).get("budget"));
-            (Ext.ComponentQuery.query('#aktiveHiWis')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveHiWis"));
-            (Ext.ComponentQuery.query('#vorgesetzter')[0]).setValue(storeDashboardInfo.getAt(0).get("vorgesetzter"));
-            (Ext.ComponentQuery.query('#aktiveAufgaben')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveAufgaben"));
-            (Ext.ComponentQuery.query('#fachgruppe')[0]).setValue(storeDashboardInfo.getAt(0).get("fachgruppe"));
-    	});              
+
+//        /* proxy entsprechend der ID setzen um nur nach Daten des Mitarbeiters Anfrage an Webservice zu starten */
+//        storeDashboardInfo.getProxy().api.read = 'ws/personen/madb/'+this.authorID; // Called when reading existing records 
+//        storeDashboardInfo.load(function(records, operation, success) {
+//            console.log("Records: "+records);
+//            console.log("Operation: "+operation);
+//            console.log("success: "+success);
+//            console.log("URL: ws/personen/madb/"+this.authorID);
+//            (Ext.ComponentQuery.query('#budget')[0]).setValue(storeDashboardInfo.getAt(0).get("budget"));
+//            (Ext.ComponentQuery.query('#aktiveHiWis')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveHiWis"));
+//            (Ext.ComponentQuery.query('#vorgesetzter')[0]).setValue(storeDashboardInfo.getAt(0).get("vorgesetzter"));
+//            (Ext.ComponentQuery.query('#aktiveAufgaben')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveAufgaben"));
+//            (Ext.ComponentQuery.query('#fachgruppe')[0]).setValue(storeDashboardInfo.getAt(0).get("fachgruppe"));
+//        });              
         
         
         
@@ -133,8 +149,8 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
                     },
                     {
                         xtype: 'displayfield',
-                        name: 'aktiveHiWis',
-                        itemId: 'aktiveHiWis',
+                        name: 'aktiveHiwis',
+                        itemId: 'aktiveHiwis',
                         value: 'Display Field',
                         fieldLabel: 'Aktive HiWis',
                         anchor: '100%'
