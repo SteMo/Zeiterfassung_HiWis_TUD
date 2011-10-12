@@ -172,6 +172,7 @@ Ext.define('AM.view.fachgebiete.Admin', {
                                         xtype: 'gridcolumn',
                                         dataIndex: 'leiter',
                                         text: 'Leiter',
+                                        renderer: getPerson,
                                     },      
 //                                    {
 //                                        xtype: 'gridcolumn',
@@ -248,8 +249,9 @@ Ext.define('AM.view.fachgebiete.Admin', {
         	                                                  		var comboLeiter = Ext.ComponentQuery.query('#leiter')[0];
         	                                                  		/* vorauswahl des momentan eingetragenen HiWis */
         	                                                  		comboLeiter.store.load(function(records, operation, success) {
-        	                                                  			comboLeiter.setValue(6);
-        	                                                  		});                              	                                                  		
+        	                                                  			comboLeiter.setValue(item.data.leiter);
+        	                                                  		});    
+                                                                                //console.log(item);
         	                                                  		win.show();
                                                               }
                                                           }

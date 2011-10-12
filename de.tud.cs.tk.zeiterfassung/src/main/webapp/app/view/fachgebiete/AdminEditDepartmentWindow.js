@@ -91,6 +91,7 @@ Ext.define('AM.view.fachgebiete.AdminEditDepartmentWindow', {
 	//                        hideLabel: true,
 	                        hideTrigger:true,        		                            
 	                        anchor: '100%',
+                                renderer: getPerson,
             			},
 	                    {
 	                        xtype: 'numberfield',

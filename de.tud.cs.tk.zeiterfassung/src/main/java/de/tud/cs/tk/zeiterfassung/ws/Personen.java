@@ -234,6 +234,7 @@ public class Personen {
     @Path("/madb/{id}")
     public String processMitarbeiterDashboard(@Context HttpServletRequest req, @Context HttpServletResponse resp, @PathParam("id") long id) {
         ResultSet<MitarbeiterDashboard> md = new ResultSet();
+        md.results = new ArrayList<MitarbeiterDashboard>();
         md.results.add(getMitarbeiterDashboard(id));
         md.success = true;
         md.total = md.results.size();
