@@ -124,16 +124,24 @@ Ext.define('AM.controller.MitarbeiterController', {
     showTaskEditWindow: function(a, item){
     	var detailsWindow = Ext.create('widget.mitarbeiterTaskEditWindow');
     	/* setze Inhalt im Fenster entsprechend angeklicktem Item */
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.description);
-    	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedAt);    	        	
-		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
-		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowPriority')[0]).setValue(item.data.priority);		
+      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowId')[0]).setValue(item.data.id);
+  	  	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowTitle')[0]).setValue(item.data.title);
+      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDescription')[0]).setValue(item.data.desc);
+      	(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowAssignedOn')[0]).setValue(item.data.assignedAt);    	        	
+  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowDeadline')[0]).setValue(item.data.deadline);
+  		(Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowPriority')[0]).setValue(item.data.priority);
+  		
 		var combo = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowHiwi')[0];
 		/* vorauswahl des momentan eingetragenen HiWis */
 		combo.store.load(function(records, operation, success) {
 		    combo.setValue(item.data.hiwi);
-		});
+		});	                                                  		
+
+		var combo2 = Ext.ComponentQuery.query('#mitarbeiterTaskEditWindowErledigt')[0];
+  		/* vorauswahl des momentan eingetragenen HiWis */
+  		combo2.store.load(function(records, operation, success) {
+  		    combo2.setValue(item.data.status);
+  		});          
     	/* zeige Fenster */
     	detailsWindow.show();    	
     },    
