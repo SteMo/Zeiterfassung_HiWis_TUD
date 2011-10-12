@@ -48,10 +48,6 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
             console.log("Person id: " + authorID);  
             storeDashboardInfo.getProxy().api.read = 'ws/personen/madb/'+storeGetIdOfLoggedInPerson.getAt(0).get("id"); // Called when reading existing records 
             storeDashboardInfo.load(function(records, operation, success) {
-                console.log("Records: "+records);
-                console.log("Operation: "+operation);
-                console.log("success: "+success);
-                console.log("URL: "+storeDashboardInfo.getProxy().api.read);
                 (Ext.ComponentQuery.query('#budget')[0]).setValue(storeDashboardInfo.getAt(0).get("budget"));
                 (Ext.ComponentQuery.query('#aktiveHiwis')[0]).setValue(storeDashboardInfo.getAt(0).get("aktiveHiwis"));
                 (Ext.ComponentQuery.query('#vorgesetzter')[0]).setValue(storeDashboardInfo.getAt(0).get("vorgesetzter"));
@@ -110,12 +106,15 @@ Ext.define('AM.view.dashboard.Mitarbeiter', {
 //                    },
                     {
                         xtype: 'numbercolumn',
-                        dataIndex: 'remainingHours',
-                        text: 'Offene Stunden',                    },
+                        dataIndex: 'doneHours',
+                        text: 'Gearbeitete Stunden',
+                        width: 120
+                    },
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'remainingTasks',
                         text: 'Offene Aufgaben',
+                        width: 120
                     },                    
 //                    {
 //                        xtype: 'gridcolumn',
