@@ -409,7 +409,7 @@ Ext.define('AM.model.HiWiAufgabe', {
     fields: [
         {name: 'id', type: 'int'},
         {name: 'title', type: 'string'},
-        {name: 'description', type: 'string'},
+        {name: 'desc', type: 'string'},
         {name: 'supervisor', type: 'string'},
         {name: 'hiwi', type: 'string'},        
         {name: 'deadline', type: 'date', dateFormat: 'd.m.y'},
@@ -477,7 +477,7 @@ Ext.define('AM.model.HiWiVertrag', {
         {name: 'begin', type: 'date', dateFormat: 'd.m.y'},
         {name: 'end', type: 'date', dateFormat: 'd.m.y'},
         {name: 'hoursPerMonth', type: 'int'},
-        {name: 'remainingHours',type: 'int'},	/* noch zu verrichtende Stunden */
+        {name: 'doneHours',type: 'int'},	/* noch zu verrichtende Stunden */
         {name: 'remainingTasks',type: 'string'}, /* ich denke so im Stil: x/y (also x von y offen), nur sortieren im Grid wird dann evtl schwierig */
         {name: 'rate', type: 'string'} /* Tarifgruppe */
     ],    
