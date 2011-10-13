@@ -62,8 +62,7 @@ public class Installation {
         
         /**
          * Personen
-         */
-        
+         */       
         Person administrator = new Person();
         administrator.firstName = "Admin";
         administrator.givenName = "Administrator";
@@ -93,6 +92,10 @@ public class Installation {
         hiwi = PersonDAO.retrieve(id_hiwi);
         hiwi.setSupervisor(PersonDAO.retrieve(id_mitarbeiter));       
         PersonDAO.update(hiwi);
+        
+        // Set Leiter of TK to Mitarbeiter
+        tk.leiter = mitarbeiter.id;
+        id_tk = FachgebietDAO.update(tk);
         
         /**
          * Aufgaben
